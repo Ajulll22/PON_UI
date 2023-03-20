@@ -1,0 +1,303 @@
+.privilege-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.admin-logo {
+    box-shadow: 0 1px 4px 0px rgba(0, 0, 0, 0.16);
+}
+
+textarea.form-control {
+    overflow-y: scroll;
+    max-height: 100px;
+}
+
+.br-sideleft {
+    background-color: #000f23;
+}
+
+.dropdown-menu {
+    border: none !important;
+}
+
+.dropdown-menu-header {
+    margin-top: -3px !important;
+}
+
+.dropdown-menu-header::before {
+    background-color: transparent !important;
+}
+
+/* Space between title and content */
+.br-pagebody {
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+
+a {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Profile Card */
+.profile-card {
+    font-size: 15px;
+    padding: 5px;
+}
+
+.dropdown-profile-card {
+    border-top: 0;
+    margin-top: 1px;
+    box-shadow: 0 1px 4px 0px rgba(0, 0, 0, 0.16);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    left: auto !important;
+    right: -1px !important;
+    top: 44px !important;
+    transform: none !important;
+    will-change: unset !important;
+}
+
+.hint-message {
+    font-size: 11px;
+    color: gray;
+    margin-bottom: 0px;
+}
+
+.hint-message-error {
+    font-size: 11px;
+    color: #a94442;
+    margin-bottom: 0px;
+    font-weight: bold;
+}
+
+.modal-sm {
+    width: 700px !important;
+}
+
+.modal-md {
+    width: 750px !important;
+}
+
+.modal-lg {
+    width: 850px !important;
+}
+
+/* Padding Content */
+@media (min-width: 992px) {
+    .br-section-wrapper {
+        padding: 30px !important;
+    }
+}
+
+.ms-container {
+    width: 100% !important;
+}
+
+/* DATE AND TIME PICKER */
+.ui-datepicker {
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    font-family: inherit;
+    font-size: inherit;
+    padding: 10px;
+    margin: 1px 0 0;
+    border-radius: 3px;
+    display: none;
+    width: auto !important;
+    z-index: 1051 !important;
+}
+
+.ui-datepicker-year {
+    color: #17A2B8;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    font-family: inherit;
+    font-size: inherit;
+    padding: 5px;
+    margin-left: 5px;
+    border-radius: 3px;
+    width: auto !important;
+    z-index: 1052 !important;
+}
+
+.ui-timepicker {
+    z-index: 1055 !important;
+}
+
+/* SELECT2 */
+.select2-container--open .select2-dropdown--below {
+    z-index: 1051;
+}
+
+span.select2-selection__clear {
+    right: 30px !important;
+    position: absolute !important;
+    top: 0px !important;
+    padding-top: 7px !important;
+    padding: 2px;
+}
+
+/* ALERTIFY */
+.alertify .ajs-header {
+    padding: 6px 24px;
+}
+
+.alertify .ajs-footer {
+    padding: 0px;
+}
+
+.alertify .ajs-body .ajs-content {
+    padding: 24px;
+}
+
+/* DATATABLE */
+/* Sorting DataTable */
+table.dataTable thead .sorting {
+    background-image: none;
+}
+
+table.dataTable thead .sorting_asc {
+    background-image: none;
+}
+
+table.dataTable thead .sorting_desc {
+    background-image: none;
+}
+
+table.dataTable thead .sorting_asc_disabled {
+    background-image: none;
+}
+
+table.dataTable thead .sorting_desc_disabled {
+    background-image: none;
+}
+
+table {
+    width: 100%;
+}
+
+/* Select range Datatables */
+.dataTables_length .select2-container {
+    width: 60px !important;
+}
+
+/* Header Width when The Body is Scrollable Y */
+.dataTables_scrollHeadInner {
+    width: 100% !important;
+}
+
+div.dataTables_scrollHead table.dataTable {
+    width: inherit !important;
+}
+
+/* AMARAN */
+.amaran {
+    max-width: 500px !important;
+    width: auto !important;
+    padding: 0 !important;
+}
+
+.amaran.default .default-message span {
+    line-height: 20px !important;
+    padding-top: 50px !important;
+    vertical-align: middle !important;
+}
+
+/* DATEPICKER */
+.datepicker-dropdown {
+    padding: 10px !important;
+    font-size: 12px !important;
+    text-shadow: none !important;
+    width: 18% !important;
+    border-radius: 8px !important;
+}
+
+
+/* UPDATE */
+.card-border{
+    background-color: white;
+    width: 100%;
+    padding: 5px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    border-style: solid;
+    border-width: 4px 0 0 0;
+    border-color: #51CBFF;
+}
+.modal-body-padding{
+    padding: 2rem 3rem 2rem 3rem;
+}
+.btn-scale:hover{
+    transform: scale(1.02);
+}
+.btn-scale:hover i.icon-rotate{
+    transform: rotate(360deg);
+    transition-duration: 2s;
+}
+
+.alert-delete{
+    border-width: 0 0 0 4px;
+    border-color: rgb(248 113 113);
+    background-color: rgb(254 226 226);
+    border-style: solid;
+}
+.alert-delete .alert-title{
+    font-weight: 700;
+    color: rgb(185 28 28);
+}
+.alert-delete .alert-text{
+    color: rgb(239 68 68);
+}
+
+.table-common td {
+    vertical-align: middle !important;
+    padding: 0.6rem !important;
+}
+
+.modal-claim-overflow{
+    overflow-y: auto;
+    max-height: 280px;
+}
+
+.modal-claim-overflow::-webkit-scrollbar {
+    width: 0.2em;
+    display: inline;
+}
+
+.modal-claim-overflow::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+.modal-claim-overflow::-webkit-scrollbar-thumb {
+  background-color: gray;
+  outline: 1px solid gray;
+  border-radius: 12px;
+}
+
+.w-full{
+    width: 100%;
+}
+
+.status-label{
+    padding: 2px;
+    font-size: small;
+    border-radius: 9px;
+    text-align: center;
+}
+
+.status-notyetsubmitted{
+    background-color: rgb(0, 207, 0);
+    color: white;
+}
+.status-open{
+    background-color: rgb(0, 110, 255);
+    color: white;
+}
+.status-close{
+    background-color: gray;
+    color: white;
+}
+.status-needrevision{
+    background-color: rgb(255, 174, 0);
+    color: white;
+}
+

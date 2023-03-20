@@ -1,0 +1,130 @@
+/*
+  Custom CSS file. 
+*/
+
+.br-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 10px 15px;
+  background-color: #E9ECEF;
+  border-top: 1px solid #cfcfcf;
+}
+
+.br-header {
+  height: 45px;
+}
+
+.br-header > .br-header-left > .navicon-left{
+  height: 45px;
+}
+
+.br-logo {
+  height: 45px;
+}
+
+.br-sideleft {
+  top: 45px;
+}
+
+.br-menu-link.active {
+    background-color: #00559e;
+}
+
+.br-mainpanel {
+  margin-top: 45px;
+}
+
+.br-section-wrapper {
+    padding: 10px;
+}
+
+.wd-logo-topbar {
+  max-width: 75%;
+}
+
+.admin-logo {
+  display: flex;
+  justify-content: center;
+}
+
+.doc-list .card-body.desc {
+    min-height: 110px;
+    padding: 10px 15px;
+}
+
+.doc-list-button {
+    display: flex;
+    justify-content: space-between;
+}
+
+.doc-list .view-btn {
+    border-radius: 0px 0px 0px;
+}
+
+.doc-list-button button {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 4px 0.75rem;
+    border-top: 0px rgb(197, 197, 197);
+    border-color: rgb(197, 197, 197);
+}
+
+.load-more {
+    display: flex;
+    justify-content: center;
+}
+
+.load-more button:hover {
+  cursor: pointer;
+}
+.load-more .sk-wave {
+    margin: 0;
+    width: 93px;
+    display: none;
+
+}
+
+.doc-list .card-body.title {
+    min-height: 80px;
+    padding: 10px 15px;
+}
+
+.br-menu-item {
+    padding: 0px 10px;
+}
+
+.card-header {
+    padding: 5px 20px;
+}
+
+.card.doc-card {
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.card.doc-card:hover {
+  
+  -webkit-box-shadow: 0 0 5px 1px #3489eb;
+  box-shadow: 0 0 5px 1px #3489eb;
+
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.card img {
+  max-height: 150px;
+  border-radius: 0px;
+}
+
+.btn-outline-secondary:hover {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+

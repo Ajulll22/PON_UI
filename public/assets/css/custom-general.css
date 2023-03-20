@@ -1,0 +1,150 @@
+
+
+.wd-logo-login {
+  max-width: 65%;
+}
+
+.login-wrapper > .login-button-div > button {
+  cursor: pointer;
+  background-image: linear-gradient(190deg,#2983FB,#1353B9);
+  color: #fff;
+  /*background-color: #007bff;*/
+  border-color: #007bff;
+}
+
+.login-wrapper > .login-button-div > button:hover{
+  background-image: linear-gradient(190deg,#1353B9,#2983FB);
+}
+
+.login-wrapper > .login-button-div > button:disabled {
+  cursor: default;
+}
+
+.login-wrapper > .login-footer {
+  margin-bottom: 0px;
+  padding: 10px;
+}
+
+.login-wrapper input{
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.login-wrapper input:hover{
+  border: 1px solid #55a6f8;
+}
+
+.btn-shadow {
+    box-shadow: 30px 30px 60px rgba(0,0,0,.25);
+}
+
+.signin-logo {
+  padding: 20px;
+}
+
+.login-btn-spinner {
+  display: none;
+}
+
+#loginForm .alert{
+  display: none;
+}
+
+.sk-wave {
+    margin: 0px auto;
+    width: 50px;
+    height: 15px;
+    text-align: center;
+    font-size: 8px;
+}
+
+.sk-wave .sk-rect {
+  background-color: white;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    right: -3px;
+}
+
+table.dataTable tbody th, table.dataTable tbody td {
+    padding: 6px 10px;
+}
+
+.dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_processing, .dataTables_wrapper .dataTables_paginate {
+    color: #888;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.current:focus {
+    background-color: #00559e;
+}
+
+.dataTables_length label {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.dataTables_length {
+  margin-bottom: 5px;
+  padding-bottom: 0;
+}
+
+.dataTables_filter label {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.dataTables_filter {
+  margin-bottom: 5px;
+  padding-bottom: 0;
+}
+
+table.dataTable {
+    border: 1px solid #dee2e6;
+    margin-bottom: 5px;
+}
+
+table.dataTable .btn {
+  padding: 3px 14px;
+}
+
+table.dataTable .btn:hover {
+  cursor: pointer;
+}
+
+.add-btn {
+  padding: 5px 25px;
+  float: right;
+}
+
+.add-btn:hover {
+  cursor: pointer;
+}
+
+.modal .btn {
+  cursor: pointer;
+}
+
+.ms-container {
+    width: 100%;
+}
+
+.ms-container .ms-list {
+  border-radius: 1px;
+  height: 150px;
+}
+
+.ms-container .ms-selectable li.ms-elem-selectable, .ms-container .ms-selection li.ms-elem-selection {
+    font-size: 12px;
+    padding: 3px 10px;
+}
+
+.search-multi:focus {
+  border-bottom: 1px solid #0753a1 !important;
+}
+
+/*
+  Group
+*/
+
+.ui-datepicker {
+  z-index: 10 !important;
+}

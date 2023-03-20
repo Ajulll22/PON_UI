@@ -1,0 +1,141 @@
+/*
+  Custom CSS file. 
+*/
+
+.br-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 10px 15px;
+  background-color: #E9ECEF;
+  border-top: 1px solid #cfcfcf;
+}
+
+.br-header {
+  height: 45px;
+}
+
+.br-header > .br-header-left > .navicon-left{
+  height: 45px;
+}
+
+.br-logo {
+  height: 45px;
+}
+
+.br-sideleft {
+  top: 45px;
+}
+
+.br-menu-link.active {
+    background-color: #00559e;
+}
+
+.br-mainpanel {
+  margin-top: 45px;
+}
+
+.br-section-wrapper {
+    padding: 10px;
+}
+
+.dropdown-menu-header {
+  top: 40px !important;
+}
+
+.card-header {
+  padding: 5px 20px;
+}
+
+.card{
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.card:hover{
+  
+  -webkit-box-shadow: 0 0 5px 1px #3489eb;
+  box-shadow: 0 0 5px 1px #3489eb;
+
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.card-img-bottom {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.load-more {
+  display: flex;
+  justify-content: center;
+}
+
+.load-more button:hover {
+  cursor: pointer;
+}
+
+.load-more .sk-wave {
+  margin: 0;
+  width: 93px;
+  display: none;
+}
+
+.wd-logo-topbar {
+  max-width: 85%;
+}
+
+.doc-list .view-btn {
+  border-radius: 0;
+  border-bottom-left-radius: 3px !important;
+}
+
+.doc-list .download-btn {
+  border-radius: 0;
+  border-bottom-right-radius: 3px !important;
+}
+
+.doc-list-button {
+  display: flex;
+  justify-content: space-between;
+}
+
+.doc-list-button button {
+  cursor: pointer;
+  padding: 4px 0.75rem;
+  font-weight: bold;
+  border-top: 0;
+  border-color: #c5c5c5;
+}
+
+.doc-list-button button:disabled {
+  cursor:default;
+}
+
+.doc-list .card-body.desc {
+  min-height: 110px;
+  padding: 10px 15px;
+}
+
+#view-modal .modal-dialog {
+  margin-top: 0;
+}
+
+
+@media (min-width: 992px) {
+  .br-header {
+    left: 0;
+  }
+}
+
+@media (min-width: 992px) {
+  .br-mainpanel {
+    margin-left: 0;
+  }
+}
