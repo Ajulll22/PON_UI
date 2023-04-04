@@ -113,6 +113,9 @@
                 <li class="nav-item"><a href="{{ route('claim_request') }}"
                     class="nav-link {{ $data['sub_menu'] == 'claim-request' ? 'active' : '' }}">Claim Request</a>
                 </li>
+                <li class="nav-item"><a href="{{ route('claim_approval') }}"
+                    class="nav-link {{ $data['sub_menu'] == 'claim-approval' ? 'active' : '' }}">Claim Approval</a>
+                </li>
             </ul>
 
             <!-- PON REQUEST -->

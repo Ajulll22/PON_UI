@@ -13,12 +13,15 @@
 
 // AUTH
 
+use App\Http\Controllers\Claim\ClaimApprovalController;
 use App\Http\Controllers\Claim\ClaimRequestController;
+use App\Http\Controllers\PONRequest\PONRequestController;
 use App\Http\Controllers\Setting\ClaimCategoryController;
 use App\Http\Controllers\Setting\CostCentreController;
 use App\Http\Controllers\Setting\CurrencyController;
 use App\Http\Controllers\Setting\RFPeriodController;
 use App\Http\Controllers\Setting\SupplierController;
+use App\Http\Controllers\UtilityController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/cobacoba', 'PasswordController@cobacoba');
@@ -34,9 +37,18 @@ Route::post('/forgot-password-process',					['uses' => 'PasswordController@forgo
 // Update
 
 Route::group(["prefix" => "claim-request"],	function () {
-	Route::get("/", 							[ClaimRequestController::class, 'index'])->middleware('privilege:PON_REQUEST_VIEW')->name('claim_request');
-	Route::get("/list", 							[ClaimRequestController::class, 'get_all'])->middleware('privilege:PON_REQUEST_VIEW')->name('claim_request_list');
-	Route::post("/", 							[ClaimRequestController::class, 'create'])->middleware('privilege:PON_REQUEST_VIEW')->name('claim_request_create');
+	Route::get("/", 							[ClaimRequestController::class, 'index'])->middleware('privilege:CLAIM_REQUEST_PUSAT_VIEW')->name('claim_request');
+	Route::get("/list", 							[ClaimRequestController::class, 'get_all'])->name('claim_request_list');
+	Route::post("/", 							[ClaimRequestController::class, 'create'])->middleware('privilege:CLAIM_REQUEST_PUSAT_ADD')->name('claim_request_create');
+	Route::put("/", 							[ClaimRequestController::class, 'update'])->middleware('privilege:CLAIM_REQUEST_PUSAT_UPDATE')->name('claim_request_update');
+	Route::post("/delete", 		[ClaimRequestController::class, 'destroy'])->name('claim_request_delete');
+	Route::post("/history", 		[ClaimRequestController::class, 'get_history'])->name('claim_request_history');
+});
+
+Route::group(["prefix" => "claim-approval"],	function () {
+	Route::get("/", 							[ClaimApprovalController::class, 'index'])->middleware('privilege:CLAIM_APPROVAL_PUSAT_VIEW')->name('claim_approval');
+	Route::get("/list", 							[ClaimApprovalController::class, 'get_all'])->name('claim_approval_list');
+	Route::post("/action", 							[ClaimApprovalController::class, 'claim_action'])->name('claim_approval_action');
 });
 
 // Setting => Cost Centre
@@ -81,6 +93,9 @@ Route::get("/setting/currency-list", 		[CurrencyController::class, 'get_all'])->
 Route::post('/encrypt-decrypt',							['uses' => 'UtilityController@encrypt_decrypt'])->name('encrypt-decrypt');
 Route::post("/upload-item",					'UtilityController@UploadToTemp')->name('upload_item');
 Route::post("/delete-item",					'UtilityController@DeleteFromTemp')->name('delete_item');
+Route::get("/generate",					[UtilityController::class, 'generate'])->name('generate');
+Route::get("/generate-csv",					[UtilityController::class, 'GenerateCSV'])->name('generate_csv');
+Route::get("/generate-autopay",					[UtilityController::class, 'GenerateAutoPay'])->name('generate_autopay');
 
 // SET NEW PASSWORD AFTER FORGOT PASSWORD
 Route::get('/set-new-password',							['uses' => 'PasswordController@set_new_password'])->middleware('privilege:dashboard')->name('set-password');
@@ -178,6 +193,10 @@ Route::group(['middleware' => 'session'], function () {
 
 	// PON REQUEST
 	Route::group(["prefix" => "pon-request"],	function () {
+		Route::group(["prefix" => "v2"],	function () {
+			Route::get('/', 							[PONRequestController::class, "index"])->middleware('privilege:PON_REQUEST_VIEW')->name('pon-request-view_v2');
+		});
+
 		Route::get('/', 							['uses' => 'PONRequest\PONRequestController@pon_request_view'])->middleware('privilege:PON_REQUEST_VIEW')->name('pon-request-view');
 
 		Route::get('/list', 						['uses' => 'PONRequest\PONRequestController@pon_request_list'])->middleware('privilege:PON_REQUEST_VIEW')->name('pon-request-list');

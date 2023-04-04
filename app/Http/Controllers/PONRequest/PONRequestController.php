@@ -44,10 +44,17 @@ class PONRequestController extends Controller
             return redirect()->route('logout');
         }
 
+        $cost_centre = GatewayController::lead_to_be("POST", "cost-centre/child-data", ["cost_centre_id" => ""]);
+        $currency 	= GatewayController::lead_to_be("GET", "currency/data", []);
+        $supplier = GatewayController::lead_to_be("GET", "supplier/data", []);
+
+        $data["cost_centre_list"] = $cost_centre["data"];
+        $data["currency_list"] = $currency["data"];
+        $data["supplier_list"] = $supplier["data"];
         $data["reason_list"]        = $result_data['reason_list'];
 
         // VIEW WITH DATA;
-        return view('PONRequest/pon-request')->with(
+        return view('PONRequest/_pon-request')->with(
           	'data', $data
         );
   	}
@@ -451,4 +458,41 @@ class PONRequestController extends Controller
 
         return $result_data;
     }
+
+
+
+
+    public function index(Request $request)
+    {
+        // MENU AND SUBMENU SIGNAGE
+        $data["menu"]                       = $this->menu;
+        $data["sub_menu"]                   = $this->sub_menu;
+        $data['privilege_menu']             = $request->get('privilege_menu');
+        $data['notification_list']          = $request->get('notification_list');
+        $data['notification_type']          = $request->get('notification_type');
+        $data['notification_data']          = $request->get('notification_data');
+        $data['notification_count']         = $request->get('notification_count');
+        $data['all_notification_length']    = count($data['notification_list']);
+
+        // GET REASON LIST
+        $method                     = 'GET';
+        $param                      = array();
+        $path                       = 'reason/list';
+        $result_data                = GatewayController::lead_to_be($method, $path, $param);
+
+        if ($result_data[config('constants.response_code')] == config('constants.session_expired')) {
+            return redirect()->route('logout');
+        }
+
+        $pon_list = GatewayController::lead_to_be("GET", "pon-request/list", []);
+
+        $data["pon_request_list"] = $pon_list["pon_request_list"];
+        $data["reason_list"]        = $result_data['reason_list'];
+
+        // VIEW WITH DATA;
+        return view('PONRequest/pon-request')->with(
+          	'data', $data
+        );
+    }
+
 }

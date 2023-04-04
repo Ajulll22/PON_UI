@@ -253,6 +253,14 @@ div.dataTables_scrollHead table.dataTable {
     padding: 0.6rem !important;
 }
 
+.table-absen td {
+    vertical-align: middle !important;
+    padding: 0.2rem !important;
+}
+.table-absen tr:hover{
+    background-color: #e2e2e2;
+}
+
 .modal-claim-overflow{
     overflow-y: auto;
     max-height: 280px;
@@ -297,7 +305,21 @@ div.dataTables_scrollHead table.dataTable {
     color: white;
 }
 .status-needrevision{
-    background-color: rgb(255, 174, 0);
+    background-color: rgb(255, 7, 7);
     color: white;
 }
 
+p.text-base {
+    font-size: 0.9rem;
+    line-height: 1.5rem;
+    color: black;
+}
+
+.font-semibold{
+    font-weight: 600;
+}
+
+.border-y-1{
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}

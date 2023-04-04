@@ -335,7 +335,7 @@
                 data[nama] = value || "";
             });
             delete data['button']
-
+            
             $.ajax({
                 url: '{{ route('currency_create') }}',
                 method: 'POST',

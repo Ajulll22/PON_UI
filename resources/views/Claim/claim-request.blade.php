@@ -106,6 +106,14 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <label for="pon_request_file" class="control-label">Support Documents (Ex: Absensi) <span class="tx-danger">*</span></label>
+                                <div class="form-group">
+                                    <input class="form-control rounded-xl" type="file" multiple
+                                        id="support_doc-add"
+                                        name="support_doc">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -161,20 +169,25 @@
                                                             autocomplete="off">
                                                     </div>
                                                 </div>
-                                                @if ($item['approval_phase']['4'] == '1')
-                                                    <div class="col">
-                                                        <div class="form-group">
-                                                            <label class="form-control-label">PM <span
-                                                                    class="tx-danger">*</span></label>
-                                                            <select class="form-control rounded-xl"
-                                                                id="{{ $item['claim_category_id'] }}-pm-add"
-                                                                name="{{ $item['claim_category_id'] }}-pm"
-                                                                style="width: 100%" required>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                @endif
                                             </div>
+                                            @if ($item['approval_phase']['4'] == '1')
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label class="form-control-label">PM <span
+                                                                class="tx-danger">*</span></label>
+                                                        <select class="form-control rounded-xl"
+                                                            id="{{ $item['claim_category_id'] }}-pm-add"
+                                                            name="{{ $item['claim_category_id'] }}-pm"
+                                                            style="width: 100%" required>
+                                                            @foreach ($data['pm_list'] as $pm)
+                                                                <option value="{{$pm["user_id"]}}">{{$pm["user_firstname"]." ".$pm["user_lastname"]}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endif
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
@@ -266,6 +279,8 @@
                 <div class="modal-body pd-5-force pd-l-20-force bg-gray-400 ">
                     Main Details
                 </div>
+                <input id="claim_request_id-edit" type="text" hidden>
+                <input id="claim_request_type_id-edit" type="text" hidden>
                 <div class="form-layout">
                     <div class="modal-body pd-20" id="pon-request-detail-container">
                         <div class="row">
@@ -273,8 +288,8 @@
                                 <div class="form-group">
                                     <label class="form-control-label">Cost Centre <span class="tx-danger">*</span></label>
                                     <select class="form-control cost_centre rounded-xl" id="cost_centre-edit" name="cost_centre"
-                                        style="width: 100%" required>
-                                        <option value="">Select Cost Centre</option>
+                                        style="width: 100%" disabled required>
+                                        <option value="{{Session::get('cost_centre_id')}}">{{Session::get('cost_centre_name')}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -283,6 +298,9 @@
                                     <label class="form-control-label">Currency <span class="tx-danger">*</span></label>
                                     <select class="form-control currency rounded-xl" id="currency-edit" name="currency"
                                         style="width: 100%" required>
+                                        @foreach ($data['currency'] as $item)
+                                            <option value="{{$item['currency_id']}}">{{$item['name']}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -290,11 +308,34 @@
                                 <div class="form-group">
                                     <label class="form-control-label">RF Period <span class="tx-danger">*</span></label>
                                     <select class="form-control rf_period rounded-xl" id="rf_period-edit" name="rf_period"
-                                        style="width: 100%" required>
+                                        style="width: 100%" disabled required>
+                                        @foreach ($data['current-period'] as $item)
+                                            <option value="{{$item['rf_period_id']}}">{{$item['rf_name']}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div id="show-support_doc_edit" style="display: none">
+                    <div class="modal-body pd-5-force pd-l-20-force bg-gray-400 ">
+                        Support Documents
+                    </div>
+                    <div class="modal-body pd-20">
+                        <table class="table display responsive nowrap px-2">
+                            <thead>
+                                <tr>
+                                    <th class="text-capitalize py-2">No</th>
+                                    <th class="text-capitalize py-2">Other Documents</th>
+                                    <th class="text-capitalize py-2 text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="support_doc-edit" class="table-absen">
+    
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -384,6 +425,7 @@
                                                 </div>
                                                 <div class="col d-flex justify-content-end" style="padding: 29px;">
                                                     <button name="button"
+                                                        onclick="submitItemDetailEdit('{{ $item['claim_category_id'] }}')"
                                                         class='rounded-xl btn btn-primary mx-2'>Add Item</button>
                                                 </div>
                                             </div>
@@ -429,9 +471,9 @@
 
                 <div class="modal-footer">
                     <button data-dismiss="modal" aria-label="Close" class='rounded-xl btn btn-dark'>Cancel</button>
-                    <button id="add-save_claim" onclick="SubmitHandler('SAVE')" value="SAVE"
+                    <button id="add-save_claim" onclick="SubmitUpdateHandler('SAVE')" value="SAVE"
                         class='rounded-xl btn btn-warning mx-2'>Save</button>
-                    <button id="add-submit_claim" onclick="SubmitHandler('SUBMIT')" value="SUBMIT"
+                    <button id="add-submit_claim" onclick="SubmitUpdateHandler('SUBMIT')" value="SUBMIT"
                         class='rounded-xl btn btn-primary'>Submit</button>
                 </div>
             </div>
@@ -454,15 +496,132 @@
                     Main Details
                 </div>
                 <div class="modal-body row px-5">
-                    test
+                    <div class="col-md-3">
+                        <p class="text-base mb-2 font-semibold">Name</p>
+                        <p class="text-base mb-2 font-semibold">Cost Centre</p>
+                        <p class="text-base mb-2 font-semibold">Currency</p>
+                        <p class="text-base mb-2 font-semibold">Total Amount</p>
+                        <p class="text-base mb-2 font-semibold">Status</p>
+                    </div>
+                    <div class="col-md-5">
+                        <p class="text-base mb-2 font-semibold text-capitalize">:<span id="name-detail" class="ml-2">{{Session::get('user_firstname')." ".Session::get('user_lastname')}}</span></p>
+                        <p class="text-base mb-2">:<span id="cost_centre-detail" class="ml-2"></span></p>
+                        <p class="text-base mb-2">:<span id="currency-detail" class="ml-2"></span></p>
+                        <p class="text-base mb-2">:<span id="total_amount-detail" class="ml-2"></span></p>
+                        <p id="status-detail" class="text-base mb-2"></p>
+                    </div>
+                    <div id="show-support_doc_view" class="col-md-4" style="display: none">
+                        <table class="table display responsive nowrap">
+                            <thead>
+                                <tr>
+                                    <th class="text-capitalize py-2">Other Documents</th>
+                                </tr>
+                            </thead>
+                            <tbody id="support_doc-view" class="table-absen">
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div class="modal-body pd-5-force pd-l-20-force bg-gray-400 ">
                     Summary Claim Items
                 </div>
+                <div class="form-layout">
+                    <div class="modal-body pd-20">
+                        <div class="row">
+                            <div class="col">
+                                <table id="request_item_datatable-view" class="table table-striped table-bordered"
+                                    style="background-color: #fff">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%">No</th>
+                                            <th width="20%">Date</th>
+                                            <th width="20%">Claim Category</th>
+                                            <th width="20%">Description</th>
+                                            <th width="25%">Amount</th>
+                                            <th class="text-center" width="10%">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="4" style="text-align:right">Total:</th>
+                                            <th colspan="1" style="text-align:left"></th>
+                                            <th colspan="1"></th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-body pd-5-force pd-l-20-force bg-gray-400 ">
+                    History Claim
+                </div>
+                <div class="form-layout">
+                    <div class="modal-body pd-20">
+                        <div class="row">
+                            <div class="col">
+                                <table id="table-data" class="table display responsive nowrap" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th class="wd-5p-force">No</th>
+                                            <th>Phase</th>
+                                            <th class="text-center">Status</th>
+                                            <th>Review Date</th>
+                                            <th>Reviewer</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-common" id="data-history">
+                    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="modal-footer">
                     <button data-dismiss="modal" aria-label="Close" class='rounded-xl btn btn-dark'>Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Delete --}}
+    <div id="modal-claim-request_delete" class="modal fade" data-value=''>
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content tx-size-sm">
+                <div class="modal-header pd-x-20">
+                    <h5></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body-padding">
+                    <div class="alert-delete rounded-xl p-3 mb-3">
+                        <div class="d-flex">
+                            <svg class="my-auto" width="30" height="30" xmlns="http://www.w3.org/2000/svg"
+                                className="h-6 w-6" viewBox="0 0 20 20">
+                                <path
+                                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z">
+                                </path>
+                            </svg>
+                            <div class="ml-2">
+                                <h5 class="alert-title">Delete Item ?</h5>
+                                <p class="alert-text mg-b-0-force">Are You Sure Want To Delete This Item ?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <input type="text" name="claim_request_id" id="delete-claim_request_id" hidden>
+                        <button name="button" data-dismiss="modal" aria-label="Close"
+                            class='rounded-xl btn btn-dark'>Cancel</button>
+                        <button id="delete_item" class='rounded-xl btn btn-danger mx-2'>Delete</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -476,6 +635,13 @@
         var data_edit_temp = []
 
         var delete_file_temp = []
+
+        var history_data = []
+
+        var support_doc = []
+
+        var delete_file_claim = []
+        var delete_file_support = []
 
         $(document).ready(function() {
             $('.dataTables_length select').select2({
@@ -491,6 +657,73 @@
 
         const claim_category_list = @json($data['claim_category'])
 
+        async function get_history(claim_request_id) { 
+            const data = {claim_request_id};
+            $.ajax({
+                url: '{{ route('claim_request_history') }}',
+                method: 'POST',
+                data,
+                datatype: "json",
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                success: function(res) {
+                    console.log(res);
+                    if (res.result == "SUCCESS") {
+                        let tbody_html = ""
+                        $.each(res.data, function(i, item) {
+                            let stat = "open"
+                            if (item.status == "Approved") {
+                                stat = "notyetsubmitted"
+                            } else if (item.status == "Rejected") {
+                                stat = "needrevision"
+                            }
+                            const status = `<div class="status-label status-${stat}" >${item.status}</div>`
+                            tbody_html += 
+                            `<tr>
+                                <td>${i+1}</td>
+                                <td>${item.claim_request_phase}</td>
+                                <td>${status}</td>
+                                <td>${item.review_date}</td>
+                                <td>${item.reviewer_name}</td>
+                            </tr>`;
+                        })
+                        $("#data-history").html(tbody_html);
+                        $('#modal-claim-request_view').modal("show");
+                        $.LoadingOverlay('hide');
+                        return
+                    }
+                    amaran_error(res.message)
+                    $.LoadingOverlay('hide');
+                    return
+                }
+            })
+         }
+
+        async function tableSupportDoc(files, action) {
+            let tbodySupportDoc = ""
+            support_doc = []
+            $.each( files, function (i, file) { 
+                support_doc.push(file.filename) 
+                const fileName = file.filename.split("/")
+                let number = ""
+                if (action == "edit") {
+                    number = `<td>${i+1}</td>`
+                }
+                tbodySupportDoc += `
+                    <tr>
+                        ${number}
+                        <td>${fileName[fileName.length-1]}</td>
+                        <td class="text-center" ><a href="${file.filename}" target="_blank" style="text-decoration: none;" class="btn btn-outline-primary py-1 px-2" type="button" title="View File"><span class="icon ion-eye"></span></a></td>
+                    </tr>`
+            } )   
+            if (files.length > 0 ) {
+                $(`#show-support_doc_${action}`).show()
+            } else {
+                $(`#show-support_doc_${action}`).hide()
+            }
+            $(`#support_doc-${action}`).html(tbodySupportDoc)
+        }
 
         var table = $('#table-data').DataTable({
             ajax: {
@@ -545,7 +778,7 @@
                         let status = "open"
                         if (data == "Not Yet Submitted") {
                             status = "notyetsubmitted"
-                        } else if (data == "Close" ) {
+                        } else if (data == "Closed" ) {
                             status = "close"
                         } else if (data == "Need Revision") {
                             status = "needrevision"
@@ -631,8 +864,13 @@
                     sortable: false,
                     targets: -1,
                     render: function(data) {
+                        let target = data
+                        let namaFile = data.split("-")
+                        if (namaFile[0] == "UploadTmp") {
+                            target = `tmp/${data}`
+                        }
                         return `
-                            <a href="tmp/${data}" target="_blank" style="text-decoration: none;" class="btn btn-outline-primary" type="button" title="Preview File"><span class="my-auto icon ion-eye"></span></a>
+                            <a href="${target}" target="_blank" style="text-decoration: none;" class="btn btn-outline-primary" type="button" title="Preview File"><span class="my-auto icon ion-eye"></span></a>
                             <button id="delete-item-detail" type="button" style="text-decoration: none;" class="btn btn-outline-danger" title="Remove Item"><span class="icon ion-trash-a"></span></button>`;
                     }
                 }
@@ -665,7 +903,54 @@
             }
         });
 
-        function resetForm(claim_category_id, action) {
+        var item_request_table_view = $('#request_item_datatable-view').DataTable({
+            "searching": false,
+            columnDefs: [
+                {
+                    searchable: false,
+                    sortable: false,
+                    className: "text-center",
+                    targets: -1,
+                    render: function(data) {
+                        let target = data
+                        let namaFile = data.split("-")
+                        if (namaFile[0] == "UploadTmp") {
+                            target = `tmp/${data}`
+                        }
+                        return `
+                            <a href="${target}" target="_blank" style="text-decoration: none;" class="btn btn-outline-primary" type="button" title="Preview File"><span class="my-auto icon ion-eye"></span></a>`;
+                    }
+                }
+            ],
+            "footerCallback": function(row, data, start, end, display) {
+                var api = this.api(),
+                    data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function(i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+
+                // Total over all pages
+                let total = api
+                    .column(-2)
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                // Update footer
+                $(api.column(-2).footer()).html(
+                    // $.fn.dataTable.render.number(',', '.', 4).display(total)
+                    addComasStatic(Math.round((parseFloat(total) + Number.EPSILON) * 10000) / 10000)
+                );
+            }
+        });
+
+        async function resetForm(claim_category_id, action) {
             $(`#${claim_category_id}-claim_date-${action}`).val('')
             $(`#${claim_category_id}-claim_desc-${action}`).val('')
             $(`#${claim_category_id}-claim_amount-${action}`).val('')
@@ -803,6 +1088,88 @@
                 }
             })
         }
+
+        // Submit Item Details Edit
+        function submitItemDetailEdit(claim_category_id) {
+            var files = $(`#${claim_category_id}-upload_document-edit`)[0].files[0];
+            var formData = new FormData();
+            formData.append('upload_document', files);
+
+            const pm = $(`#${claim_category_id}-pm-edit`).val()
+            const data = {
+                claim_date: $(`#${claim_category_id}-claim_date-edit`).val(),
+                claim_amount: $(`#${claim_category_id}-claim_amount-edit`).val(),
+                claim_desc: $(`#${claim_category_id}-claim_desc-edit`).val(),
+                claim_category_id
+            }
+            if (pm !== undefined) {
+                if (pm === null) {
+                    $('#validate-detail-edit').html("<li><strong>Please fill all required field</strong></li>")
+                    $('#validate-detail-edit').fadeIn("slow");
+                    setTimeout(function() {
+                        $("#validate-detail-edit").fadeOut("slow");
+                    }, 3000);
+                    return
+                }
+                data.pm = pm
+            }
+
+            if (data.claim_date === "" || data.claim_amount === "") {
+                $('#validate-detail-edit').html("<li><strong>Please fill all required field</strong></li>")
+                $('#validate-detail-edit').fadeIn("slow");
+                setTimeout(function() {
+                    $("#validate-detail-edit").fadeOut("slow");
+                }, 3000);
+                return
+            }
+            if (!Date.parse(data.claim_date)) {
+                $('#validate-detail-edit').html("<li><strong>Please enter a valid date</strong></li>")
+                $('#validate-detail-edit').fadeIn("slow");
+                setTimeout(function() {
+                    $("#validate-detail-edit").fadeOut("slow");
+                }, 3000);
+                return
+            }
+            $.ajax({
+                url: "{{ route('upload_item') }}",
+                method: 'POST',
+                data: formData,
+                datatype: "json",
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                success: function(res) {
+                    $.LoadingOverlay('hide');
+                    if (res.result === 'error_validate') {
+                        var listErr = ""
+                        $.each(res.message, function(_, valueOfElement) {
+                            $.each(valueOfElement, function(_, valueOfElement) {
+                                listErr +=
+                                    `<li><strong>${valueOfElement}</strong></li>`
+                            });
+                        });
+                        $('#validate-detail-edit').html(listErr)
+                        $('#validate-detail-edit').fadeIn("slow");
+                        setTimeout(function() {
+                            $("#validate-detail-edit").fadeOut("slow");
+                        }, 3000);
+                        return
+                    } else if (res.result === "SUCCESS") {
+                        data.claim_document = [{ filename: res.file_name}]
+                        data_edit_temp.push(data)
+
+                        console.log(data_edit_temp);
+
+                        buildTableItem("edit")
+                        resetForm(claim_category_id, 'edit')
+                    }
+                }
+            })
+            
+        }
+
         // Delete Item Detail
         $('#request_item_datatable-add tbody').on('click', '#delete-item-detail', function() {
             const i = $(this).closest('tr').index()
@@ -839,13 +1206,27 @@
                 claim_category_id,
                 claim_document
             } = data_edit_temp[i]
-
-            delete_file_temp.push(claim_document[0].filename)
+            console.log(claim_document);
+            let namaFile = claim_document[0].filename.split("-")
+            if (namaFile[0] == "UploadTmp") {
+                const data = { delete_document: claim_document[0].filename }
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('delete_item') }}",
+                    data: data,
+                    dataType: "json",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
+                });
+            } else {
+                delete_file_temp.push(claim_document[0].filename)
+                console.log(delete_file_temp);
+            }
 
             data_edit_temp.splice(i, 1)
             buildTableItem("edit")
 
-            console.log(delete_file_temp);
         })
 
         // Action Submit
@@ -854,6 +1235,15 @@
                 amaran_error("Please Add Item")
                 return
             }
+
+            var files = $("#support_doc-add")[0].files
+            var formData = new FormData();
+            $.each( files, function (i, file) {  
+                formData.append('support_doc[]', file);
+            } )
+
+            const rfName = "{{ $data['current-period'][0]['rf_period_name'] }}"
+
             var column = item_request_table_add.column(-2);
             var totalFormat = $(column.footer()).html().split(",")
 
@@ -866,12 +1256,16 @@
                 rf_period_id: $("#rf_period-add").val(),
                 cost_centre_id: $("#cost_centre-add").val()
             }
+            formData.append('data', JSON.stringify(data));
+            formData.append('rf_name', rfName);
 
             $.ajax({
                 url: '{{ route('claim_request_create') }}',
                 method: 'POST',
-                data,
+                data: formData,
                 datatype: "json",
+                contentType: false,
+                processData: false,
                 headers: {
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
@@ -892,6 +1286,83 @@
             });
 
         }
+        function SubmitUpdateHandler(action) { 
+            if (!data_edit_temp.length) {
+                amaran_error("Please Add Item")
+                return
+            }
+            var column = item_request_table_edit.column(-2);
+            var totalFormat = $(column.footer()).html().split(",")
+
+            const rfName = "{{ $data['current-period'][0]['rf_period_name'] }}"
+
+            const total_amount = totalFormat.join("")
+            let claim_item_detail = [...data_edit_temp]
+
+            const data = {
+                action, total_amount, claim_item_detail, support_doc, 
+                rf_name: rfName,
+                currency_id: $("#currency-edit").val(),
+                rf_period_id: $("#rf_period-edit").val(),
+                cost_centre_id: $("#cost_centre-edit").val(),
+                claim_request_id: $("#claim_request_id-edit").val(),
+                claim_request_type_id: $("#claim_request_type_id-edit").val(),
+                delete_document: delete_file_temp
+            }
+
+            $.ajax({
+                url: '{{ route('claim_request_update') }}',
+                method: 'PUT',
+                data,
+                datatype: "json",
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                success: function(res) {
+                    console.log(res);                    
+                    if (res.result == "SUCCESS") {
+                        table.ajax.reload()
+                        $('#modal-claim-request_edit').modal("hide");
+                        amaran_success(res.message)
+                        return
+                    }
+                    amaran_error("Update Claim Failed")
+                    return
+                },
+                error: function(err) {
+                    amaran_error(err)
+                }
+            });
+        }
+
+        $("#delete_item").click(() => {
+            const data = {
+                claim_request_id: $("#delete-claim_request_id").val(),
+                delete_file_claim, delete_file_support
+            }
+            $.ajax({
+                url: '{{ route('claim_request_delete') }}',
+                method: 'POST',
+                data,
+                datatype: "json",
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                success: function(res) {
+                    console.log(res);
+                    if (res.result === 'SUCCESS') {
+                        table.ajax.reload()
+                        $('#modal-claim-request_delete').modal("hide");
+                        amaran_success(res.message)
+                    } else {
+                        amaran_error(res.message)
+                    }
+                },
+                error: function(err) {
+                    amaran_error(err)
+                }
+            });
+        })
 
         // Modal Show
         $(".modal-add").click(() => {
@@ -904,7 +1375,11 @@
         $('#table-data tbody').on('click', '#edit-modal-show', function() {
             $.LoadingOverlay("show");
             const data = table.row($(this).parents('tr')).data();
-            console.log(data.status);
+            tableSupportDoc( data.support_doc, "edit" )
+
+            $("#currency-edit").val(data.currency_id)
+            $("#claim_request_type_id-edit").val(data.claim_request_type_id)
+            $("#claim_request_id-edit").val(data.claim_request_id)
             
             data_edit_temp = [...data.claim_item_detail]
             delete_file_temp = []
@@ -917,11 +1392,64 @@
 
         $('#table-data tbody').on('click', '#view-modal-show', function() {
             $.LoadingOverlay("show");
+            item_request_table_view.clear()
             const data = table.row($(this).parents('tr')).data();
-            console.log(data.status);
+            get_history(data.claim_request_id);
+            tableSupportDoc( data.support_doc, "view" )
 
-            $('#modal-claim-request_view').modal("show");
+            $("#support_doc-view").html()
+
+            let stat = "open"
+            if (data.status == "Not Yet Submitted") {
+                stat = "notyetsubmitted"
+            } else if (data.status == "Closed" ) {
+                stat = "close"
+            } else if (data.status == "Need Revision") {
+                stat = "needrevision"
+            }
+            const status = `<span class="ml-2 px-3 py-1 status-label status-${stat} p-2" >${data.status}</span>` 
+            $("#cost_centre-detail").text(data.cost_centre_name);
+            $("#currency-detail").text(data.currency_name);
+            $("#total_amount-detail").text("Rp."+data.total_amount);
+            $("#status-detail").html(`:${status}`);
+
+            let nomor = 1;
+            data.claim_item_detail.map((item, index) => {
+                const claim_category = claim_category_list.find(claim_category => claim_category
+                    .claim_category_id == item.claim_category_id)
+
+                filename = item.claim_document[0].filename;
+
+                const detail_data = `<tr>
+                    <td style="width: 5%">${nomor}</td>
+                    <td style="width: 15%">${item.claim_date}</td>
+                    <td style="width: 20%">${claim_category.name}</td>
+                    <td style="width: 20%">${item.claim_desc}</td>
+                    <td style="width: 20%">${addComasStatic(Math.round((parseFloat(item.claim_amount) +
+                        Number.EPSILON) * 10000) / 10000)}</td>
+                    <td style="width: 20%">${filename}</td>
+                </tr>`
+                item_request_table_view.row.add($(`${detail_data}`)).draw()
+                nomor++
+            })
+
+            // $('#modal-claim-request_view').modal("show");
             $.LoadingOverlay('hide');
         })
+        
+        $('#table-data tbody').on('click', '#delete-modal-show', function() {
+            $.LoadingOverlay("show");
+            const { claim_request_id, support_doc, claim_item_detail } = table.row($(this).parents('tr')).data();
+            delete_file_claim = []
+            delete_file_support = []
+
+            delete_file_claim = claim_item_detail;
+            delete_file_support = support_doc;
+
+            $("#delete-claim_request_id").val(claim_request_id)
+            $('#modal-claim-request_delete').modal("show");
+            $.LoadingOverlay('hide');
+        })
+
     </script>
 @endsection
