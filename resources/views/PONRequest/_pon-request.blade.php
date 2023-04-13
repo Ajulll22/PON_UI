@@ -177,73 +177,7 @@
                         </div>
                         <hr>
 
-                        <div class="form-layout">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label class="form-control-label">Progress</label>
-                                    <table class="table">
-                                        <thead>
-                                            <th class="tx-center">No</th>
-                                            <th class="tx-center">Step</th>
-                                            <th class="tx-center">Status</th>
-                                            <th class="tx-center">Last Update</th>
-                                            <th class="tx-center">Completed By</th>
-                                            @if ($data['privilege_menu'][config('constants.PON_REQUEST_ADD_CKR')] || $data['privilege_menu'][config('constants.PON_REQUEST_ADD_APR')])
-                                                <th class="tx-center action_status">Action</th>
-                                            @endif
-                                        </thead>
-                                        <tbody class="tx-bold">
-                                            <tr id="detail_step_1" style="color: green">
-                                                <td class="pd-4-force tx-center" id="number_1">1</td>
-                                                <td class="pd-4-force" id="phase_1">PON Request Initiation</td>
-                                                <td class="pd-4-force tx-center" id="phase_status_1">Completed</td>
-                                                <td class="pd-4-force tx-center" id="updated_1"></td>
-                                                <td class="pd-4-force tx-center" id="by_phase_1">-</td>
-                                                @if ($data['privilege_menu'][config('constants.PON_REQUEST_ADD_CKR')] || $data['privilege_menu'][config('constants.PON_REQUEST_ADD_APR')])
-                                                    <td class="pd-4-force tx-center action_status" id="action_1"></td>
-                                                @endif
-                                            </tr>
-                                            <tr id="detail_step_2" style="color: gray">
-                                                <td class="pd-4-force tx-center" id="number_2">2</td>
-                                                <td class="pd-4-force" id="phase_2">Financial Approval</td>
-                                                <td class="pd-4-force tx-center" id="phase_status_2">Not Completed</td>
-                                                <td class="pd-4-force tx-center" id="updated_2">Not Updated</td>
-                                                <td class="pd-4-force tx-center" id="by_phase_2">-</td>
-                                                @if ($data['privilege_menu'][config('constants.PON_REQUEST_ADD_CKR')])
-                                                    <td class="pd-4-force tx-center action_status" id="action_2" style="white-space:nowrap">
-                                                        <div id="finance-head">
-                                                        </div>
-                                                    </td>
-                                                @endif
-                                            </tr>
-                                                
-                                            <tr id="detail_step_3" style="color: gray">
-                                                <td class="pd-4-force tx-center" id="number_3">3</td>
-                                                <td class="pd-4-force" id="phase_3">Top Management Approval</td>
-                                                <td class="pd-4-force tx-center" id="phase_status_3">-</td>
-                                                <td class="pd-4-force tx-center" id="updated_3">-</td>
-                                                <td class="pd-4-force tx-center" id="by_phase_3">-</td>
-                                                @if ($data['privilege_menu'][config('constants.PON_REQUEST_ADD_APR')])
-                                                    <td class="pd-4-force tx-center action_status" id="action_3" style="white-space:nowrap">
-                                                        <!-- <div id="top-mgmt"> -->
-                                                            <div class="row mg-x-0">
-                                                                <div class="col-xs-2" style="width: 100%;">
-                                                                    <a href="/approval/pon-request">
-                                                                        <button type="button" class="btn btn-outline-primary tx-12 mg-y-5" style="float: left; padding: 0.65rem 0.75rem; width: inherit;" data-toggle="tooltip" data-placement="right" title="Go to Approval Menu"><i class="fas fa-check-square"></i> Approval</button>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        <!-- </div> -->
-                                                    </td>
-                                                @endif
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-
+    
                         <div class="form-layout">
                             <div class="row mg-t-7">
                                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
@@ -440,35 +374,46 @@
                 </div>
 
                 <form id="form_update_pon_request" enctype="multipart/form-data">
+                    <input type="text" id="pon_request_id_update" hidden>
                     <div class="modal-body pd-5-force pd-l-20-force bg-gray-400 ">
                         Main Details
                     </div>
                     <div class="form-layout">
-                        <div class="modal-body pd-20" id="update-pon-request-detail-container">
-                            <input class="form-control" type="hidden" name="pon_request_id_update" id="pon_request_id_update" required readonly="readonly">
+                        <div class="modal-body pd-20" id="pon-request-detail-container">
                             <div class="row">
-                                <div class="col-md-5">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-control-label">Cost Centre <span class="tx-danger">*</span></label>
                                         <select class="form-control select2 cost_centre" id="cost_centre_update" name="cost_centre_update" style="width: 100%" required>
+                                            <option value="">Select Cost Centre</option>
+                                            @foreach ($data["cost_centre_list"] as $costCentre)
+                                                <option value="{{$costCentre["cost_centre_id"]}}">{{$costCentre["cost_centre_name"]}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-control-label">Currency <span class="tx-danger">*</span></label>
                                         <select class="form-control select2 currency" id="currency_update" name="currency_update" style="width: 100%" required>
+                                            @foreach ($data["currency_list"] as $costCentre)
+                                                <option value="{{$costCentre["currency_id"]}}">{{$costCentre["name"]}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                     <label class="form-control-label">Estimated Invoice Date <span class="tx-danger">*</span></label>
                                     <input type="text" class="form-control fc-datepicker" name="datepicker" id="est_inv_date_update" placeholder="DD/MM/YYYY" autocomplete="off" required>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-control-label">Supplier <span class="tx-danger">*</span></label>
-                                        <input class="form-control" type="text" name="supplier_update" id="supplier_update" data-parsley-maxlength="1000" placeholder="Enter Supplier Name" maxlength="50" required>
+                                        <select class="form-control select2 supplier" id="supplier_update" name="supplier_update" style="width: 100%" required>
+                                            @foreach ($data["supplier_list"] as $costCentre)
+                                                <option value="{{$costCentre["supplier_id"]}}">{{$costCentre["name"]}}</option>
+                                            @endforeach
+                                        </select>                                    
                                     </div>
                                 </div>
                             </div>
@@ -1296,9 +1241,6 @@
             $('#form_update_pon_request')[0].reset();
             $('#selected_files_update').text("No File Selected");
             
-            get_cost_centre();
-            get_currency();
-
             let rowdata = pon_request_datatable.row($(this).parents('tr')).data();
             
             let each_total      = 0;
@@ -1380,11 +1322,12 @@
                     amaran_error('Something went wrong, please contact technical support!');
                 }
             });
+            console.log(rowdata);
 
             $('#pon_request_id_update').val(pon_request_id);
             $('#cost_centre_update').val(rowdata.cost_centre_id).change();
             $('#currency_update').val(rowdata.currency_id).change();
-            $('#supplier_update').val(rowdata.supplier);
+            $('#supplier_update').val(rowdata.supplier).change();
             $('#est_inv_date_update').val(rowdata.estimated_invoice_date);
             $('#reason_update').val(rowdata.reason);
 
@@ -1458,6 +1401,7 @@
                 investment_expenditure_reason   : investment_expenditure_reason,
                 file_list                       : file_list,
             };
+            console.log(data);
 
             let instance = $('#form_update_pon_request').parsley();
             if (instance.validate()) {
@@ -1471,6 +1415,7 @@
                     },
                     success     : function(msg) {
                         $.LoadingOverlay('hide');
+                        console.log(msg);
 
                         if (msg['{{ config('constants.result') }}'] == "FAILED") {
                             amaran_error(msg.message);
@@ -1544,6 +1489,7 @@
             $.LoadingOverlay("show");
 
             let rowdata         = pon_request_datatable.row($(this).parents('tr')).data();
+            console.log(rowdata);
             let each_total      = 0;
             let grand_total     = 0;
             let pon_request_id  = rowdata.pon_request_id;
@@ -1772,6 +1718,7 @@
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
                 success: function (msg) {
+                    console.log(msg);
                     $.LoadingOverlay('hide');
 
                     array_item = [];

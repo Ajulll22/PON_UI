@@ -42,7 +42,7 @@ class ClaimApprovalController extends Controller
     {
         $claim_list = GatewayController::lead_to_be("GET", "claim-request/approval/list", []);
         
-        return $claim_list['data'];
+        return $claim_list;
     }
 
     public function claim_action(Request $request)

@@ -72,142 +72,87 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-
-                <form id="form_pon_request_detail" autocomplete="off">
-                    <div class="modal-body pd-20">
-                        <div class="form-layout">
-                            <div class="row">
-                                <div class="col-md-7">
-                                    <label class="form-control-label">Summary</label>
-                                    <hr class="mg-t-0">
-                                    <table class="table table-striped table-bordered">
-                                        <tbody>
-                                            <tr id="pon_view_row" style="display: hidden;">
-                                                <th class="pd-5">Purchase Order Number</th>
-                                                <td class="pd-5" id="pon_view"></td>
-                                            </tr>
-                                            <tr id="buffer_row" style="display: none;">
-                                                <th class="pd-5"></th>
-                                                <td class="pd-5"></td>
-                                            </tr>
-                                            <tr id="current_phase_row">
-                                                <th class="pd-5">Current Phase</th>
-                                                <td class="pd-5" id="current_phase"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="pd-5">Cost Centre</th>
-                                                <td class="pd-5" id="cost_centre"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="pd-5">Supplier</th>
-                                                <td class="pd-5" id="supplier"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="pd-5">Total Price</th>
-                                                <td class="pd-5" id="total_price"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="pd-5">Reason for Investment/Expenditure</th>
-                                                <td class="pd-5" id="request_reason"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="pd-5">Estimated Invoice Date</th>
-                                                <td class="pd-5" id="estimated_invoice_date"></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div class="col-md-5">
-                                    <label class="form-control-label">Document(s) Uploaded</label>
-                                    <hr class="mg-t-0">
-                                    <table class="table table-striped table-hover table-bordered" id="document-datatable">
-                                    </table>
-                                </div>
+                
+                <div class="modal-body pd-20">
+                    <div class="form-layout">
+                        <input type="text" id="pon_request_id" hidden>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <label class="form-control-label">Summary</label>
+                                <hr class="mg-t-0">
+                                <table class="table table-striped table-bordered">
+                                    <tbody>
+                                        <tr id="pon_view_row" style="display: hidden;">
+                                            <th class="pd-5">Purchase Order Number</th>
+                                            <td class="pd-5" id="pon_view"></td>
+                                        </tr>
+                                        <tr id="buffer_row" style="display: none;">
+                                            <th class="pd-5"></th>
+                                            <td class="pd-5"></td>
+                                        </tr>
+                                        <tr id="current_phase_row">
+                                            <th class="pd-5">Current Phase</th>
+                                            <td class="pd-5" id="current_phase"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="pd-5">Cost Centre</th>
+                                            <td class="pd-5" id="cost_centre"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="pd-5">Supplier</th>
+                                            <td class="pd-5" id="supplier"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="pd-5">Total Price</th>
+                                            <td class="pd-5" id="total_price"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="pd-5">Reason for Investment/Expenditure</th>
+                                            <td class="pd-5" id="request_reason"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="pd-5">Estimated Invoice Date</th>
+                                            <td class="pd-5" id="estimated_invoice_date"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                        </div>
-                        <hr>
 
-                        <div class="form-layout">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label class="form-control-label">Progress</label>
-                                    <table class="table">
-                                        <thead>
-                                            <th class="tx-center">No</th>
-                                            <th class="tx-center">Step</th>
-                                            <th class="tx-center">Status</th>
-                                            <th class="tx-center">Last Update</th>
-                                            <th class="tx-center">Completed By</th>
-                                            @if ($data['privilege_menu'][config('constants.PON_REQUEST_ADD_CKR')] || $data['privilege_menu'][config('constants.PON_REQUEST_ADD_APR')])
-                                                <th class="tx-center action_status">Action</th>
-                                            @endif
-                                        </thead>
-                                        <tbody class="tx-bold">
-                                            <tr id="detail_step_1" style="color: green">
-                                                <td class="pd-4-force tx-center" id="number_1">1</td>
-                                                <td class="pd-4-force" id="phase_1">PON Request Initiation</td>
-                                                <td class="pd-4-force tx-center" id="phase_status_1">Completed</td>
-                                                <td class="pd-4-force tx-center" id="updated_1"></td>
-                                                <td class="pd-4-force tx-center" id="by_phase_1">-</td>
-                                                @if ($data['privilege_menu'][config('constants.PON_REQUEST_ADD_CKR')] || $data['privilege_menu'][config('constants.PON_REQUEST_ADD_APR')])
-                                                    <td class="pd-4-force tx-center action_status" id="action_1"></td>
-                                                @endif
-                                            </tr>
-                                            <tr id="detail_step_2" style="color: gray">
-                                                <td class="pd-4-force tx-center" id="number_2">2</td>
-                                                <td class="pd-4-force" id="phase_2">Financial Approval</td>
-                                                <td class="pd-4-force tx-center" id="phase_status_2">Not Completed</td>
-                                                <td class="pd-4-force tx-center" id="updated_2">Not Updated</td>
-                                                <td class="pd-4-force tx-center" id="by_phase_2">-</td>
-                                                @if ($data['privilege_menu'][config('constants.PON_REQUEST_ADD_CKR')])
-                                                    <td class="pd-4-force tx-center action_status" id="action_2" style="white-space:nowrap">
-                                                        <div id="finance-head">
-                                                        </div>
-                                                    </td>
-                                                @endif
-                                            </tr>
-                                                
-                                            <tr id="detail_step_3" style="color: gray">
-                                                <td class="pd-4-force tx-center" id="number_3">3</td>
-                                                <td class="pd-4-force" id="phase_3">Top Management Approval</td>
-                                                <td class="pd-4-force tx-center" id="phase_status_3">-</td>
-                                                <td class="pd-4-force tx-center" id="updated_3">-</td>
-                                                <td class="pd-4-force tx-center" id="by_phase_3">-</td>
-                                                @if ($data['privilege_menu'][config('constants.PON_REQUEST_ADD_APR')])
-                                                    <td class="pd-4-force tx-center action_status" id="action_3" style="white-space:nowrap">
-                                                        <div id="top-mgmt">
-                                                        </div>
-                                                    </td>
-                                                @endif
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-
-                        <div class="form-layout">
-                            <div class="row mg-t-7">
-                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                    <label class="form-control-label">Item Details</label>
-                                    <table id="item_detail_datatable" class="table table-striped table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th width="5%">No</th>
-                                                <th width="35%">Description</th>
-                                                <th width="15%">Quantity</th>
-                                                <th width="20%">Unit Price</th>
-                                                <th width="20%">Total Price</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
+                            <div class="col-md-5">
+                                <label class="form-control-label">Document(s) Uploaded</label>
+                                <hr class="mg-t-0">
+                                <table class="table table-striped table-hover table-bordered" id="document-datatable">
+                                </table>
                             </div>
                         </div>
                     </div>
-                </form>
+                    
+                    <hr>
+
+                    <div class="form-layout">
+                        <div class="row mg-t-7">
+                            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                <label class="form-control-label">Item Details</label>
+                                <table id="item_detail_datatable" class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%">No</th>
+                                            <th width="35%">Description</th>
+                                            <th width="15%">Quantity</th>
+                                            <th width="20%">Unit Price</th>
+                                            <th width="20%">Total Price</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer pd-8-force">
+                    <button onclick="approvePonRequest(2)" class="rounded-xl btn status-needrevision mx-2">Reject</button>
+                    <button onclick="approvePonRequest(1)" class="rounded-xl btn btn-success">Approve</button>
+                </div>
             </div>
         </div>
     </div>
@@ -251,7 +196,6 @@
                 'url'       : "{{ route('pon-request-approval-list') }}",
                 'dataSrc'   : 'pon_request_list'
             },
-            aaSorting       : [ [1,'desc'] ],
             processing      : true,
             scrollX         : "100%",
             scrollCollapse  : true,
@@ -263,7 +207,7 @@
                 data: null
             },
             {
-                data    : "sorted_at",
+                data    : "pon_request_id",
                 visible : false
             },
             {
@@ -339,7 +283,7 @@
                         pon_status = '<span style="color:green;font-weight: bold;">'+data.status+'</span>'; 
                     }
                     else if (data.status_id == '3'){
-                        pon_status = '<span style="color:orange;font-weight: bold;">Waiting for Approval</span>'; 
+                        pon_status = `<span style="color:orange;font-weight: bold;">${data.status}</span>`; 
                     }
                     else if (data.status_id == '4'){
                         pon_status = '<span style="color:red;font-weight: bold;">'+data.status+'</span>'; 
@@ -431,6 +375,8 @@
             $.LoadingOverlay("show");
 
             let rowdata         = pon_request_datatable.row($(this).parents('tr')).data();
+
+            console.log(rowdata);
             let each_total      = 0;
             let grand_total     = 0;
             let pon_request_id  = rowdata.pon_request_id;
@@ -439,228 +385,54 @@
                 pon_request_id  : pon_request_id
             };
             
-            // GET PON REQUEST LIST BY ID
-            $.ajax({
-                url     : '{{ route("pon-request-list-by-id-approval") }}',
-                method  : 'POST',
-                data    : data,
-                datatype: "json",
-                headers : {
-                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                },
-                success: function (msg) {
-                    $.LoadingOverlay('hide');
+            let pon_number              = rowdata.pon_number;
+            let current_phase           = rowdata.current_phase;
+            let cost_centre             = rowdata.cost_centre;
+            let supplier                = rowdata.supplier_name;
+            let total_price             = addComasStatic(Math.round((parseFloat(rowdata.total_price) + Number.EPSILON) * 10000) / 10000);
+            let reason                  = rowdata.reason;
+            let rejection_reason        = rowdata.rejection_reason;
+            let estimated_invoice_date  = rowdata.estimated_invoice_date;
+            let created_at              = rowdata.created_at;
+            let updated_at              = rowdata.updated_at;
+            let user_firstname          = rowdata.user_firstname;
+            let user_lastname           = rowdata.user_lastname;
+            let user_fullname           = user_firstname;
+            let status_id               = rowdata.status_id;
+            let status                  = rowdata.status;
+            let user_checker_name       = rowdata.user_checker_name;
+            let checked_at              = rowdata.checked_at;
+            let user_approver_name      = rowdata.user_approver_name;
+            let approved_at             = rowdata.approved_at;
 
-                    if(msg['{{ config('constants.result') }}'] == "SUCCESS"){
-                        if (msg.pon_request_list.length > 0) {
-                            let pon_number              = msg.pon_request_list[0].pon_number;
-                            let current_phase           = msg.pon_request_list[0].current_phase;
-                            let cost_centre             = msg.pon_request_list[0].cost_centre;
-                            let supplier                = msg.pon_request_list[0].supplier;
-                            let total_price             = addComasStatic(Math.round((parseFloat(msg.pon_request_list[0].total_price) + Number.EPSILON) * 10000) / 10000);
-                            let reason                  = msg.pon_request_list[0].reason;
-                            let rejection_reason        = msg.pon_request_list[0].rejection_reason;
-                            let estimated_invoice_date  = msg.pon_request_list[0].estimated_invoice_date;
-                            let created_at              = msg.pon_request_list[0].created_at;
-                            let updated_at              = msg.pon_request_list[0].updated_at;
-                            let user_firstname          = msg.pon_request_list[0].user_firstname;
-                            let user_lastname           = msg.pon_request_list[0].user_lastname;
-                            let user_fullname           = user_firstname;
-                            let status_id               = msg.pon_request_list[0].status_id;
-                            let status                  = msg.pon_request_list[0].status;
-                            let user_checker_name       = msg.pon_request_list[0].user_checker_name;
-                            let checked_at              = msg.pon_request_list[0].checked_at;
-                            let user_approver_name      = msg.pon_request_list[0].user_approver_name;
-                            let approved_at             = msg.pon_request_list[0].approved_at;
+            if (pon_number === null || pon_number === '') {
+                $('#pon_view_row').hide();
+                $('#current_phase_row').show();
 
-                            // DATE FORMATTING
-                            created_at  = new Date(created_at);
-                            created_at  = dateformat_ddmmyyyy(created_at, '/');
+                pon_number = '-';
+            }
+            else {
+                $('#pon_view_row').show();
+                $('#current_phase_row').hide();
+            }
 
-                            if (updated_at != null && updated_at != ''){
-                                updated_at  = new Date(updated_at);
-                                updated_at  = dateformat_ddmmyyyy(updated_at, '/');
-                            }
+            $("#pon_request_id").val(rowdata.pon_request_id);
+            $('#pon_view').text(pon_number);
+            $('#current_phase').text(current_phase);
+            $('#cost_centre').text(cost_centre);
+            $('#supplier').text(supplier);
+            $('#total_price').text(total_price);
+            $('#request_reason').text(reason);
+            $('#estimated_invoice_date').text(estimated_invoice_date);
+            $('#by_phase_1').text(user_fullname);
 
-                            if (checked_at === null || checked_at === '') {
-                                checked_at = checked_at;
-                            }
-                            else {
-                                checked_at  = new Date(checked_at);
-                                checked_at  = dateformat_ddmmyyyy(checked_at, '/');
-                            }
+            $('#modal_pon_request_detail').modal('show');
+            
+            // GET PON REQUEST ITEM DATA
+            get_pon_request_item(pon_request_id);
 
-                            if (approved_at === null || approved_at === '') {
-                                approved_at = '-';
-                            }
-                            else {
-                                approved_at = new Date(approved_at);
-                                approved_at = dateformat_ddmmyyyy(approved_at, '/');
-                            }
-                            
-                            // APPROVED
-                            if (status_id == 2) {
-                                $('.action_status').hide();
-                                $('#by_phase_2').text(user_checker_name);
-                                $('#phase_status_2').text(status);
-                                $('#updated_2').text(checked_at);
-                                $('#detail_step_1').css('color', 'green');
-                                $('#detail_step_2').css('color', 'green');
-                                $('#detail_step_3').css('color', 'green');
-
-                                if (user_approver_name === null || user_approver_name === ''){
-                                    $('#phase_status_3').text('-');
-                                    $('#by_phase_3').text('-');
-                                    $('#updated_3').text('-');
-                                }
-                                else {
-                                    $('#phase_status_3').text(status);
-                                    $('#by_phase_3').text(user_approver_name);
-                                    $('#updated_3').text(approved_at);
-                                }
-                            }
-                            // REJECTED
-                            else if (status_id == 4) {
-                                $('.action_status').hide();
-                                $('#detail_step_1').css('color', 'red');
-                                $('#detail_step_2').css('color', 'red');
-                                $('#detail_step_3').css('color', 'red');
-
-                                $('#by_phase_2').text(user_checker_name);
-                                $('#phase_status_2').text(status+' ('+rejection_reason+')');
-                                $('#updated_2').text(checked_at);
-
-                                if (user_approver_name === null || user_approver_name === ''){
-                                    $('#phase_status_3').text('-');
-                                    $('#by_phase_3').text('-');
-                                    $('#updated_3').text('-');
-                                }
-                                else {
-                                    $('#phase_status_3').text(status+' ('+rejection_reason+')');
-                                    $('#by_phase_3').text(user_approver_name);
-                                    $('#updated_3').text(approved_at);
-                                }
-                            }
-                            // OPEN
-                            else if (status_id == 1) {
-                                $('.action_status').show();
-                                $('#finance-head').empty();
-
-                                $('#detail_step_1').css('color', 'green');
-
-                                $('#updated_2').text('-');
-                                $('#by_phase_2').text('-');
-                                $('#phase_status_2').text('Not Completed');
-                                $('#detail_step_2').css('color', 'gray');
-
-                                $('#updated_3').text('-');
-                                $('#by_phase_3').text('-');
-                                $('#phase_status_3').text('Not Completed');
-                                $('#detail_step_3').css('color', 'gray');
-
-                                $("#finance-head").append(
-                                    '<div class="row mg-x-0">'+
-                                        '<div class="col-xs-2" style="width: 100%;">'+
-                                            '<button type="button" class="btn btn-outline-primary tx-12 mg-y-5" style="float: left; padding: 0.65rem 0.75rem; width: inherit;" data-toggle="tooltip" data-placement="right" title="Approve" onClick="$(this).approve_finance('+pon_request_id+')"><i class="fas fa-check-square"></i> Approve</button>'+
-                                        '</div>'+
-                                    '</div>'+
-                                    '<div class="row mg-x-0">'+
-                                        '<div class="col-xs-2">'+
-                                            '<button type="button" class="btn btn-outline-primary tx-12" style="float: left; padding: 0.65rem 0.75rem" data-toggle="tooltip" data-placement="right" title="Reject with Reason" onClick="$(this).reject_finance('+pon_request_id+')"><i class="fas fa-times"></i></button>'+
-                                            '<input class="form-control tx-12" type="text" name="reject_reason" id="reject_reason" data-parsley-maxlength="50" placeholder="Enter Reason" maxlength="50" autocomplete="off" style="width: 80%;">'+
-                                        '</div>'+
-                                    '</div>'+
-                                    '<div class="row mg-x-0">'+
-                                        '<div class="col-xs-2">'+
-                                            '<button type="button" class="btn btn-outline-primary tx-12 mg-y-5" style="float: left; padding: 0.65rem 0.75rem; width: inherit;" data-toggle="tooltip" data-placement="right" title="Request for Top Management Approval" onClick="$(this).forward('+pon_request_id+')"><i class="fas fa-share"></i> Request Top Mgmt Approval</button>'+
-                                        '</div>'+
-                                    '</div>'
-                                );
-
-                                $('#finance-head').show();
-                                $('#top-mgmt').hide();
-                            }
-                            else if (status_id == 3){
-                                $('.action_status').show();
-                                $('#top-mgmt').empty();
-
-                                $('#detail_step_1').css('color', 'green');
-                                $('#detail_step_2').css('color', 'green');
-                                $('#detail_step_3').css('color', 'gray');
-                                $('#by_phase_2').text(user_checker_name);
-                                $('#phase_status_2').text('Completed');
-                                $('#updated_2').text(checked_at);
-
-                                $("#top-mgmt").append(
-                                    '<div class="row mg-x-0">'+
-                                        '<div class="col-xs-2" style="width: 100%;">'+
-                                            '<button type="button" class="btn btn-outline-primary tx-12 mg-y-5" style="float: left; padding: 0.65rem 0.75rem; width: inherit;" data-toggle="tooltip" data-placement="right" title="Approve" onClick="$(this).approve_top('+pon_request_id+')"><i class="fas fa-check-square"></i> Approve</button>'+
-                                        '</div>'+
-                                    '</div>'+
-                                    '<div class="row mg-x-0">'+
-                                        '<div class="col-xs-2" style="width:100%">'+
-                                            '<button type="button" class="btn btn-outline-primary mg-r-5 tx-12" style="float: left; padding: 0.65rem 0.75rem" data-toggle="tooltip" data-placement="right" title="Reject with Reason" onClick="$(this).reject_top('+pon_request_id+')"><i class="fas fa-times"></i></button>'+
-                                            '<input class="form-control tx-12" type="text" name="reject_reason_top" id="reject_reason_top" data-parsley-maxlength="50" placeholder="Enter Reason" maxlength="50" autocomplete="off" style="width: 82%;">'+
-                                        '</div>'+
-                                    '</div>'           
-                                );
-
-                                $('#finance-head').hide();
-                                $('#top-mgmt').show();
-                            }
-
-
-                            if (user_lastname != null || user_lastname != '') {
-                                user_fullname += ' '+user_lastname;
-                            }
-
-                            if (pon_number === null || pon_number === '') {
-                                $('#pon_view_row').hide();
-                                $('#current_phase_row').show();
-
-                                pon_number = '-';
-                            }
-                            else {
-                                $('#pon_view_row').show();
-                                $('#current_phase_row').hide();
-                            }
-
-                            $('#pon_view').text(pon_number);
-                            $('#current_phase').text(current_phase);
-                            $('#cost_centre').text(cost_centre);
-                            $('#supplier').text(supplier);
-                            $('#total_price').text(total_price);
-                            $('#request_reason').text(reason);
-                            $('#estimated_invoice_date').text(estimated_invoice_date);
-                            $('#by_phase_1').text(user_fullname);
-
-                            if (updated_at === null || updated_at === ''){
-                                $('#updated_1').text(created_at);
-                            }
-                            else {
-                                $('#updated_1').text(updated_at);
-                            }
-                            $('#modal_pon_request_detail').modal('show');
-                        }
-                        
-                        // GET PON REQUEST ITEM DATA
-                        get_pon_request_item(pon_request_id);
-
-                        // GET PON REQUEST ATTACHMENT DATA
-                        get_pon_request_attachment(pon_request_id);
-                    }
-                    else if(msg['{{ config('constants.result') }}'] == "FAILED"){
-                        amaran_error(msg.message);
-                    }
-                    else{
-                        amaran_error('Oops, Get PON Request Data Failed!');
-                    }
-                },
-                error: function () {
-                    $.LoadingOverlay('hide');
-                    amaran_error('Something went wrong, please contact technical support!');
-                }
-            });
+            // GET PON REQUEST ATTACHMENT DATA
+            get_pon_request_attachment(pon_request_id);
 
             $.LoadingOverlay("hide");
         });
@@ -791,6 +563,36 @@
                     amaran_error('Something went wrong, please contact technical support!');
                 }
             });
+        }
+
+        function approvePonRequest(approval_type) {
+            const data = {
+                pon_request_id: $("#pon_request_id").val(),
+                approval_type
+            }
+            if (approval_type == 2) {
+                data.rejection_reason = "Tidak Sesuai"
+            }
+            $.ajax({
+                url     : '{{ route("pon_request_approve") }}',
+                method  : 'POST',
+                data    : data,
+                datatype: "json",
+                headers : {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                success: function (res) {
+                    if (res.result == "SUCCESS") {
+                        pon_request_datatable.ajax.reload()
+                        $.LoadingOverlay('hide');
+                        $("#modal_pon_request_detail").modal("hide")
+
+                        amaran_success(res.message)
+                        return
+                    }
+                    amaran_error(res.message)
+                }
+            })
         }
 
 

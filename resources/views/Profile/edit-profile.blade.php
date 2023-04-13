@@ -66,6 +66,29 @@
                                             <label class="form-control-label">Account Name: <span class="tx-danger">*</span></label>
                                             <input class="form-control" type="text" id="update_account_name" name="update_account_name" value="{{ $data['user_data'][0]['bank_account']['account_name'] }}" placeholder="Account Name" required>
                                         </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label">On Leave Status</label>
+                                            <div class="form-check d-flex my-auto">
+                                                <input id="on_leave"
+                                                    name="on_leave" type="checkbox" value="">
+                                                <div><p class="my-auto mx-2 font-italic">Checklist if you're paid leave</p></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="show_substitute" class="col-lg-6" style="display: none">
+                                        <div class="form-group">
+                                            <label class="form-control-label">Subtitute <span class="tx-danger">*</span></label>
+                                            <select class="form-control" name="on_leave_subtitute" id="on_leave_subtitute" >
+                                                <option value="">Select Subtitute</option>
+                                                @foreach ($data["substitute"] as $item)
+                                                    <option value="{{$item['user_id']}}">{{$item['user_fullname']}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
                                         <div class="form-group mg-b-10-force">
                                             <label class="form-control-label">User Description: <span class="tx-danger">*</span></label>
                                             <textarea rows="4" class="form-control" id="update_description" name="update_description" placeholder="Enter your description" required>{{ $data['user_data'][0]['user_description'] }}</textarea>
@@ -87,7 +110,29 @@
 @endsection
 @section('javascript')
     <script type="text/javascript">
+        $(document).ready(function() {
+            $('input[type="checkbox"]').on('change', function() {
+                this.value = this.checked ? 1 : 0;
+                if (this.id == "on_leave") {
+                    if (this.value == 1) {
+                        $("#on_leave_subtitute").prop('required',true);
+                        $("#show_substitute").show(200)
+                    }else {
+                        $("#on_leave_subtitute").prop('required',false);
+                        $("#show_substitute").hide(200)
+                    }
+                }
+            });
+
+            $("#on_leave").val(on_leave_status.on_leave)
+            if (on_leave_status.on_leave == 1) {
+                $("#on_leave").prop("checked", true).change();
+            }
+        })
         // EDIT USER
+        var on_leave_status = @json($data['user_data'][0]['on_leave_status']);
+        $("#on_leave_subtitute").val(on_leave_status.subtitute_user).change()
+
         var frm = $('#form-update-profile');
         frm.submit(function (e) {
             e.preventDefault();
@@ -102,6 +147,11 @@
             const bank_id = $('#update_bank_id').val();
             const account_number = $('#update_account_number').val();
             const account_name = $('#update_account_name').val();
+            const on_leave = $("#on_leave").val();
+            let on_leave_subtitute = ""
+            if (on_leave == 1) {
+                on_leave_subtitute = $("#on_leave_subtitute").val()
+            }
 
             var data = {
                 user_name           : update_user_name,
@@ -110,7 +160,8 @@
                 user_description    : update_user_description,
                 user_phone          : update_user_phone,
                 user_address        : update_user_address,
-                bank_id, account_name, account_number
+                bank_id, account_name, account_number,
+                on_leave, on_leave_subtitute
             };
 
             var instance = $('#form-update-profile').parsley();
@@ -124,6 +175,7 @@
                     },
                     datatype: "json",
                     success: function (msg) {
+                        console.log(msg);
                         $.LoadingOverlay('hide');
                         if (msg['{{ config('constants.result') }}'] == "FAILED") {
                             amaran_error(msg.message);

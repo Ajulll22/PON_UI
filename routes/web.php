@@ -14,6 +14,7 @@
 // AUTH
 
 use App\Http\Controllers\Claim\ClaimApprovalController;
+use App\Http\Controllers\Claim\ClaimProcessingController;
 use App\Http\Controllers\Claim\ClaimRequestController;
 use App\Http\Controllers\PONRequest\PONRequestController;
 use App\Http\Controllers\Setting\ClaimCategoryController;
@@ -41,7 +42,7 @@ Route::group(["prefix" => "claim-request"],	function () {
 	Route::get("/list", 							[ClaimRequestController::class, 'get_all'])->name('claim_request_list');
 	Route::post("/", 							[ClaimRequestController::class, 'create'])->middleware('privilege:CLAIM_REQUEST_PUSAT_ADD')->name('claim_request_create');
 	Route::put("/", 							[ClaimRequestController::class, 'update'])->middleware('privilege:CLAIM_REQUEST_PUSAT_UPDATE')->name('claim_request_update');
-	Route::post("/delete", 		[ClaimRequestController::class, 'destroy'])->name('claim_request_delete');
+	Route::post("/delete", 		[ClaimRequestController::class, 'destroy'])->middleware('privilege:CLAIM_REQUEST_PUSAT_DELETE')->name('claim_request_delete');
 	Route::post("/history", 		[ClaimRequestController::class, 'get_history'])->name('claim_request_history');
 });
 
@@ -51,43 +52,48 @@ Route::group(["prefix" => "claim-approval"],	function () {
 	Route::post("/action", 							[ClaimApprovalController::class, 'claim_action'])->name('claim_approval_action');
 });
 
-// Setting => Cost Centre
-Route::get("/setting/cost-centre", 			[CostCentreController::class, 'index'])->middleware('privilege:PON_REQUEST_VIEW')->name('cost_centre');
+Route::group(["prefix" => "claim-processing"],	function () {
+	Route::get("/", 							[ClaimProcessingController::class, 'index'])->middleware('privilege:CLAIM_PROCESSING_VIEW')->name('claim_processing');
+	Route::get("/list", 							[ClaimProcessingController::class, 'get_all'])->middleware('privilege:CLAIM_PROCESSING_VIEW')->name('claim_processing_list');
+	Route::post("/initiate", 							[ClaimProcessingController::class, 'initiate_claim'])->middleware('privilege:CLAIM_PROCESSING_VIEW')->name('claim_processing_initiate');
+	Route::post("/close", 							[ClaimProcessingController::class, 'close_claim'])->middleware('privilege:CLAIM_PROCESSING_VIEW')->name('claim_processing_close');
+	Route::get("/generate-csv/{id}", 							[ClaimProcessingController::class, 'GenerateCSV'])->name('claim_processing_csv');
+	Route::get("/generate-autopay/{id}", 							[ClaimProcessingController::class, 'GenerateAutoPay'])->name('claim_processing_autopay');
+	Route::get("/generate-pp/{id}", 							[ClaimProcessingController::class, 'GeneratePP'])->name('claim_processing_pp');
+	Route::get("/download-zip/{id}", 							[ClaimProcessingController::class, 'DownloadZip'])->name('claim_processing_zip');
+});
+
+// Setting
+Route::get("/setting/cost-centre", 			[CostCentreController::class, 'index'])->middleware('privilege:COST_CENTRE_VIEW')->name('cost_centre');
 Route::get("/setting/cost-centre-list", 		[CostCentreController::class, 'get_all'])->name('cost_centre_list');
 Route::post("/setting/cost-centre-child", 		[CostCentreController::class, 'get_child'])->name('cost_centre_child');
-Route::post("/setting/cost-centre", 		[CostCentreController::class, 'create'])->name('cost_centre_create');
-Route::put("/setting/cost-centre", 		[CostCentreController::class, 'update'])->name('cost_centre_update');
-Route::post("/setting/cost-centre-delete", 		[CostCentreController::class, 'destroy'])->name('cost_centre_delete');
+Route::post("/setting/cost-centre", 		[CostCentreController::class, 'create'])->middleware('privilege:COST_CENTRE_ADD')->name('cost_centre_create');
+Route::put("/setting/cost-centre", 		[CostCentreController::class, 'update'])->middleware('privilege:COST_CENTRE_UPDATE')->name('cost_centre_update');
+Route::post("/setting/cost-centre-delete", 		[CostCentreController::class, 'destroy'])->middleware('privilege:COST_CENTRE_DELETE')->name('cost_centre_delete');
 
-Route::get("/setting/claim-category", 		[ClaimCategoryController::class, 'index'])->middleware('privilege:PON_REQUEST_VIEW')->name('claim_category');
-Route::get("/setting/currency", 			[CurrencyController::class, 'index'])->middleware('privilege:PON_REQUEST_VIEW')->name('currency');
-Route::get("/setting/supplier", 			[SupplierController::class, 'index'])->middleware('privilege:PON_REQUEST_VIEW')->name('supplier');
-Route::get("/setting/rf-period", 			[RFPeriodController::class, 'index'])->middleware('privilege:PON_REQUEST_VIEW')->name('rf_period');
-
-// Setting Delete
-Route::post("/setting/rf-period-delete", 		[RFPeriodController::class, 'destroy'])->name('rf_period_delete');
-Route::post("/setting/supplier-delete", 		[SupplierController::class, 'destroy'])->name('supplier_delete');
-Route::post("/setting/currency-delete", 		[CurrencyController::class, 'destroy'])->name('currency_delete');
-Route::post("/setting/claim-category-delete", 		[ClaimCategoryController::class, 'destroy'])->name('claim_category_delete');
-
-// Setting Create
-Route::post("/setting/claim-category", 		[ClaimCategoryController::class, 'create'])->name('claim_category_create');
-Route::post("/setting/rf-period", 		[RFPeriodController::class, 'create'])->name('rf_period_create');
-Route::post("/setting/supplier", 		[SupplierController::class, 'create'])->name('supplier_create');
-Route::post("/setting/currency", 		[CurrencyController::class, 'create'])->name('currency_create');
-
-// Setting Update
-Route::put("/setting/rf-period", 		[RFPeriodController::class, 'update'])->name('rf_period_update');
-Route::put("/setting/supplier", 		[SupplierController::class, 'update'])->name('supplier_update');
-Route::put("/setting/currency", 		[CurrencyController::class, 'update'])->name('currency_update');
-Route::put("/setting/claim-category", 		[ClaimCategoryController::class, 'update'])->name('claim_category_update');
-
-// Setting Get All
+Route::get("/setting/claim-category", 		[ClaimCategoryController::class, 'index'])->middleware('privilege:CLAIM_CATEGORY_VIEW')->name('claim_category');
 Route::get("/setting/claim-category-list", 		[ClaimCategoryController::class, 'get_all'])->name('claim_category_list');
-Route::get("/setting/rf-period-list", 		[RFPeriodController::class, 'get_all'])->name('rf_period_list');
-Route::get("/setting/supplier-list", 		[SupplierController::class, 'get_all'])->name('supplier_list');
-Route::get("/setting/currency-list", 		[CurrencyController::class, 'get_all'])->name('currency_list');
+Route::post("/setting/claim-category-delete", 		[ClaimCategoryController::class, 'destroy'])->middleware('privilege:CLAIM_CATEGORY_DELETE')->name('claim_category_delete');
+Route::post("/setting/claim-category", 		[ClaimCategoryController::class, 'create'])->middleware('privilege:CLAIM_CATEGORY_ADD')->name('claim_category_create');
+Route::put("/setting/claim-category", 		[ClaimCategoryController::class, 'update'])->middleware('privilege:CLAIM_CATEGORY_UPDATE')->name('claim_category_update');
 
+Route::get("/setting/currency", 			[CurrencyController::class, 'index'])->middleware('privilege:CURRENCY_VIEW')->name('currency');
+Route::get("/setting/currency-list", 		[CurrencyController::class, 'get_all'])->name('currency_list');
+Route::post("/setting/currency-delete", 		[CurrencyController::class, 'destroy'])->middleware('privilege:CURRENCY_DELETE')->name('currency_delete');
+Route::post("/setting/currency", 		[CurrencyController::class, 'create'])->middleware('privilege:CURRENCY_ADD')->name('currency_create');
+Route::put("/setting/currency", 		[CurrencyController::class, 'update'])->middleware('privilege:CURRENCY_UPDATE')->name('currency_update');
+
+Route::get("/setting/supplier", 			[SupplierController::class, 'index'])->middleware('privilege:SUPPLIER_VIEW')->name('supplier');
+Route::get("/setting/supplier-list", 		[SupplierController::class, 'get_all'])->name('supplier_list');
+Route::post("/setting/supplier-delete", 		[SupplierController::class, 'destroy'])->middleware('privilege:SUPPLIER_DELETE')->name('supplier_delete');
+Route::post("/setting/supplier", 		[SupplierController::class, 'create'])->middleware('privilege:SUPPLIER_ADD')->name('supplier_create');
+Route::put("/setting/supplier", 		[SupplierController::class, 'update'])->middleware('privilege:SUPPLIER_UPDATE')->name('supplier_update');
+
+Route::get("/setting/rf-period", 			[RFPeriodController::class, 'index'])->middleware('privilege:RF_PERIOD_VIEW')->name('rf_period');
+Route::post("/setting/rf-period-delete", 		[RFPeriodController::class, 'destroy'])->middleware('privilege:RF_PERIOD_DELETE')->name('rf_period_delete');
+Route::post("/setting/rf-period", 		[RFPeriodController::class, 'create'])->middleware('privilege:RF_PERIOD_ADD')->name('rf_period_create');
+Route::put("/setting/rf-period", 		[RFPeriodController::class, 'update'])->middleware('privilege:RF_PERIOD_UPDATE')->name('rf_period_update');
+Route::get("/setting/rf-period-list", 		[RFPeriodController::class, 'get_all'])->name('rf_period_list');
 
 // UTILITY
 Route::post('/encrypt-decrypt',							['uses' => 'UtilityController@encrypt_decrypt'])->name('encrypt-decrypt');
@@ -234,6 +240,7 @@ Route::group(['middleware' => 'session'], function () {
 		Route::post('/approve-by-top-management', 	['uses' => 'Approval\PONRequestApprovalController@approve_by_top_management'])->middleware('privilege:PON_REQUEST_ADD_APR')->name('approve-by-top-management');
 
 		Route::post('/reject-by-top-management', 	['uses' => 'Approval\PONRequestApprovalController@reject_by_top_management'])->middleware('privilege:PON_REQUEST_ADD_APR')->name('reject-by-top-management');
+		Route::post('/approve', 	['uses' => 'Approval\PONRequestApprovalController@approve_pon'])->middleware('privilege:PON_REQUEST_ADD_APR')->name('pon_request_approve');
 	});
 
 

@@ -151,8 +151,14 @@
                 <div class="modal-body pd-5-force pd-l-20-force bg-gray-400 ">
                     Main Details
                 </div>
-                <input id="claim_request_id-edit" type="text" hidden>
-                <input id="claim_request_type_id-edit" type="text" hidden>
+                <input id="claim_request_id-edit" type="text"  hidden>
+                <input id="claim_request_type_id-edit" type="text"  hidden>
+                <input type="text" id="currency_id-edit" hidden>
+                <input type="text" id="rf_period_id-edit" hidden>
+                <input type="text" id="cost_centre_id-edit" hidden>
+                <input type="text" id="claim_phase_id-edit" hidden>
+
+                <input type="text" id="rf_name-edit" hidden>
                 <div class="modal-body row px-5">
                     <div class="col-md-3">
                         <p class="text-base mb-2 font-semibold">Name</p>
@@ -517,6 +523,26 @@
             }
         });
 
+        function reFatchData() { 
+            $.ajax({
+                url: '{{ route('claim_approval_list') }}',
+                method: 'GET',
+                datatype: "json",
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                success: function(res) {
+                    console.log(res);
+                    if (res.result === 'SUCCESS') {
+                        table.clear().rows.add(res.data.claim_request_approval).draw()
+                        return
+                    }
+                    amaran_error(res.message)
+                    $.LoadingOverlay("hide");
+                }
+            })
+         }
+
         function ApproveAction(action, claim_request_id) {
             const data = {
                 action,claim_request_id
@@ -532,6 +558,14 @@
                 },
                 success: function(res) {
                     console.log(res);
+                    if (res.result == "SUCCESS") {
+                        reFatchData();
+                        $.LoadingOverlay("hide");
+                        $("#modal-claim-approve_view").modal("hide");
+                        amaran_success(res.message);
+                        return;
+                    }
+                    amaran_error(res.message);
                 }
             });
         }
@@ -601,7 +635,47 @@
          } )
 
         $("#edit-submit_claim").click( function () { 
-            console.log('test');
+            var column = item_request_table_edit.column(-2);
+            var totalFormat = $(column.footer()).html().split(",")
+
+            const total_amount = totalFormat.join("")
+
+            const data = {
+                claim_request_id: $("#claim_request_id-edit").val(),
+                claim_request_type_id: $("#claim_request_type_id-edit").val(),
+                currency_id: $("#currency_id-edit").val(),
+                rf_period_id: $("#rf_period_id-edit").val(),
+                cost_centre_id: $("#cost_centre_id-edit").val(),
+                rf_name: $("#rf_name-edit").val(),
+                claim_phase_id: $("#claim_phase_id-edit").val(),
+                total_amount, action: "SUBMIT", support_doc,
+                claim_item_detail: data_edit_temp,
+                delete_document: delete_file_temp
+            }
+
+            $.ajax({
+                url: '{{ route('claim_request_update') }}',
+                method: 'PUT',
+                data,
+                datatype: "json",
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                success: function(res) {
+                    console.log(res);                    
+                    if (res.result == "SUCCESS") {
+                        reFatchData()
+                        $('#modal-claim-request_edit').modal("hide");
+                        amaran_success(res.message)
+                        return
+                    }
+                    amaran_error("Update Claim Failed")
+                    return
+                },
+                error: function(err) {
+                    amaran_error(err)
+                }
+            });
          } )
 
         $('#request_item_datatable-edit tbody').on('click', '#edit-item-detail', function() {
@@ -671,6 +745,13 @@
             $.LoadingOverlay("show");
             const data = table.row($(this).parents('tr')).data();
             console.log(data);
+            $("#claim_request_id-edit").val(data.claim_request_id);
+            $("#claim_request_type_id-edit").val(data.claim_request_type_id);
+            $("#currency_id-edit").val(data.currency_id);
+            $("#rf_period_id-edit").val(data.rf_period_id);
+            $("#cost_centre_id-edit").val(data.cost_centre_id);
+            $("#rf_name-edit").val(data.rf_period.rf_period_name);
+            $("#claim_phase_id-edit").val(data.claim_request_phase_id);
             tableSupportDoc( data.support_doc, "edit" )
 
             let stat = ""

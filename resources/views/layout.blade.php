@@ -116,12 +116,16 @@
                 <li class="nav-item"><a href="{{ route('claim_approval') }}"
                     class="nav-link {{ $data['sub_menu'] == 'claim-approval' ? 'active' : '' }}">Claim Approval</a>
                 </li>
+                @if ( $data['privilege_menu']["CLAIM_PROCESSING_VIEW"] )                   
+                    <li class="nav-item"><a href="{{ route('claim_processing') }}"
+                        class="nav-link {{ $data['sub_menu'] == 'claim-processing' ? 'active' : '' }}">Claim Processing</a>
+                    </li>
+                @endif
             </ul>
 
             <!-- PON REQUEST -->
             @if (
-                $data['privilege_menu'][config('constants.PON_REQUEST_VIEW')] ||
-                    $data['privilege_menu'][config('constants.PON_REQUEST_APR_VIEW')]
+                $data['privilege_menu'][config('constants.PON_REQUEST_VIEW')]
             )
                 <a href="{{ route('pon-request-view') }}"
                     class="br-menu-link {{ $data['menu'] == 'pon-request' ? 'active' : '' }}">

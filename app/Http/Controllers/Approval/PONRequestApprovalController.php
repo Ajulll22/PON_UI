@@ -58,6 +58,26 @@ class PONRequestApprovalController extends Controller
         return $result_data;
     }
 
+    public function approve_pon(Request $request)
+    {
+        $data = $request->all();
+        $user_firstname     = Session::get('user_firstname');
+        $user_lastname      = Session::get('user_lastname');
+
+        $user_approver_name = '';
+        if ($user_lastname != null || $user_lastname != ''){
+            $user_approver_name = $user_firstname.' '.$user_lastname;
+        }
+        else {
+            $user_approver_name = $user_firstname;
+        }
+        $data['user_approver_name']    = $user_approver_name;
+
+        $res = GatewayController::lead_to_be("POST", "pon-request/approve", $data);
+
+        return $res;
+    }
+
     // APPROVE BY APPROVER (TOP MANAGEMENT)
     public function approve_by_top_management(Request $request){
         $method             = 'POST';

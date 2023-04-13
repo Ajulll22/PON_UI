@@ -33,8 +33,10 @@
             </div>
         </div>
         <div class="d-flex justify-content-end">
+            @if ($data['privilege_menu']["CLAIM_REQUEST_PUSAT_ADD"])     
             <button class='btn-scale my-auto rounded-xl btn btn-primary modal-add mx-1'><i class="fas fa-plus"></i> Add Item
             </button>
+            @endif
         </div>
     </div>
 @endsection
@@ -191,7 +193,8 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="form-control-label">Claim Description</label>
+                                                        <label class="form-control-label">Claim Description <span
+                                                            class="tx-danger">*</span></label>
                                                         <textarea class="form-control rounded-xl" type="text" name="{{ $item['claim_category_id'] }}-claim_desc"
                                                             id="{{ $item['claim_category_id'] }}-claim_desc-add" placeholder="Enter Description" maxlength="3000" autocomplete></textarea>
                                                     </div>
@@ -281,6 +284,7 @@
                 </div>
                 <input id="claim_request_id-edit" type="text" hidden>
                 <input id="claim_request_type_id-edit" type="text" hidden>
+                <input id="claim_phase_id-edit" type="text" hidden>
                 <div class="form-layout">
                     <div class="modal-body pd-20" id="pon-request-detail-container">
                         <div class="row">
@@ -407,7 +411,8 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="form-control-label">Claim Description</label>
+                                                        <label class="form-control-label">Claim Description <span
+                                                            class="tx-danger">*</span></label>
                                                         <textarea class="form-control rounded-xl" type="text" name="{{ $item['claim_category_id'] }}-claim_desc-edit"
                                                             id="{{ $item['claim_category_id'] }}-claim_desc-edit" placeholder="Enter Description" maxlength="3000" autocomplete></textarea>
                                                     </div>
@@ -1033,7 +1038,7 @@
                 data.pm = pm
             }
 
-            if (data.claim_date === "" || data.claim_amount === "") {
+            if (data.claim_date === "" || data.claim_amount === ""|| data.claim_desc === "") {
                 $('#validate-detail').html("<li><strong>Please fill all required field</strong></li>")
                 $('#validate-detail').fadeIn("slow");
                 setTimeout(function() {
@@ -1114,7 +1119,7 @@
                 data.pm = pm
             }
 
-            if (data.claim_date === "" || data.claim_amount === "") {
+            if (data.claim_date === "" || data.claim_amount === "" || data.claim_desc === "") {
                 $('#validate-detail-edit').html("<li><strong>Please fill all required field</strong></li>")
                 $('#validate-detail-edit').fadeIn("slow");
                 setTimeout(function() {
@@ -1236,7 +1241,11 @@
                 return
             }
 
-            var files = $("#support_doc-add")[0].files
+            var files = $("#support_doc-add")[0].files;
+            if (!files.length) {
+                amaran_error("Please Add Support Doc")
+                return
+            }
             var formData = new FormData();
             $.each( files, function (i, file) {  
                 formData.append('support_doc[]', file);
@@ -1307,6 +1316,7 @@
                 cost_centre_id: $("#cost_centre-edit").val(),
                 claim_request_id: $("#claim_request_id-edit").val(),
                 claim_request_type_id: $("#claim_request_type_id-edit").val(),
+                claim_phase_id: $("#claim_phase_id-edit").val(),
                 delete_document: delete_file_temp
             }
 
@@ -1380,6 +1390,7 @@
             $("#currency-edit").val(data.currency_id)
             $("#claim_request_type_id-edit").val(data.claim_request_type_id)
             $("#claim_request_id-edit").val(data.claim_request_id)
+            $("#claim_phase_id-edit").val(data.claim_request_phase_id)
             
             data_edit_temp = [...data.claim_item_detail]
             delete_file_temp = []

@@ -38,13 +38,15 @@ class ProfileController extends Controller
         $user_name   = Session::get('user_name');
 
         $bank_list            = GatewayController::lead_to_be("GET", "bank/data", []);
-        $data['bank_list'] = $bank_list['data'];
+        $substitute           = GatewayController::lead_to_be("GET", "user/list/claim-approval-subtitute-user", []);
         
         $param['user_name']     = $user_name;
         $result_data            = GatewayController::lead_to_be($method, $path, $param);
 
         if($result_data[config('constants.result')] == "SUCCESS"){
             $data['user_data'] = $result_data['user_data'];
+            $data['bank_list'] = $bank_list['data'];
+            $data['substitute'] = $substitute['data'];
             Log::info(' ');
         	return view('Profile/edit-profile')->with('data',$data);
         }
@@ -68,6 +70,8 @@ class ProfileController extends Controller
         $bank_id       = $request->input('bank_id');
         $account_name       = $request->input('account_name');
         $account_number       = $request->input('account_number');
+        $on_leave       = $request->input('on_leave');
+        $on_leave_subtitute       = $request->input('on_leave_subtitute');
         
         // REQUEST PARAMETER
         $param['user_name']         = $user_name;
@@ -79,6 +83,8 @@ class ProfileController extends Controller
         $param['bank_id']      = $bank_id;
         $param['account_name']      = $account_name;
         $param['account_number']      = $account_number;
+        $param['on_leave']      = $on_leave;
+        $param['on_leave_subtitute']      = $on_leave_subtitute;
 
         $result_data = GatewayController::lead_to_be($method, $path, $param);
 

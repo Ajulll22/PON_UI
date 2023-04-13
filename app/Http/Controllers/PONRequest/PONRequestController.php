@@ -102,16 +102,6 @@ class PONRequestController extends Controller
 
         $user_id        = Session::get('user_id');
 
-        $subgroup_name  = Session::get('subgroup_name');
-        $pic            = '';
-
-        if ($subgroup_name == 'Finance Staff' || $subgroup_name == 'Administrator'){
-            $pic = 'Head of Finance';
-        }
-        else if ($subgroup_name == 'Head of Finance'){
-            $pic = 'Top Management';
-        }
-
         $currency                       = (int)$request->input('currency');
         $cost_centre                    = (int)$request->input('cost_centre');
         $supplier                       = $request->input('supplier');
@@ -123,6 +113,13 @@ class PONRequestController extends Controller
 
         foreach ($item_list as $item){
             $total_price = $total_price + ((float)$item['quantity'] * (float)$item['unit_price']);
+        }
+
+        $pic = 'Head of Finance';
+        if ($total_price > 10000000 && $total_price < 100000000) {
+            $pic = "Owner Representative";
+        } else if ($total_price > 100000000) {
+            $pic = "Top Management";
         }
 
         // REQUEST PARAMETER
