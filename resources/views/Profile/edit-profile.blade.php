@@ -72,7 +72,7 @@
                                             <label class="form-control-label">On Leave Status</label>
                                             <div class="form-check d-flex my-auto">
                                                 <input id="on_leave"
-                                                    name="on_leave" type="checkbox" value="">
+                                                    name="on_leave" type="checkbox" value="0">
                                                 <div><p class="my-auto mx-2 font-italic">Checklist if you're paid leave</p></div>
                                             </div>
                                         </div>
@@ -131,6 +131,7 @@
         })
         // EDIT USER
         var on_leave_status = @json($data['user_data'][0]['on_leave_status']);
+        console.log(on_leave_status);
         $("#on_leave_subtitute").val(on_leave_status.subtitute_user).change()
 
         var frm = $('#form-update-profile');

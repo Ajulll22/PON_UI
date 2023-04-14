@@ -707,17 +707,8 @@
                     let delete_btn      = '';
                     let details_btn     = '';
 
-                    if (checker_status) {
-                        if (data.status_id == 1) {
-                            details_btn = '<button style="text-decoration: none;" class="btn btn-outline-primary mg-r-5 btn-pon-request-click-details" type="button" data-toggle="tooltip" data-placement="top" title="PON Request Approval"><span class="fa fa-gavel"></span></button>';
-                        }
-                        else {
-                            details_btn = '<button style="text-decoration: none;" class="btn btn-outline-primary mg-r-5 btn-pon-request-click-details" type="button" data-toggle="tooltip" data-placement="top" title="See Details"><span class="icon ion-clipboard"></span></button>';
-                        }
-                    }
-                    else {
-                        details_btn     = '<button style="text-decoration: none;" class="btn btn-outline-primary mg-r-5 btn-pon-request-click-details" type="button" data-toggle="tooltip" data-placement="top" title="See Details"><span class="icon ion-clipboard"></span></button>';
-                    }
+
+                    details_btn     = '<button style="text-decoration: none;" class="btn btn-outline-primary mg-r-5 btn-pon-request-click-details" type="button" data-toggle="tooltip" data-placement="top" title="See Details"><span class="icon ion-clipboard"></span></button>';
 
                     if (data.status_id == 1) {
                         edit_btn        = '<button style="text-decoration: none;" class="btn btn-outline-primary mg-r-5 btn-pon-request-click-update" type="button" data-toggle="tooltip" data-placement="top" title="Update PON Request"><span class="icon ion-compose"></span></button>';
@@ -1021,6 +1012,11 @@
         // SUBMIT - ADD NEW PON REQUEST
         $('#form_add_pon_request').submit(function(event) {
             event.preventDefault();
+            let filePost = []
+            let pon_request_file = $('input[name="pon_request_file[]"]')[0].files;
+            for(var i = 0; i < pon_request_file.length; i++) {
+                filePost.push({ file_name: pon_request_file[i].name});
+            }
             
             let cost_centre                     = $('#cost_centre_add').val();
             let estimated_invoice_date          = $('#est_inv_date_add').val();
@@ -1028,7 +1024,7 @@
             let currency                        = $('#currency_add').val();
             let item_list                       = array_item;
             let investment_expenditure_reason   = $('#reason_add').val();
-            let file_list                       = array_file;
+            let file_list                       = filePost;
 
             let data = {
                 cost_centre                     : cost_centre,

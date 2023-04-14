@@ -296,7 +296,6 @@
 @section('javascript')
     <script>
         let claim_request_approval = @json($data['claim_list']['claim_request_approval']);
-        let delegated_approval = @json($data['claim_list']['delegated_approval']);
 
         const priv_list = @json($data['privilege_menu'])
         

@@ -112,14 +112,57 @@
                                         <input class="form-control" type="text" name="user_phone" id="user_phone" maxlength="20" placeholder="Enter phone number" autocomplete="off" required value="">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-control-label">Status : <span class="tx-danger">*</span></label>
-                                        <select class="form-control selectStatus" style="width: 100%" name="select_user_status" id="select_user_status" required>
+                                        <select class="form-control selectStyle" style="width: 100%" name="select_user_status" id="select_user_status" required>
                                             <option value="0">Inactive</option>
                                             <option value="1">Active</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label">Cost Centre : <span class="tx-danger">*</span></label>
+                                        <select class="form-control selectStyle" style="width: 100%" name="cost_centre_id" id="cost_centre_id" required>
+                                            <option value=""></option>
+                                            @foreach ($data["cost_centre_list"] as $main_div)
+                                                <option value="{{$main_div["cost_centre_id"]}}">{{$main_div["cost_centre_name"]}}</option>
+                                                @if (array_key_exists("division", $main_div))
+                                                    @foreach ($main_div["division"] as $div_1)
+                                                        <option value="{{$div_1["cost_centre_id"]}}">&ensp;{{$div_1["cost_centre_name"]}}</option>
+                                                        @if (array_key_exists("division", $div_1))
+                                                            @foreach ($div_1["division"] as $div_2)
+                                                                <option value="{{$div_2["cost_centre_id"]}}">&ensp;{{$div_2["cost_centre_name"]}}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label">Role : <span class="tx-danger">*</span></label>
+                                        <select class="form-control selectStyle" style="width: 100%" name="role_id" id="role_id" required>
+                                            <option value=""></option>
+                                            @foreach ($data["role_list"] as $role)
+                                                <option value="{{$role["role_id"]}}">{{$role["name"]}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label">Team Leader :</label>
+                                        <select class="form-control selectStyle" style="width: 100%" name="leader_user_id" id="leader_user_id" disabled>
+                                            <option value="">-</option>
+                                            @foreach ($data["leader_list"] as $lead)
+                                                @if (array_key_exists("leader_user_id", $lead))                  
+                                                <option value="{{$lead["leader_user_id"]}}">{{$lead["leader_fullname"]}}</option>
+                                                @endif
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -352,14 +395,57 @@
                                         <input class="form-control" type="text" name="edit_user_phone" id="edit_user_phone" maxlength="20" placeholder="Enter phone number" autocomplete="off" required>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-control-label">Status : <span class="tx-danger">*</span></label>
                                         <select class="form-control selectStatusEdit" style="width: 100%" name="select_user_status_edit" id="select_user_status_edit" required>
                                             <option value="0">Inactive</option>
                                             <option value="1">Active</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label">Cost Centre : <span class="tx-danger">*</span></label>
+                                        <select class="form-control selectStyle" style="width: 100%" name="cost_centre_id_edit" id="cost_centre_id_edit" required>
+                                            <option value=""></option>
+                                            @foreach ($data["cost_centre_list"] as $main_div)
+                                                <option value="{{$main_div["cost_centre_id"]}}">{{$main_div["cost_centre_name"]}}</option>
+                                                @if (array_key_exists("division", $main_div))
+                                                    @foreach ($main_div["division"] as $div_1)
+                                                        <option value="{{$div_1["cost_centre_id"]}}">&ensp;{{$div_1["cost_centre_name"]}}</option>
+                                                        @if (array_key_exists("division", $div_1))
+                                                            @foreach ($div_1["division"] as $div_2)
+                                                                <option value="{{$div_2["cost_centre_id"]}}">&ensp;{{$div_2["cost_centre_name"]}}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label">Role : <span class="tx-danger">*</span></label>
+                                        <select class="form-control selectStyle" style="width: 100%" name="role_id_edit" id="role_id_edit" required>
+                                            <option value=""></option>
+                                            @foreach ($data["role_list"] as $role)
+                                                <option value="{{$role["role_id"]}}">{{$role["name"]}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label">Team Leader :</label>
+                                        <select class="form-control selectStyle" style="width: 100%" name="leader_user_id_edit" id="leader_user_id_edit" disabled>
+                                            <option value="">-</option>
+                                            @foreach ($data["leader_list"] as $lead)
+                                                @if (array_key_exists("leader_user_id", $lead))                  
+                                                <option value="{{$lead["leader_user_id"]}}">{{$lead["leader_fullname"]}}</option>
+                                                @endif
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -480,6 +566,7 @@
         let data_filter_type    = JSON.parse('<?php echo json_encode($data['data_filter_type']) ?>');
         let hierarchy           = {};
         let temp_delete_user    = {};
+        let leader_list         = @json($data['leader_list']);
 
         function set_hierarchy(user_data_filter) {
              // DEFINING DATA FILTER HIERARCHY
@@ -626,7 +713,49 @@
                 })
             });
 
+            // role change
+            $("#role_id").change( function () { 
+
+                const leader = leader_list[this.value] || []
+                if (leader.leader_user_id) {
+                    $("#leader_user_id").val(leader.leader_user_id).change();
+                } else {
+                    $("#leader_user_id").val("").change();
+                }                
+            } )
+            $("#role_id_edit").change( function () { 
+
+                const leader = leader_list[this.value] || []
+                if (leader.leader_user_id) {
+                    $("#leader_user_id_edit").val(leader.leader_user_id).change();
+                } else {
+                    $("#leader_user_id_edit").val("").change();
+                }                
+            } )
+
             // User Status Dropdown Handle
+            $('#cost_centre_id').select2({
+                placeholder: "Select Cost Centre",
+                width: '100%',
+                dropdownParent: $('#user-detail-container')
+            });
+            $('#cost_centre_id_edit').select2({
+                placeholder: "Select Cost Centre",
+                width: '100%',
+                dropdownParent: $('#user-detail-container-edit')
+            });
+
+            $('#role_id').select2({
+                placeholder: "Select Cost Centre",
+                width: '100%',
+                dropdownParent: $('#user-detail-container')
+            });
+            $('#role_id_edit').select2({
+                placeholder: "Select Cost Centre",
+                width: '100%',
+                dropdownParent: $('#user-detail-container-edit')
+            });
+
             $('#select_user_status').select2({
                 placeholder: "Select User Status",
                 width: '100%',
@@ -1143,6 +1272,9 @@
             var user_active         = $('#select_user_status').val();
             var user_address 		= $('#user_address').val();
             var subgroup_id 		= $('#subgroup_id').val();     
+            var cost_centre_id 		= $('#cost_centre_id').val();     
+            var role_id 		    = $('#role_id').val();     
+            var leader_user_id 		= $('#leader_user_id').val();     
 
             var reason = "";
             if($('#select-reason-add').val() == 'other'){
@@ -1163,7 +1295,9 @@
                 user_address        : user_address,
                 subgroup_id         : subgroup_id,
                 data_filter         : user_data_filter,
-                reason              : reason
+                reason              : reason,
+                cost_centre_id,
+                role_id, leader_user_id
             };
 
             var instance = $('#form_add_user').parsley();
@@ -1213,6 +1347,7 @@
             instance.reset();
             user_data_filter ={};
             var data = table.row($(this).parents('tr')).data();
+            console.log(data);
             
             $('#edit_user_name').val(data.user_name);
             $('#select-reason-edit').val('').trigger('change');
@@ -1224,6 +1359,8 @@
             $('#select_user_status_edit').val(data.user_active).trigger('change');
             $('#edit_user_address').val(data.user_address);
             $('#edit_user_description').val(data.user_description);
+            $('#role_id_edit').val(data.role_id).change();
+            $('#cost_centre_id_edit').val(data.cost_centre_id).change();
 
             $('#edit_subgroup_id').val(data.subgroup_id).trigger('change');
 
@@ -1270,7 +1407,10 @@
             var edit_user_phone          = $('#edit_user_phone').val();     
             var edit_user_active         = $('#select_user_status_edit').val();
             var edit_user_address        = $('#edit_user_address').val();
-            var edit_subgroup_id         = $('#edit_subgroup_id').val();   
+            var edit_subgroup_id         = $('#edit_subgroup_id').val();
+            var cost_centre_id 		     = $('#cost_centre_id_edit').val();     
+            var role_id 		         = $('#role_id_edit').val();   
+            var leader_user_id 		     = $('#leader_user_id_edit').val();   
 
             var reason = "";
             if($('#select-reason-edit').val() == 'other'){
@@ -1291,7 +1431,8 @@
                 user_active         : edit_user_active,
                 subgroup_id         : edit_subgroup_id,
                 data_filter         : user_data_filter,
-                reason              : reason
+                reason              : reason,
+                cost_centre_id, role_id, leader_user_id
             };
 
             var instance = $('#form_edit_user').parsley();

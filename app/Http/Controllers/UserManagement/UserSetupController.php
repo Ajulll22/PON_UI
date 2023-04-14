@@ -83,7 +83,13 @@ class UserSetupController extends Controller
             return redirect()->route('logout');
         }
 
+        $cost_centre_list 	= GatewayController::lead_to_be("GET", "cost-centre/data", []);
+        $role_list 	= GatewayController::lead_to_be("GET", "user/role/data", []);
+
         $data["reason_list"]        = $result_data['reason_list'];
+        $data["cost_centre_list"] = $cost_centre_list["data"];
+        $data["role_list"] = $role_list["data"]['role'];
+        $data["leader_list"] = $role_list["data"]["leader"];
 
         // VIEW WITH DATA;
         return view('UserManagement/user')->with(
@@ -140,6 +146,9 @@ class UserSetupController extends Controller
 	    $subgroup_id     						= $request->input('subgroup_id');
 	    $data_filter      						= $request->input('data_filter');
     	$reason 	                            = $request->input('reason');
+    	$cost_centre_id 	                    = $request->input('cost_centre_id');
+    	$role_id 	                            = $request->input('role_id');
+    	$leader_user_id 	                    = $request->input('leader_user_id');
 
 	    // REQUEST PARAMETER
         $param['user_name']            			= $user_name;
@@ -153,6 +162,9 @@ class UserSetupController extends Controller
 		$param['user_active']                 	= $user_active;
 		$param['subgroup_id']                 	= $subgroup_id;
 		$param['data_filter']                 	= $data_filter;
+		$param['cost_centre_id']                = $cost_centre_id;
+		$param['role_id']                 	    = $role_id;
+		$param['leader_user_id']                = $leader_user_id;
 
 	    if($reason == null){
 	    	$reason = "";
@@ -200,6 +212,9 @@ class UserSetupController extends Controller
         $user_address  		= $request->input('user_address');
         $data_filter        = $request->input('data_filter');
         $reason             = $request->input('reason');
+        $cost_centre_id 	= $request->input('cost_centre_id');
+    	$role_id 	        = $request->input('role_id');
+    	$leader_user_id 	= $request->input('leader_user_id');
         
         // REQUEST PARAMETER
         $param['user_name']         = $user_name;
@@ -212,6 +227,9 @@ class UserSetupController extends Controller
         $param['user_active']       = $user_active;
         $param['user_address']      = $user_address;
         $param['data_filter']       = $data_filter;
+        $param['cost_centre_id']       = $cost_centre_id;
+        $param['role_id']       = $role_id;
+        $param['leader_user_id']       = $leader_user_id;
 
         if($reason == null){
             $reason = "";

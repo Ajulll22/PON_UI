@@ -242,7 +242,6 @@ class PONRequestController extends Controller
 
         if (isset($_FILES['pon_request_file']['name'])) {
             $total = count($_FILES['pon_request_file']['name']);
-            
             // LOOP THROUGH EACH FILE
             for($i=0;$i<$total;$i++) {
                 // GET TEMP FILE PATH
@@ -251,10 +250,10 @@ class PONRequestController extends Controller
 
                 // MAKE NEW DIRECTORY IF DOESN'T EXIST YET
                 if (is_dir(public_path('\\storage\\temp\\')) === false){
-                    mkdir(public_path('\\storage\\temp\\'));
+                    mkdir(public_path('\\storage\\temp\\'), 0777, true);
                 }
                 if (is_dir(public_path('\\storage\\uploaded\\'.$specific_dir)) === false){
-                    mkdir(public_path('\\storage\\uploaded\\'.$specific_dir));
+                    mkdir(public_path('\\storage\\uploaded\\'.$specific_dir), 0777, true);
                 }
 
                 $destinationPath    = public_path('\\storage\\uploaded\\');
@@ -265,7 +264,7 @@ class PONRequestController extends Controller
 
                     // UPLOAD FILE TO TEMP DIR
                     if(move_uploaded_file($tmpFilePath, $newFilePath)) {
-
+                        return "berhasil";
                     }
                 }
             }
