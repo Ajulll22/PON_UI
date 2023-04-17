@@ -2,9 +2,9 @@
 
 return [
     // SERVER
-    'api_server'            => 'http://192.168.202.152:8110/',
+    // 'api_server'            => 'http://192.168.202.152:8110/',
     // 'api_server'            => 'http://10.240.205.88:92/',
-    // 'api_server'            => 'http://127.0.0.1:8887/',
+    'api_server'            => 'http://192.168.202.121:8110/',
     'local_url'             => 'http://localhost:8502/',
     'sms_gateway_server'    => 'http://175.103.48.29/', // Backend SMS Gateway
 
