@@ -1089,7 +1089,6 @@
 
                         buildTableItem("add")
                         resetForm(claim_category_id, 'add')
-                        $("#support_doc-add").val("")
                     }
                 }
             })
@@ -1284,6 +1283,7 @@
                         table.ajax.reload()
                         $('#modal-claim-request_add').modal("hide");
                         data_temp = []
+                        $("#support_doc-add").val("")
                         amaran_success(res.message)
                         return
                     }
