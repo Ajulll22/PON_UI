@@ -1089,6 +1089,7 @@
 
                         buildTableItem("add")
                         resetForm(claim_category_id, 'add')
+                        $("#support_doc-add").val("")
                     }
                 }
             })
