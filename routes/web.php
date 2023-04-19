@@ -41,7 +41,7 @@ Route::group(["prefix" => "claim-request"],	function () {
 	Route::get("/", 							[ClaimRequestController::class, 'index'])->middleware('privilege:CLAIM_REQUEST_PUSAT_VIEW')->name('claim_request');
 	Route::get("/list", 							[ClaimRequestController::class, 'get_all'])->name('claim_request_list');
 	Route::post("/", 							[ClaimRequestController::class, 'create'])->middleware('privilege:CLAIM_REQUEST_PUSAT_ADD')->name('claim_request_create');
-	Route::put("/", 							[ClaimRequestController::class, 'update'])->middleware('privilege:CLAIM_REQUEST_PUSAT_UPDATE')->name('claim_request_update');
+	Route::post("/update", 							[ClaimRequestController::class, 'update'])->middleware('privilege:CLAIM_REQUEST_PUSAT_UPDATE')->name('claim_request_update');
 	Route::post("/delete", 		[ClaimRequestController::class, 'destroy'])->middleware('privilege:CLAIM_REQUEST_PUSAT_DELETE')->name('claim_request_delete');
 	Route::post("/history", 		[ClaimRequestController::class, 'get_history'])->name('claim_request_history');
 });
