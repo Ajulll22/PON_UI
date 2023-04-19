@@ -235,6 +235,7 @@
                                     <div class="form-group">
                                         <label class="form-control-label">Currency <span class="tx-danger">*</span></label>
                                         <select class="form-control select2 currency" id="currency_add" name="currency_add" style="width: 100%" required>
+                                            <option value="">Select Curency</option>
                                             @foreach ($data["currency_list"] as $costCentre)
                                                 <option value="{{$costCentre["currency_id"]}}">{{$costCentre["name"]}}</option>
                                             @endforeach
@@ -249,8 +250,9 @@
                                     <div class="form-group">
                                         <label class="form-control-label">Supplier <span class="tx-danger">*</span></label>
                                         <select class="form-control select2 supplier" id="supplier_add" name="supplier_add" style="width: 100%" required>
+                                            <option value="">Select Supllier</option>
                                             @foreach ($data["supplier_list"] as $costCentre)
-                                                <option value="{{$costCentre["supplier_id"]}}">{{$costCentre["name"]}}</option>
+                                                <option value="{{$costCentre["supplier_id"]}}" {{$costCentre["supplier_id"] == 1 ? "disabled" : ""}} >{{$costCentre["name"]}}</option>
                                             @endforeach
                                         </select>                                    
                                     </div>
@@ -990,6 +992,9 @@
             $.LoadingOverlay("show");
             
             $('#form_add_pon_request')[0].reset();
+            $('#cost_centre_add').val("").change();
+            $('#supplier_add').val("").change();
+            $('#currency_add').val("").change();
             $('#selected_files_add').text("No File Selected");
             
             array_item          = [];
@@ -1324,6 +1329,11 @@
             $('#cost_centre_update').val(rowdata.cost_centre_id).change();
             $('#currency_update').val(rowdata.currency_id).change();
             $('#supplier_update').val(rowdata.supplier).change();
+            if (rowdata.supplier == 1) {
+                $('#supplier_update').prop('disabled', true);
+            }else {
+                $('#supplier_update').prop('disabled', false);
+            }
             $('#est_inv_date_update').val(rowdata.estimated_invoice_date);
             $('#reason_update').val(rowdata.reason);
 
