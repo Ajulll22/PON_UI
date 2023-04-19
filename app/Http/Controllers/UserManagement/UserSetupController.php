@@ -90,7 +90,6 @@ class UserSetupController extends Controller
         $data["cost_centre_list"] = $cost_centre_list["data"];
         $data["role_list"] = $role_list["data"]['role'];
         $data["leader_list"] = $role_list["data"]["leader"];
-
         // VIEW WITH DATA;
         return view('UserManagement/user')->with(
           	'data', $data

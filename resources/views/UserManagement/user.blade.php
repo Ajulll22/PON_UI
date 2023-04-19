@@ -156,13 +156,9 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-control-label">Team Leader :</label>
-                                        <select class="form-control selectStyle" style="width: 100%" name="leader_user_id" id="leader_user_id" disabled>
+                                        <select class="form-control selectStyle" style="width: 100%" name="leader_user_id" id="leader_user_id" >
                                             <option value="">-</option>
-                                            @foreach ($data["leader_list"] as $lead)
-                                                @if (array_key_exists("leader_user_id", $lead))                  
-                                                <option value="{{$lead["leader_user_id"]}}">{{$lead["leader_fullname"]}}</option>
-                                                @endif
-                                            @endforeach
+                                            
                                         </select>
                                     </div>
                                 </div>
@@ -439,13 +435,9 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-control-label">Team Leader :</label>
-                                        <select class="form-control selectStyle" style="width: 100%" name="leader_user_id_edit" id="leader_user_id_edit" disabled>
+                                        <select class="form-control selectStyle" style="width: 100%" name="leader_user_id_edit" id="leader_user_id_edit">
                                             <option value="">-</option>
-                                            @foreach ($data["leader_list"] as $lead)
-                                                @if (array_key_exists("leader_user_id", $lead))                  
-                                                <option value="{{$lead["leader_user_id"]}}">{{$lead["leader_fullname"]}}</option>
-                                                @endif
-                                            @endforeach
+                                            
                                         </select>
                                     </div>
                                 </div>
@@ -713,24 +705,29 @@
                 })
             });
 
+            function buildListLeader(data, action) {
+                let optionHtml = `<option value="">-</option>`
+                data.forEach(element => {
+                    optionHtml += `<option value="${element.leader_user_id}" >${element.leader_fullname}</option>`
+                });
+                if (action == "add") { 
+                    $("#leader_user_id").html(optionHtml);
+                } else {
+                    $("#leader_user_id_edit").html(optionHtml);
+                }
+            }
+
             // role change
             $("#role_id").change( function () { 
 
                 const leader = leader_list[this.value] || []
-                if (leader.leader_user_id) {
-                    $("#leader_user_id").val(leader.leader_user_id).change();
-                } else {
-                    $("#leader_user_id").val("").change();
-                }                
+                buildListLeader(leader, "add");
+                $("#leader_user_id").val("").change();
             } )
             $("#role_id_edit").change( function () { 
 
                 const leader = leader_list[this.value] || []
-                if (leader.leader_user_id) {
-                    $("#leader_user_id_edit").val(leader.leader_user_id).change();
-                } else {
-                    $("#leader_user_id_edit").val("").change();
-                }                
+                buildListLeader(leader, "edit");
             } )
 
             // User Status Dropdown Handle
@@ -1365,6 +1362,7 @@
             $('#edit_subgroup_id').val(data.subgroup_id).trigger('change');
 
             $('#edit_data_filter_type').val('').trigger('change');
+            $("#leader_user_id_edit").val(data.team_leader_user_id).change()
             $.ajax({
                 url    : '{{ route("user-data-filter") }}',
                 method : 'POST',
