@@ -61,10 +61,16 @@
                                             <input class="form-control" type="text" id="update_account_number" name="update_account_number" value="{{ $data['user_data'][0]['bank_account']['account_number'] }}" placeholder="Account Number" required>
                                         </div>
                                     </div>
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="form-control-label">Account Name: <span class="tx-danger">*</span></label>
                                             <input class="form-control" type="text" id="update_account_name" name="update_account_name" value="{{ $data['user_data'][0]['bank_account']['account_name'] }}" placeholder="Account Name" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label">Team Leader: </label>
+                                            <input class="form-control" type="text" id="update_team_leader" name="update_team_leader" value="{{ $data['user_data'][0]['team_leader_name'] }}" placeholder="No Choose Team Lead" disabled>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
@@ -131,7 +137,6 @@
         })
         // EDIT USER
         var on_leave_status = @json($data['user_data'][0]['on_leave_status']);
-        console.log(on_leave_status);
         $("#on_leave_subtitute").val(on_leave_status.subtitute_user).change()
 
         var frm = $('#form-update-profile');
