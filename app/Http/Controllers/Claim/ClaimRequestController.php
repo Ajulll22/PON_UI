@@ -93,13 +93,32 @@ class ClaimRequestController extends Controller
 
     public function update(Request $request)
     {
-        $data = $request->all();
+        $data_all = $request->all();
+        $data = json_decode($data_all['data'], true);
         $rf_name = $data["rf_name"];
         $data['updated_by'] = Session::get('user_id');
         $nameFile = Session::get('user_firstname')." ".Session::get('user_lastname')."-".time();
         $path = "file/RF Period $rf_name/".Session::get('user_firstname')." ".Session::get('user_lastname') ;
         if(!File::isDirectory($path)){
             File::makeDirectory($path."/absensi", 0777, true, true);
+        }
+        if (array_key_exists("change_support_doc", $data_all)) {
+            $changeSupportDoc = [];
+            if (array_key_exists('support_doc', $data)) {
+                foreach ($data["support_doc"] as $file_old) {
+                    if (file_exists(public_path($file_old))) {
+                        unlink(public_path($file_old));
+                    }
+                }
+            }
+
+            foreach ($data_all["change_support_doc"] as $key => $value) {
+                $fileName = 'Absensi-'.time()."-". $key+1 . '.' . $value->extension();
+                $value->move(public_path($path."/absensi"), $fileName);
+                array_push( $changeSupportDoc, $path. "/absensi"."/". $fileName );
+            }
+
+            $data["support_doc"] = $changeSupportDoc;
         }
         $nomor = 1;
         foreach ($data['claim_item_detail'] as $key => $item) {
@@ -137,14 +156,18 @@ class ClaimRequestController extends Controller
     {
         $data = $request->all();
 
-        foreach ($data["delete_file_support"] as $supportFile) {
-            if (file_exists(public_path($supportFile["filename"]))) {
-                unlink(public_path($supportFile["filename"]));
+        if (array_key_exists("delete_file_support", $data)) {
+            foreach ($data["delete_file_support"] as $supportFile) {
+                if (file_exists(public_path($supportFile["filename"]))) {
+                    unlink(public_path($supportFile["filename"]));
+                }
             }
         }
-        foreach ($data["delete_file_claim"] as $claimFile) {
-            if (file_exists(public_path($claimFile["claim_document"][0]["filename"]))) {
-                unlink(public_path($claimFile["claim_document"][0]["filename"]));
+        if (array_key_exists("delete_file_claim", $data)) {
+            foreach ($data["delete_file_claim"] as $claimFile) {
+                if (file_exists(public_path($claimFile["claim_document"][0]["filename"]))) {
+                    unlink(public_path($claimFile["claim_document"][0]["filename"]));
+                }
             }
         }
 
