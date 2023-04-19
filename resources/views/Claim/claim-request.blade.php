@@ -113,6 +113,7 @@
                                 <div class="form-group">
                                     <input class="form-control rounded-xl" type="file" multiple
                                         id="support_doc-add"
+                                        accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"
                                         name="support_doc">
                                 </div>
                             </div>
@@ -145,6 +146,7 @@
                                 <div class="tab-pane fade @once {{ 'active' }} @endonce show "
                                     id="{{ $item['claim_category_id'] }}" role="tabpanel"
                                     aria-labelledby="{{ $item['claim_category_id'] }}-tab">
+                                    <form onsubmit="return submitItemDetail(event, '{{ $item['claim_category_id'] }}')" id="{{ $item['claim_category_id'] }}-form_add">
                                     <div class="form-layout">
                                         <div class="modal-body pd-20 pd-t-10-force">
                                             <div class="row">
@@ -156,18 +158,18 @@
                                                             class="form-control fc-datepicker rounded-xl"
                                                             name="{{ $item['claim_category_id'] }}-claim_date"
                                                             id="{{ $item['claim_category_id'] }}-claim_date-add"
-                                                            placeholder="DD/MM/YYYY" autocomplete="off">
+                                                            placeholder="DD/MM/YYYY" autocomplete="off" required>
                                                     </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group">
                                                         <label class="form-control-label">Claim Amount <span
                                                                 class="tx-danger">*</span></label>
-                                                        <input class="form-control rounded-xl" type="text"
+                                                        <input class="form-control rounded-xl" type="number"
+                                                            onchange="this.value = parseInt(this.value)"
                                                             name="{{ $item['claim_category_id'] }}-claim_amount"
                                                             id="{{ $item['claim_category_id'] }}-claim_amount-add"
-                                                            placeholder="Enter Price"
-                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                                            placeholder="Enter Price" min="1" step="1" required
                                                             autocomplete="off">
                                                     </div>
                                                 </div>
@@ -196,7 +198,7 @@
                                                         <label class="form-control-label">Claim Description <span
                                                             class="tx-danger">*</span></label>
                                                         <textarea class="form-control rounded-xl" type="text" name="{{ $item['claim_category_id'] }}-claim_desc"
-                                                            id="{{ $item['claim_category_id'] }}-claim_desc-add" placeholder="Enter Description" maxlength="3000" autocomplete></textarea>
+                                                            id="{{ $item['claim_category_id'] }}-claim_desc-add" placeholder="Enter Description" maxlength="3000" autocomplete required></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -205,19 +207,20 @@
                                                     <label for="pon_request_file" class="control-label">Upload Document
                                                         Attachment <span class="tx-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input class="form-control rounded-xl" type="file"
+                                                        <input class="form-control rounded-xl" type="file" required
+                                                            accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"
                                                             id="{{ $item['claim_category_id'] }}-upload_document-add"
                                                             name="{{ $item['claim_category_id'] }}-upload_document">
                                                     </div>
                                                 </div>
                                                 <div class="col d-flex justify-content-end" style="padding: 29px;">
-                                                    <button name="button"
-                                                        onclick="submitItemDetail('{{ $item['claim_category_id'] }}')"
+                                                    <button name="button" type="submit"
                                                         class='rounded-xl btn btn-primary mx-2'>Add Item</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </form>
                                 </div>
                             @endif
                         @endforeach
@@ -319,6 +322,15 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <label for="pon_request_file" class="control-label">Change Support Documents</label>
+                                <div class="form-group">
+                                    <input class="form-control rounded-xl" type="file" multiple
+                                        id="change_support_doc-edit"
+                                        accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"
+                                        name="support_doc">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -368,6 +380,7 @@
                                 <div class="tab-pane fade @once {{ 'active' }} @endonce show "
                                     id="{{ $item['claim_category_id'] }}-edit" role="tabpanel"
                                     aria-labelledby="{{ $item['claim_category_id'] }}-tab-edit">
+                                    <form onsubmit="return submitItemDetailEdit(event, '{{ $item['claim_category_id'] }}')">
                                     <div class="form-layout">
                                         <div class="modal-body pd-20 pd-t-10-force">
                                             <div class="row">
@@ -379,19 +392,19 @@
                                                             class="form-control fc-datepicker rounded-xl"
                                                             name="{{ $item['claim_category_id'] }}-claim_date-edit"
                                                             id="{{ $item['claim_category_id'] }}-claim_date-edit"
-                                                            placeholder="DD/MM/YYYY" autocomplete="off">
+                                                            placeholder="DD/MM/YYYY" autocomplete="off" required>
                                                     </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group">
                                                         <label class="form-control-label">Claim Amount <span
                                                                 class="tx-danger">*</span></label>
-                                                        <input class="form-control rounded-xl" type="text"
+                                                        <input class="form-control rounded-xl" type="number"
+                                                            onchange="this.value = parseInt(this.value)"
                                                             name="{{ $item['claim_category_id'] }}-claim_amount-edit"
                                                             id="{{ $item['claim_category_id'] }}-claim_amount-edit"
-                                                            placeholder="Enter Price"
-                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-                                                            autocomplete="off">
+                                                            placeholder="Enter Price" min="1" step="1"
+                                                            autocomplete="off" required>
                                                     </div>
                                                 </div>
                                                 @if ($item['approval_phase']['4'] == '1')
@@ -414,7 +427,7 @@
                                                         <label class="form-control-label">Claim Description <span
                                                             class="tx-danger">*</span></label>
                                                         <textarea class="form-control rounded-xl" type="text" name="{{ $item['claim_category_id'] }}-claim_desc-edit"
-                                                            id="{{ $item['claim_category_id'] }}-claim_desc-edit" placeholder="Enter Description" maxlength="3000" autocomplete></textarea>
+                                                            id="{{ $item['claim_category_id'] }}-claim_desc-edit" placeholder="Enter Description" maxlength="3000" required autocomplete></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -423,19 +436,20 @@
                                                     <label for="pon_request_file" class="control-label">Upload Document
                                                         Attachment <span class="tx-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input class="form-control rounded-xl" type="file"
+                                                        <input class="form-control rounded-xl" type="file" required
+                                                            accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"
                                                             id="{{ $item['claim_category_id'] }}-upload_document-edit"
                                                             name="{{ $item['claim_category_id'] }}-upload_document-edit">
                                                     </div>
                                                 </div>
                                                 <div class="col d-flex justify-content-end" style="padding: 29px;">
-                                                    <button name="button"
-                                                        onclick="submitItemDetailEdit('{{ $item['claim_category_id'] }}')"
+                                                    <button name="button" type="submit"
                                                         class='rounded-xl btn btn-primary mx-2'>Add Item</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    </form>
                                 </div>
                             @endif
                         @endforeach
@@ -1014,15 +1028,17 @@
         }
 
         // Submit Item Details
-        function submitItemDetail(claim_category_id) {
+        function submitItemDetail(e, claim_category_id) {
+            e.preventDefault()
             var files = $(`#${claim_category_id}-upload_document-add`)[0].files[0];
+
             var formData = new FormData();
             formData.append('upload_document', files);
 
             const pm = $(`#${claim_category_id}-pm-add`).val()
             const data = {
                 claim_date: $(`#${claim_category_id}-claim_date-add`).val(),
-                claim_amount: $(`#${claim_category_id}-claim_amount-add`).val(),
+                claim_amount: parseInt($(`#${claim_category_id}-claim_amount-add`).val()),
                 claim_desc: $(`#${claim_category_id}-claim_desc-add`).val(),
                 claim_category_id
             }
@@ -1095,7 +1111,9 @@
         }
 
         // Submit Item Details Edit
-        function submitItemDetailEdit(claim_category_id) {
+        function submitItemDetailEdit(e, claim_category_id) {
+            e.preventDefault();
+
             var files = $(`#${claim_category_id}-upload_document-edit`)[0].files[0];
             var formData = new FormData();
             formData.append('upload_document', files);
@@ -1103,7 +1121,7 @@
             const pm = $(`#${claim_category_id}-pm-edit`).val()
             const data = {
                 claim_date: $(`#${claim_category_id}-claim_date-edit`).val(),
-                claim_amount: $(`#${claim_category_id}-claim_amount-edit`).val(),
+                claim_amount: parseInt($(`#${claim_category_id}-claim_amount-edit`).val()),
                 claim_desc: $(`#${claim_category_id}-claim_desc-edit`).val(),
                 claim_category_id
             }
@@ -1246,10 +1264,25 @@
                 amaran_error("Please Add Support Doc")
                 return
             }
+            /* define allowed file types */
+            var allowedExtensionsRegx = /(\.jpg|\.jpeg|\.png|\.gif|\.pdf)$/i;
+
             var formData = new FormData();
+            let invalidType = false
             $.each( files, function (i, file) {  
+                var extension = file.name.substr(file.name.lastIndexOf("."));
+                /* testing extension with regular expression */
+                var isAllowed = allowedExtensionsRegx.test(extension);
+                if (!isAllowed) {
+                    amaran_error("Invalid Support Doc Type")
+                    invalidType = true
+                    return
+                }
                 formData.append('support_doc[]', file);
             } )
+            if (invalidType) {
+                return
+            }
 
             const rfName = "{{ $data['current-period'][0]['rf_period_name'] }}"
 
@@ -1301,6 +1334,28 @@
                 amaran_error("Please Add Item")
                 return
             }
+            var formData = new FormData();
+            var change_support_doc = $("#change_support_doc-edit")[0].files;
+
+            /* define allowed file types */
+            var allowedExtensionsRegx = /(\.jpg|\.jpeg|\.png|\.gif|\.pdf)$/i;
+
+            let invalidType = false;
+            $.each( change_support_doc, function (i, file) { 
+                var extension = file.name.substr(file.name.lastIndexOf("."));
+                /* testing extension with regular expression */
+                var isAllowed = allowedExtensionsRegx.test(extension);
+                if (!isAllowed) {
+                    amaran_error("Invalid Support Doc Type")
+                    invalidType = true
+                    return
+                }
+                formData.append('change_support_doc[]', file);
+            })
+            if (invalidType) {
+                return
+            }
+
             var column = item_request_table_edit.column(-2);
             var totalFormat = $(column.footer()).html().split(",")
 
@@ -1320,24 +1375,27 @@
                 claim_phase_id: $("#claim_phase_id-edit").val(),
                 delete_document: delete_file_temp
             }
+            formData.append("data", JSON.stringify(data));
 
             $.ajax({
                 url: '{{ route('claim_request_update') }}',
-                method: 'PUT',
-                data,
+                method: 'POST',
+                data: formData,
                 datatype: "json",
+                contentType: false,
+                processData: false,
                 headers: {
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
                 success: function(res) {
-                    console.log(res);                    
+                    console.log(res); 
                     if (res.result == "SUCCESS") {
                         table.ajax.reload()
                         $('#modal-claim-request_edit').modal("hide");
                         amaran_success(res.message)
                         return
                     }
-                    amaran_error("Update Claim Failed")
+                    amaran_error("Add Claim Request Success")
                     return
                 },
                 error: function(err) {
