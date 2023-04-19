@@ -651,12 +651,16 @@
                 claim_item_detail: data_edit_temp,
                 delete_document: delete_file_temp
             }
+            var formData = new FormData();
+            formData.append("data", JSON.stringify(data));
 
             $.ajax({
                 url: '{{ route('claim_request_update') }}',
-                method: 'PUT',
-                data,
+                method: 'POST',
+                data: formData,
                 datatype: "json",
+                contentType: false,
+                processData: false,
                 headers: {
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
