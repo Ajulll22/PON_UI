@@ -42,7 +42,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-control-label">Nama Bank: <span class="tx-danger">*</span></label>
-                                            <select class="form-control" name="update_bank_id" id="update_bank_id">
+                                            <select class="form-control" name="update_bank_id" id="update_bank_id" required>
                                                 <option value="">Select Bank Name</option>
                                                 @foreach ($data["bank_list"] as $item)
                                                     <option {{$data['user_data'][0]['bank_account']['bank_id'] == $item['id'] ? "selected" : "" }} value="{{$item['id']}}">{{$item['name']}}</option>
