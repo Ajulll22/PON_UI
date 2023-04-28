@@ -66,7 +66,7 @@
                 <div class="modal-header pd-x-20">
                     <h5></h5>
                     <h6 class="tx-20 mg-b-0 tx-inverse tx-bold"> <i class="fa fa-plus mg-r-10"></i> Add Claim Request</h6>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close add-cancel_claim" >
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -260,7 +260,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button id="add-cancel_claim" class='rounded-xl btn btn-dark'>Cancel</button>
+                    <button class='add-cancel_claim rounded-xl btn btn-dark'>Cancel</button>
                     <button id="add-save_claim" onclick="SubmitHandler('SAVE')" value="SAVE"
                         class='rounded-xl btn btn-warning mx-2'>Save</button>
                     <button id="add-submit_claim" onclick="SubmitHandler('SUBMIT')" value="SUBMIT"
@@ -1525,20 +1525,21 @@
             const data = {
                 claim_item_detail: data_temp
             }
-            console.log(data);
-            $.ajax({
-                url: '{{ route('claim_request_cancel') }}',
-                method: 'POST',
-                data,
-                datatype: "json",
-                headers: {
-                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                }
-            });
+            if (data_temp.length) {    
+                $.ajax({
+                    url: '{{ route('claim_request_cancel') }}',
+                    method: 'POST',
+                    data,
+                    datatype: "json",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    }
+                });
+            }
             data_temp = []
         }
 
-        $("#add-cancel_claim").click( function () {  
+        $(".add-cancel_claim").click( function () {  
             deleteFileTemp()
             $("#support_doc-add").val("")
             $("#modal-claim-request_add").modal("hide")
