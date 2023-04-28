@@ -260,7 +260,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button data-dismiss="modal" aria-label="Close" class='rounded-xl btn btn-dark'>Cancel</button>
+                    <button id="add-cancel_claim" class='rounded-xl btn btn-dark'>Cancel</button>
                     <button id="add-save_claim" onclick="SubmitHandler('SAVE')" value="SAVE"
                         class='rounded-xl btn btn-warning mx-2'>Save</button>
                     <button id="add-submit_claim" onclick="SubmitHandler('SUBMIT')" value="SUBMIT"
@@ -1520,6 +1520,30 @@
             $('#modal-claim-request_delete').modal("show");
             $.LoadingOverlay('hide');
         })
+
+        async function deleteFileTemp() {
+            const data = {
+                claim_item_detail: data_temp
+            }
+            console.log(data);
+            $.ajax({
+                url: '{{ route('claim_request_cancel') }}',
+                method: 'POST',
+                data,
+                datatype: "json",
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                }
+            });
+            data_temp = []
+        }
+
+        $("#add-cancel_claim").click( function () {  
+            deleteFileTemp()
+            $("#support_doc-add").val("")
+            $("#modal-claim-request_add").modal("hide")
+        } )
+
 
     </script>
 @endsection

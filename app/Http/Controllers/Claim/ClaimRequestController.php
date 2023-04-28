@@ -185,4 +185,18 @@ class ClaimRequestController extends Controller
         // dd($result_data);
         return $result_data;
     }
+
+    public function cancel_submit(Request $request)
+    {
+        $claim_item_detail = $request->input('claim_item_detail');
+        if ($claim_item_detail) {
+            foreach ($claim_item_detail as $detail) {
+                if (file_exists(public_path('tmp/'.$detail["claim_document"][0]))){
+                    unlink(public_path('tmp/'.$detail["claim_document"][0]));
+                }
+            }
+        }
+
+        return;
+    }
 }

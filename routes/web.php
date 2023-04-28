@@ -44,6 +44,7 @@ Route::group(["prefix" => "claim-request"],	function () {
 	Route::post("/update", 							[ClaimRequestController::class, 'update'])->middleware('privilege:CLAIM_REQUEST_PUSAT_UPDATE')->name('claim_request_update');
 	Route::post("/delete", 		[ClaimRequestController::class, 'destroy'])->middleware('privilege:CLAIM_REQUEST_PUSAT_DELETE')->name('claim_request_delete');
 	Route::post("/history", 		[ClaimRequestController::class, 'get_history'])->name('claim_request_history');
+	Route::post("/cancel", 		[ClaimRequestController::class, 'cancel_submit'])->name('claim_request_cancel');
 });
 
 Route::group(["prefix" => "claim-approval"],	function () {
