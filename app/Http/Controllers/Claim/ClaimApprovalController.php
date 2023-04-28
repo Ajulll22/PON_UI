@@ -48,11 +48,15 @@ class ClaimApprovalController extends Controller
     public function claim_action(Request $request)
     {
         $action = $request->input("action");
-        $claim_request_id = $request->input("claim_request_id");
 
-        $res = GatewayController::lead_to_be("POST", "claim-request/$action", [
-            "claim_request_id" => $claim_request_id
-        ]);
+        $data = [
+            "claim_request_id" => $request->input("claim_request_id")
+        ];
+        if ($action == "reject") {
+            $data["reason"] = $request->input("reason");
+        }
+
+        $res = GatewayController::lead_to_be("POST", "claim-request/$action", $data);
 
         return $res;
     }
