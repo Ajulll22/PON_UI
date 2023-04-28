@@ -129,6 +129,9 @@
                         </div>
                     </div>
                 </div>
+                <div id="view_action_reason" >
+                    
+                </div>
                 
                 <div id="action-view" class="d-flex justify-content-between p-4">
                 </div>
@@ -546,6 +549,13 @@
             const data = {
                 action,claim_request_id
             }
+            if (action == "reject") {
+                $("#reason_validate").parsley().validate();
+                if (!$("#reason_validate").parsley().validate()) {
+                    return
+                }
+                data.reason = $("#reason").val()
+            }
 
             $.ajax({
                 url: '{{ route('claim_approval_action') }}',
@@ -701,7 +711,8 @@
             item_approve_table_view.clear()
             const data = table.row($(this).parents('tr')).data();
             tableSupportDoc( data.support_doc, "view" )
-            let stat = ""
+            let stat = "";
+            $("#view_action_reason").html("")
             let action_view = `<div></div>
                             <button data-dismiss="modal" aria-label="Close" class='rounded-xl btn btn-dark'>Close</button>`
             if (data.status == "Closed" ) {
@@ -717,6 +728,26 @@
                 </div>
                 `
                 stat = "open"
+
+                const view_action_reason = `
+                    <form id="reason_validate">
+                        <div class="modal-body pd-5-force pd-l-20-force bg-gray-400 ">
+                            Reason
+                        </div>
+                        <div class="form-layout">
+                            <div class="modal-body pd-20">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="form-control-label">Reason</label>
+                                            <textarea class="form-control rounded-xl" name="reason" id="reason" placeholder="Reason" rows="3" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>`
+                $("#view_action_reason").html(view_action_reason)
             }
             const status = `<span class="ml-2 px-3 py-1 status-label status-${stat} p-2" >${data.status}</span>` 
             $("#name-detail").text(data.user_fullname);
