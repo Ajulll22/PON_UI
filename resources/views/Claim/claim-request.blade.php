@@ -1325,7 +1325,7 @@
                         $('#modal-claim-request_add').modal("hide");
                         data_temp = []
                         $("#support_doc-add").val("")
-                        amaran_success(res.message)
+                        amaran_success("Add claim request success")
                         return
                     }
                     amaran_error("Add Claim Failed")
@@ -1400,10 +1400,10 @@
                     if (res.result == "SUCCESS") {
                         table.ajax.reload()
                         $('#modal-claim-request_edit').modal("hide");
-                        amaran_success(res.message)
+                        amaran_success("Add claim request success")
                         return
                     }
-                    amaran_error("Add Claim Request Success")
+                    amaran_error("Add Claim Request Failed")
                     return
                 },
                 error: function(err) {

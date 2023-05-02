@@ -679,10 +679,10 @@
                     if (res.result == "SUCCESS") {
                         reFatchData()
                         $('#modal-claim-request_edit').modal("hide");
-                        amaran_success(res.message)
+                        amaran_success("Add claim request success")
                         return
                     }
-                    amaran_error("Update Claim Failed")
+                    amaran_error("Add claim request failed")
                     return
                 },
                 error: function(err) {
