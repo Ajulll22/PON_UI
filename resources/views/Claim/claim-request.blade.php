@@ -869,8 +869,7 @@
 
                 // Update footer
                 $(api.column(-2).footer()).html(
-                    // $.fn.dataTable.render.number(',', '.', 4).display(total)
-                    addComasStatic(Math.round((parseFloat(total) + Number.EPSILON) * 10000) / 10000)
+                    total.toLocaleString('en-US')
                 );
             }
         });
@@ -917,7 +916,7 @@
                 // Update footer
                 $(api.column(-2).footer()).html(
                     // $.fn.dataTable.render.number(',', '.', 4).display(total)
-                    addComasStatic(Math.round((parseFloat(total) + Number.EPSILON) * 10000) / 10000)
+                    total.toLocaleString('en-US')
                 );
             }
         });
@@ -964,7 +963,7 @@
                 // Update footer
                 $(api.column(-2).footer()).html(
                     // $.fn.dataTable.render.number(',', '.', 4).display(total)
-                    addComasStatic(Math.round((parseFloat(total) + Number.EPSILON) * 10000) / 10000)
+                    total.toLocaleString('en-US')
                 );
             }
         });
@@ -1011,8 +1010,7 @@
                     <td style="width: 15%">${item.claim_date}</td>
                     <td style="width: 20%">${claim_category.name}</td>
                     <td style="width: 20%">${item.claim_desc}</td>
-                    <td style="width: 20%">${addComasStatic(Math.round((parseFloat(item.claim_amount) +
-                        Number.EPSILON) * 10000) / 10000)}</td>
+                    <td style="width: 20%">${item.claim_amount.toLocaleString('en-US')}</td>
                     <td style="width: 20%">${filename}</td>
                 </tr>`
             
@@ -1070,7 +1068,17 @@
                 }, 3000);
                 return
             }
-            console.log(data);
+            let total = data_temp.reduce( function(accumulator, object) {
+                return accumulator + object.claim_amount;
+            }, 0);
+        
+            total += data.claim_amount;
+
+            if (total > 1000000000) {
+                amaran_error("Maximum Total Is 1B")
+                return
+            }
+
             $.ajax({
                 url: "{{ route('upload_item') }}",
                 method: 'POST',
@@ -1495,8 +1503,7 @@
                     <td style="width: 15%">${item.claim_date}</td>
                     <td style="width: 20%">${claim_category.name}</td>
                     <td style="width: 20%">${item.claim_desc}</td>
-                    <td style="width: 20%">${addComasStatic(Math.round((parseFloat(item.claim_amount) +
-                        Number.EPSILON) * 10000) / 10000)}</td>
+                    <td style="width: 20%">${item.claim_amount.toLocaleString('en-US')}</td>
                     <td style="width: 20%">${filename}</td>
                 </tr>`
                 item_request_table_view.row.add($(`${detail_data}`)).draw()
