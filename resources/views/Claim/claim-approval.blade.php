@@ -234,8 +234,9 @@
                                         name="claim_amount-edit"
                                         id="claim_amount-edit"
                                         placeholder="Enter Price"
-                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-                                        autocomplete="off">
+                                        onkeydown="return forceNumber(event)"
+                                        onkeyup="this.value = formatRupiah(this.value, event)"
+                                        onchange="this.value = formatRupiah(this.value, event)"                                        autocomplete="off">
                                 </div>
                             </div>
                         </div>
@@ -472,7 +473,7 @@
                 // Update footer
                 $(api.column(-2).footer()).html(
                     // $.fn.dataTable.render.number(',', '.', 4).display(total)
-                    addComasStatic(Math.round((parseFloat(total) + Number.EPSILON) * 10000) / 10000)
+                    total.toLocaleString('en-US')
                 );
             }
         });
@@ -520,7 +521,7 @@
                 // Update footer
                 $(api.column(-2).footer()).html(
                     // $.fn.dataTable.render.number(',', '.', 4).display(total)
-                    addComasStatic(Math.round((parseFloat(total) + Number.EPSILON) * 10000) / 10000)
+                    total.toLocaleString('en-US')
                 );
             }
         });
@@ -587,8 +588,7 @@
                     <td style="width: 15%">${item.claim_date}</td>
                     <td style="width: 20%">${item.claim_category_name}</td>
                     <td style="width: 20%">${item.claim_desc}</td>
-                    <td style="width: 20%">${addComasStatic(Math.round((parseFloat(item.claim_amount) +
-                        Number.EPSILON) * 10000) / 10000)}</td>
+                    <td style="width: 20%">${item.claim_amount.toLocaleString('en-US')}</td>
                     <td style="width: 20%">${item.claim_document[0].filename}</td>
                 </tr>`
             } )
@@ -633,7 +633,9 @@
             const index = $("#index-edit").val()
             const tmp = {...data_edit_temp[index]}
 
-            tmp.claim_amount = $("#claim_amount-edit").val()
+            let amount = $("#claim_amount-edit").val()
+
+            tmp.claim_amount = parseInt(amount.replaceAll('.', ''))
             tmp.claim_desc = $("#claim_desc-edit").val()
             tmp.claim_date = $("#claim_date-edit").val()
 
@@ -700,7 +702,7 @@
 
             $("#claim_category-edit").val(data_edit_temp[i].claim_category_id)
             $("#claim_date-edit").val(data_edit_temp[i].claim_date)
-            $("#claim_amount-edit").val(data_edit_temp[i].claim_amount)
+            $("#claim_amount-edit").val(data_edit_temp[i].claim_amount).change()
             $("#claim_desc-edit").val(data_edit_temp[i].claim_desc)
             $("#edit_item_detail").show(200)
         })
@@ -763,8 +765,7 @@
                     <td style="width: 15%">${item.claim_date}</td>
                     <td style="width: 20%">${item.claim_category_name}</td>
                     <td style="width: 20%">${item.claim_desc}</td>
-                    <td style="width: 20%">${addComasStatic(Math.round((parseFloat(item.claim_amount) +
-                        Number.EPSILON) * 10000) / 10000)}</td>
+                    <td style="width: 20%">${item.claim_amount.toLocaleString('en-US')}</td>
                     <td style="width: 20%">${item.claim_document[0].filename}</td>
                 </tr>`
             })
@@ -811,5 +812,35 @@
             $('#modal-claim-request_edit').modal("show");
             $.LoadingOverlay('hide');
         })
+
+        
+        function forceNumber(e) {
+            console.log(e.keyCode);
+            if (e.keyCode === 190 || e.keyCode === 110 || e.keyCode === 188) {
+                e.preventDefault();
+            }
+
+            if ((e.keyCode >= 65 && e.keyCode <= 90)) { 
+                e.preventDefault();
+            }
+        }
+
+        function formatRupiah(angka, e)
+        {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split    = number_string.split(','),
+                sisa     = split[0].length % 3,
+                rupiah     = split[0].substr(0, sisa),
+                ribuan     = split[0].substr(sisa).match(/\d{3}/gi);
+                
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+            
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return rupiah ? rupiah : '';
+
+        }
     </script>
 @endsection
