@@ -38,7 +38,10 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-control-label">Phone Number: <span class="tx-danger">*</span></label>
-                                            <input class="form-control" type="number" id="update_phone" name="update_phone" value="{{ $data['user_data'][0]['user_phone'] }}" placeholder="Enter phone number" required>
+                                            <input 
+                                                onkeyup="this.value = this.value.replaceAll(',', '');this.value = this.value.replace(/[^,\d]/g, '').toString()" 
+                                                onchange="this.value = this.value.replaceAll(',', '');this.value = this.value.replace(/[^,\d]/g, '').toString()" 
+                                                class="form-control" minlength="10" maxlength="16" type="tel" pattern="0[0-9]{11,15}" id="update_phone" name="update_phone" value="{{ $data['user_data'][0]['user_phone'] }}" placeholder="Enter phone number" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="form-control-label">Nama Bank: <span class="tx-danger">*</span></label>
@@ -58,7 +61,10 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-control-label">Account Number: <span class="tx-danger">*</span></label>
-                                            <input class="form-control" type="text" id="update_account_number" name="update_account_number" value="{{ $data['user_data'][0]['bank_account']['account_number'] }}" placeholder="Account Number" required>
+                                            <input 
+                                                onkeyup="this.value = this.value.replaceAll(',', '');this.value = this.value.replace(/[^,\d]/g, '').toString()" 
+                                                onchange="this.value = this.value.replaceAll(',', '');this.value = this.value.replace(/[^,\d]/g, '').toString()"
+                                                class="form-control" maxlength="20" type="text" id="update_account_number" name="update_account_number" value="{{ $data['user_data'][0]['bank_account']['account_number'] }}" placeholder="Account Number" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
