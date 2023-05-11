@@ -165,8 +165,10 @@
                                                     <div class="form-group">
                                                         <label class="form-control-label">Claim Amount <span
                                                                 class="tx-danger">*</span></label>
-                                                        <input class="form-control rounded-xl" type="number"
-                                                            onchange="this.value = parseInt(this.value)"
+                                                        <input class="form-control rounded-xl" type="text"
+                                                            onkeydown="return forceNumber(event)"
+                                                            onkeyup="this.value = formatRupiah(this.value, event)"
+                                                            onchange="this.value = formatRupiah(this.value, event)"
                                                             name="{{ $item['claim_category_id'] }}-claim_amount"
                                                             id="{{ $item['claim_category_id'] }}-claim_amount-add"
                                                             placeholder="Enter Price" min="1" step="1" required
@@ -399,8 +401,10 @@
                                                     <div class="form-group">
                                                         <label class="form-control-label">Claim Amount <span
                                                                 class="tx-danger">*</span></label>
-                                                        <input class="form-control rounded-xl" type="number"
-                                                            onchange="this.value = parseInt(this.value)"
+                                                        <input class="form-control rounded-xl" type="text"
+                                                            onkeydown="return forceNumber(event)"
+                                                            onkeyup="this.value = formatRupiah(this.value, event)"
+                                                            onchange="this.value = formatRupiah(this.value, event)"
                                                             name="{{ $item['claim_category_id'] }}-claim_amount-edit"
                                                             id="{{ $item['claim_category_id'] }}-claim_amount-edit"
                                                             placeholder="Enter Price" min="1" step="1"
@@ -1033,10 +1037,12 @@
             var formData = new FormData();
             formData.append('upload_document', files);
 
+            let amount = $(`#${claim_category_id}-claim_amount-add`).val()
+
             const pm = $(`#${claim_category_id}-pm-add`).val()
             const data = {
                 claim_date: $(`#${claim_category_id}-claim_date-add`).val(),
-                claim_amount: parseInt($(`#${claim_category_id}-claim_amount-add`).val()),
+                claim_amount: parseInt(amount.replaceAll('.', '')),
                 claim_desc: $(`#${claim_category_id}-claim_desc-add`).val(),
                 claim_category_id
             }
@@ -1126,10 +1132,12 @@
             var formData = new FormData();
             formData.append('upload_document', files);
 
+            let amount = $(`#${claim_category_id}-claim_amount-edit`).val()
+
             const pm = $(`#${claim_category_id}-pm-edit`).val()
             const data = {
                 claim_date: $(`#${claim_category_id}-claim_date-edit`).val(),
-                claim_amount: parseInt($(`#${claim_category_id}-claim_amount-edit`).val()),
+                claim_amount: parseInt(amount.replaceAll('.', '')),
                 claim_desc: $(`#${claim_category_id}-claim_desc-edit`).val(),
                 claim_category_id
             }
@@ -1551,6 +1559,35 @@
             $("#support_doc-add").val("")
             $("#modal-claim-request_add").modal("hide")
         } )
+
+        function forceNumber(e) {
+            console.log(e.keyCode);
+            if (e.keyCode === 190 || e.keyCode === 110 || e.keyCode === 188) {
+                e.preventDefault();
+            }
+
+            if ((e.keyCode >= 65 && e.keyCode <= 90)) { 
+                e.preventDefault();
+            }
+        }
+
+        function formatRupiah(angka, e)
+        {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split    = number_string.split(','),
+                sisa     = split[0].length % 3,
+                rupiah     = split[0].substr(0, sisa),
+                ribuan     = split[0].substr(sisa).match(/\d{3}/gi);
+                
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+            
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return rupiah ? rupiah : '';
+
+        }
 
 
     </script>
