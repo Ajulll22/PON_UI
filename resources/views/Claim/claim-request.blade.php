@@ -291,7 +291,7 @@
                 <input id="claim_request_type_id-edit" type="text" hidden>
                 <input id="claim_phase_id-edit" type="text" hidden>
 
-                <input id="rf_period_name-edit" type="text" >
+                <input id="rf_period_name-edit" type="text" hidden>
 
                 <div class="form-layout">
                     <div class="modal-body pd-20" id="pon-request-detail-container">
