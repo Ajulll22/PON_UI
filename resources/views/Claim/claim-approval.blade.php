@@ -726,7 +726,7 @@
                 <button data-dismiss="modal" aria-label="Close" class='rounded-xl btn btn-dark'>Close</button>
                 <div class="d-flex" >
                     <button onclick="ApproveAction('reject', ${data.claim_request_id})" class="rounded-xl btn status-needrevision mx-2" >Reject</button>
-                    <button onclick="ApproveAction('approve', ${data.claim_request_id})" class="rounded-xl btn btn-success" >Aprrove</button>
+                    <button onclick="ApproveAction('approve', ${data.claim_request_id})" class="rounded-xl btn btn-success" >Approve</button>
                 </div>
                 `
                 stat = "open"
