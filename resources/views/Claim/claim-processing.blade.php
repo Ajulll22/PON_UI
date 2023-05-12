@@ -151,6 +151,7 @@
                     targets: -1,
                     data: null,
                     render: function(data) {
+                        console.log(data.action_menu);
                         let follup = ""
                         if (data.action_menu.request_pon == 1) {
                             follup += `<button id="initiate_claim" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5" type="button" >Request PON</button>`
