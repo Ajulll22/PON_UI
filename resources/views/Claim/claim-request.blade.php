@@ -290,6 +290,9 @@
                 <input id="claim_request_id-edit" type="text" hidden>
                 <input id="claim_request_type_id-edit" type="text" hidden>
                 <input id="claim_phase_id-edit" type="text" hidden>
+
+                <input id="rf_period_name-edit" type="text" >
+
                 <div class="form-layout">
                     <div class="modal-body pd-20" id="pon-request-detail-container">
                         <div class="row">
@@ -318,9 +321,6 @@
                                     <label class="form-control-label">RF Period <span class="tx-danger">*</span></label>
                                     <select class="form-control rf_period rounded-xl" id="rf_period-edit" name="rf_period"
                                         style="width: 100%" disabled required>
-                                        @foreach ($data['current-period'] as $item)
-                                            <option value="{{$item['rf_period_id']}}">{{$item['rf_name']}}</option>
-                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -676,9 +676,10 @@
                 format: 'dd/mm/yyyy',
                 autoclose: true
             });
-        })
+        });
 
-        const claim_category_list = @json($data['claim_category'])
+        const currentPeriod = @json($data['current-period']);
+        const claim_category_list = @json($data['claim_category']);
 
         async function get_history(claim_request_id) { 
             const data = {claim_request_id};
@@ -1058,7 +1059,7 @@
                 data.pm = pm
             }
 
-            if (data.claim_date === "" || data.claim_amount === ""|| data.claim_desc === "") {
+            if (data.claim_date === "" || data.claim_amount === ""|| data.claim_desc === "" || data.claim_amount === 0) {
                 $('#validate-detail').html("<li><strong>Please fill all required field</strong></li>")
                 $('#validate-detail').fadeIn("slow");
                 setTimeout(function() {
@@ -1375,7 +1376,7 @@
             var column = item_request_table_edit.column(-2);
             var totalFormat = $(column.footer()).html().split(",")
 
-            const rfName = "{{ $data['current-period'][0]['rf_period_name'] }}"
+            const rfName = $("#rf_period_name-edit").val()
 
             const total_amount = totalFormat.join("")
             let claim_item_detail = [...data_edit_temp]
@@ -1461,6 +1462,16 @@
             $.LoadingOverlay("show");
             const data = table.row($(this).parents('tr')).data();
             tableSupportDoc( data.support_doc, "edit" )
+
+            console.log(data);
+            // kasih value rf period saat need revision
+            if (data.status == "Not Yet Submitted") {
+                $("#rf_period_name-edit").val(currentPeriod[0].rf_period_name)
+                $("#rf_period-edit").html(`<option value="${currentPeriod[0].rf_period_id}" selected>${currentPeriod[0].rf_name}</option>`)
+            } else {
+                $("#rf_period_name-edit").val(data.rf_period.rf_period_name)
+                $("#rf_period-edit").html(`<option value="${data.rf_period_id}" selected>${data.rf_period.rf_name}</option>`)
+            }
 
             $("#currency-edit").val(data.currency_id)
             $("#claim_request_type_id-edit").val(data.claim_request_type_id)
