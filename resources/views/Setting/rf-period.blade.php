@@ -22,10 +22,10 @@
                 <h6 class="ml-2">List RF Period</h6>
             </div>
         </div>
-        <div class="d-flex justify-content-end">
+        {{-- <div class="d-flex justify-content-end">
             <button class='btn-scale my-auto rounded-xl btn btn-primary modal-add mx-1'><i class="fas fa-plus"></i> Add Item
             </button>
-        </div>
+        </div> --}}
     </div>
 @endsection
 
@@ -138,7 +138,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="form-control-label">RF Name <span class="tx-danger">*</span></label>
+                                        <label class="form-control-label">RF Type <span class="tx-danger">*</span></label>
                                         <select class="form-control rounded-xl" id="edit-rf_id" name="rf_id">
                                             <option value="">Choose RF Name</option>
                                             @foreach ($data['rf_period'] as $item)
@@ -418,6 +418,9 @@
                 data[nama] = value || "";
             });
             delete data['button']
+
+            console.log(data);
+            return
 
 
             $.ajax({

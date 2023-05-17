@@ -166,12 +166,11 @@
                                                         <label class="form-control-label">Claim Amount <span
                                                                 class="tx-danger">*</span></label>
                                                         <input class="form-control rounded-xl" type="text"
-                                                            onkeydown="return forceNumber(event)"
-                                                            onkeyup="this.value = formatRupiah(this.value, event)"
-                                                            onchange="this.value = formatRupiah(this.value, event)"
+                                                            oninput="this.value = formatRupiah(this.value, event)"
                                                             name="{{ $item['claim_category_id'] }}-claim_amount"
                                                             id="{{ $item['claim_category_id'] }}-claim_amount-add"
                                                             placeholder="Enter Price" min="1" step="1" required
+                                                            maxlength="15"
                                                             autocomplete="off">
                                                     </div>
                                                 </div>
@@ -402,11 +401,10 @@
                                                         <label class="form-control-label">Claim Amount <span
                                                                 class="tx-danger">*</span></label>
                                                         <input class="form-control rounded-xl" type="text"
-                                                            onkeydown="return forceNumber(event)"
-                                                            onkeyup="this.value = formatRupiah(this.value, event)"
-                                                            onchange="this.value = formatRupiah(this.value, event)"
+                                                            oninput="this.value = formatRupiah(this.value, event)"
                                                             name="{{ $item['claim_category_id'] }}-claim_amount-edit"
                                                             id="{{ $item['claim_category_id'] }}-claim_amount-edit"
+                                                            maxlength="15"
                                                             placeholder="Enter Price" min="1" step="1"
                                                             autocomplete="off" required>
                                                     </div>
@@ -1584,6 +1582,8 @@
 
         function formatRupiah(angka, e)
         {
+            angka = angka.replaceAll(",", "");
+            angka = angka.replace(/^0+/, '');
             var number_string = angka.replace(/[^,\d]/g, '').toString(),
                 split    = number_string.split(','),
                 sisa     = split[0].length % 3,
@@ -1591,7 +1591,7 @@
                 ribuan     = split[0].substr(sisa).match(/\d{3}/gi);
                 
             if (ribuan) {
-                separator = sisa ? '.' : '';
+                let separator = sisa ? '.' : '';
                 rupiah += separator + ribuan.join('.');
             }
             

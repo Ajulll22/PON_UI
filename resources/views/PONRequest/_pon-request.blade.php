@@ -283,7 +283,7 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label class="form-control-label">Qty</label>
-                                        <input list="quantity_item_list_add" class="form-control" type="text" name="quantity_add" id="quantity_add" placeholder="Enter Quantity" maxlength="20" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" autocomplete>
+                                        <input list="quantity_item_list_add" class="form-control" type="text" name="quantity_add" id="quantity_add" placeholder="Enter Quantity" maxlength="4" oninput="this.value = forceNumber(this.value)" autocomplete>
                                         <datalist id="quantity_item_list_add">
                                         </datalist>
                                     </div>
@@ -291,7 +291,9 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label class="form-control-label">Unit Price</label>
-                                        <input list="unit_price_item_list_add" class="form-control" type="text" name="unit_price_add" id="unit_price_add" placeholder="Enter Unit Price" maxlength="15" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" autocomplete>
+                                        <input list="unit_price_item_list_add" 
+                                            oninput="this.value = formatRupiah(this.value, event)"
+                                            class="form-control" type="text" name="unit_price_add" id="unit_price_add" placeholder="Enter Unit Price" maxlength="15" autocomplete>
                                         <datalist id="unit_price_item_list_add">
                                         </datalist>
                                     </div>
@@ -444,7 +446,7 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label class="form-control-label">Qty</label>
-                                        <input list="quantity_item_list_update" class="form-control" type="text" name="quantity_update" id="quantity_update" data-parsley-maxlength="5" placeholder="Enter Quantity" maxlength="20" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                        <input list="quantity_item_list_update" class="form-control" type="text" name="quantity_update" id="quantity_update" data-parsley-maxlength="5" placeholder="Enter Quantity" maxlength="4" autocomplete="off" oninput="this.value = forceNumber(this.value)">
                                         <datalist id="quantity_item_list_update">
                                         </datalist>
                                     </div>
@@ -452,7 +454,7 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label class="form-control-label">Unit Price</label>
-                                        <input list="unit_price_item_list_update" class="form-control" type="text" name="unit_price_update" id="unit_price_update" data-parsley-maxlength="15" placeholder="Enter Unit Price" maxlength="15" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                        <input list="unit_price_item_list_update" class="form-control" type="text" name="unit_price_update" id="unit_price_update" data-parsley-maxlength="15" placeholder="Enter Unit Price" maxlength="15" oninput="this.value = formatRupiah(this.value, event)">
                                         <datalist id="unit_price_item_list_update">
                                         </datalist>
                                     </div>
@@ -879,6 +881,7 @@
             let description_item    = $('#description_add').val();
             let quantity_item       = $('#quantity_add').val();
             let unit_price_item     = $('#unit_price_add').val();
+            unit_price_item = parseInt(unit_price_item.replaceAll(".", ""));
 
             // AUTOCOMPLETE
             let list_data_description   = '<option value="'+description_item+'"></option>';
@@ -1135,6 +1138,7 @@
             let description_item    = $('#description_update').val();
             let quantity_item       = $('#quantity_update').val();
             let unit_price_item     = $('#unit_price_update').val();
+            unit_price_item = parseInt(unit_price_item.replaceAll(".", ""));
 
             // AUTOCOMPLETE
             let list_data_description   = '<option value="'+description_item+'"></option>';
@@ -2081,6 +2085,34 @@
                     }
                 }
             });
+        }
+
+        function forceNumber(angka) {
+            angka = angka.replaceAll(",", "");
+            angka = angka.replace(/^0+/, '');
+            angka = angka.replace(/[^,\d]/g, '').toString();
+
+            return angka;
+        }
+
+        function formatRupiah(angka, e)
+        {
+            angka = angka.replaceAll(",", "");
+            angka = angka.replace(/^0+/, '');
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split    = number_string.split(','),
+                sisa     = split[0].length % 3,
+                rupiah     = split[0].substr(0, sisa),
+                ribuan     = split[0].substr(sisa).match(/\d{3}/gi);
+                
+            if (ribuan) {
+                let separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+            
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return rupiah ? rupiah : '';
+
         }
     </script>
 @endsection
