@@ -6,7 +6,8 @@ return [
     // 'api_server'            => 'http://10.240.205.88:92/',
     'api_server'            => 'http://192.168.202.121:8110/',
     'local_url'             => 'http://localhost:8502/',
-    'sms_gateway_server'    => 'http://175.103.48.29/', // Backend SMS Gateway
+    // 'sms_gateway_server'    => 'http://175.103.48.29/', // Backend SMS Gateway
+    'com_gateway'           => "http://192.168.202.152:5555/",
 
     // JWT
     'jwk'               =>'SUMV/uYzKMGe2jpKgH8ql40nYKq4IEDKG6e6X03JdaQ=',
@@ -23,8 +24,8 @@ return [
     'midtid_token'      => '$2y$10$TzZlS4mF/WAIKqPo5S.XYuEhWyYs9y1MA2Ifr3BveaSGOqVDK3Yzu',
     'midtid_user_id'    => '318',
 
-    'X-CLIENT-SECRET'           => '50565320652d50726f6a656374323032322d31312d31372031343a33383a3332',
-    'X-CLIENT-ID'               => '7a8fdf21-4dca-4c65-98b1-8b43f049b3db',
+    'X-CLIENT-SECRET'           => '50565320504f4e2052657175657374323032332d30352d32332031313a32383a',
+    'X-CLIENT-ID'               => '9df59306-0e26-439e-8d97-c5d0cf42edd7', 
     'X-PURPOSE'                 => 'Notification',
 
     // LOGGING

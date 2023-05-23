@@ -335,17 +335,31 @@ class UserSetupController extends Controller
                         'user_email'    => $user_email,
                         'user_password' => $user_password
                     );
-
-        $emailTo    = $user_email;
+        $client = new Client();
 
         try{
-            Mail::send('Mail.reset-password', $data, function($message)use($emailTo){
-                $message->from(config('constants.mailusername'), config('constants.sender'));                 
-                $message->subject(config('constants.app_name').' - Password Reset');      
-                $message->to($emailTo);
-            });
+            $html = view('Mail.reset-password',$data)->render();
+            $payload = [
+                "subject" => config('constants.app_name').' - Forgot Password',
+                "recipient" => [
+                    ["email" => $user_email]
+                ],
+                "body" => $html
+            ];
 
-            return "success";
+            $data = [
+                'headers' => [
+                    'Content-Type'      => 'application/json',
+                    'X-CLIENT-SECRET'           => config('constants.X-CLIENT-SECRET'),
+                    'X-CLIENT-ID'           => config('constants.X-CLIENT-ID'),
+                    'X-PURPOSE'           => config('constants.X-PURPOSE')
+                ],
+                'json' => $payload
+            ];
+    
+            $gateway_req = $client->request('POST', config('constants.com_gateway').'api/email-request', $data);
+    
+            return 'success';
         }
         catch(\Exception $e){
             return "error message: ".$e->getMessage();

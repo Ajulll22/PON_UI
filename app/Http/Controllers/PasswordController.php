@@ -70,9 +70,18 @@ class PasswordController extends Controller
             $param['user_email']        = $user_email;
             $param['user_fullname']     = $user_firstname.' '.$user_lastname;
             
-            if($this->sendChangePassword($param['user_name'], $param['user_email'], $param['user_fullname'])){
-                return $result_data;
-            }
+            $html = view('Mail.change-password',$param)->render();
+            $payload = [
+                "subject" => config('constants.app_name').' - Password Changed',
+                "recipient" => [
+                    ["email" => $user_email]
+                ],
+                "body" => $html
+            ];
+
+            $this->sendMail($payload);
+
+            return $result_data;
         }
         else{
             return $result_data;        
@@ -143,9 +152,18 @@ class PasswordController extends Controller
             $param['user_email']        = $user_email;
             $param['user_fullname']     = $user_name;
             
-            if($this->sendChangePassword($param['user_name'], $param['user_email'], $param['user_fullname'])){
-                return $result_data;
-            }
+            $html = view('Mail.change-password',$param)->render();
+            $payload = [
+                "subject" => config('constants.app_name').' - Password Changed',
+                "recipient" => [
+                    ["email" => $user_email]
+                ],
+                "body" => $html
+            ];
+
+            $this->sendMail($payload);
+
+            return $result_data;
         }
         else{
             return $result_data;        
@@ -189,11 +207,20 @@ class PasswordController extends Controller
                 $user_fullname = $user_firstname.' '.$user_lastname;
             }
 
-            $param['user_fullname'] = $user_fullname;
+            $param['user_name'] = $user_fullname;
+    
+            $html = view('Mail.forgot-password',$param)->render();
+            $payload = [
+                "subject" => config('constants.app_name').' - Forgot Password',
+                "recipient" => [
+                    ["email" => $user_email]
+                ],
+                "body" => $html
+            ];
 
-            if($this->sendMailGateway($param['user_fullname'], $param['user_email'], $param['user_password'])){
-                return $result_data;
-            }
+            $this->sendMail($payload);
+
+            return $result_data;
         }
         else{
             return $result_data;
@@ -202,62 +229,23 @@ class PasswordController extends Controller
         return response($result_data);
     }
 
-    public function sendMailGateway($user_name, $user_email, $user_password)
+    public function sendMail($payload)
     {
         $client = new Client();
 
-        $data       = array(
-            'user_name'     => $user_name,
-            'user_email'    => $user_email,
-            'user_password' => $user_password
-        );
-
-        $html = view('Mail.forgot-password',$data)->render();
-        $json = [
-            "subject" => config('constants.app_name').' - Forgot Password',
-            "recipient" => [
-                ["email" => $user_email]
-            ],
-            "body" => $html
-        ];
-
-        $headers = [
+        $data = [
             'headers' => [
                 'Content-Type'      => 'application/json',
-                'X-CLIENT-SECRET'           => '50565320652d50726f6a656374323032322d31312d31372031343a33383a3332',
-                'X-CLIENT-ID'               => '7a8fdf21-4dca-4c65-98b1-8b43f049b3db', 
-                'X-PURPOSE'                 => 'Notification',
+                'X-CLIENT-SECRET'           => config('constants.X-CLIENT-SECRET'),
+                'X-CLIENT-ID'           => config('constants.X-CLIENT-ID'),
+                'X-PURPOSE'           => config('constants.X-PURPOSE')
             ],
-            'json' => $json
+            'json' => $payload
         ];
 
-        $gateway_req = $client->request('POST', 'localhost:5555/api/email-request', $headers);
+        $gateway_req = $client->request('POST', config('constants.com_gateway').'api/email-request', $data);
 
         return 'success';
-    }
-
-    public function sendForgotPassword($user_name, $user_email, $user_password) {
-        $user_email = "ajulrizki@gmail.com";
-        $data       = array(
-                        'user_name'     => $user_name,
-                        'user_email'    => $user_email,
-                        'user_password' => $user_password
-                    );
-
-        $emailTo    = $user_email;
-
-        try{
-            Mail::send('Mail.forgot-password', $data, function($message)use($emailTo){
-                $message->from(config('constants.mailusername'), config('constants.sender'));                 
-                $message->subject(config('constants.app_name').' - Forgot Password');      
-                $message->to($emailTo);
-            });
-
-            return "success";
-        }
-        catch(\Exception $e){
-            return "error message: ".$e->getMessage();
-        }
     }
 
     // SET NEW PASSWORD
@@ -293,9 +281,18 @@ class PasswordController extends Controller
         $result_data            = GatewayController::lead_to_be($method, $path, $param);
 
         if($result_data[config('constants.result')] == "SUCCESS"){
-            if($this->sendSetNewPassword($user_name, $user_email)){
-                return $result_data;
-            }
+            $html = view('Mail.change-password',$param)->render();
+            $payload = [
+                "subject" => config('constants.app_name').' - Password Changed',
+                "recipient" => [
+                    ["email" => $user_email]
+                ],
+                "body" => $html
+            ];
+
+            $this->sendMail($payload);
+
+            return $result_data;
         }
         else{
             return $result_data;         
