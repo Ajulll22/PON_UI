@@ -340,7 +340,7 @@ class UserSetupController extends Controller
         try{
             $html = view('Mail.reset-password',$data)->render();
             $payload = [
-                "subject" => config('constants.app_name').' - Forgot Password',
+                "subject" => config('constants.app_name').' - Reset Password',
                 "recipient" => [
                     ["email" => $user_email]
                 ],
