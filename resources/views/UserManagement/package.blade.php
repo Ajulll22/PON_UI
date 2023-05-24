@@ -103,7 +103,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Reason</label>
-                                        <select class="form-control select2" id="select-reason">
+                                        <select class="form-control select2" id="select-reason" required>
                                             @foreach ($data['reason_list'] as $value)
                                                 <option value="{{ $value['request_reason_name'] }}">{{ $value['request_reason_name'] }}</option>
                                             @endforeach
