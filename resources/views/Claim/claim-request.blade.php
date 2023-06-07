@@ -1013,7 +1013,7 @@
                     <td style="width: 15%">${item.claim_date}</td>
                     <td style="width: 20%">${claim_category.name}</td>
                     <td style="width: 20%">${item.claim_desc}</td>
-                    <td style="width: 20%">${item.claim_amount.toLocaleString('en-US')}</td>
+                    <td style="width: 20%">${parseInt(item.claim_amount).toLocaleString('en-US')}</td>
                     <td style="width: 20%">${filename}</td>
                 </tr>`
             
@@ -1520,7 +1520,7 @@
                     <td style="width: 15%">${item.claim_date}</td>
                     <td style="width: 20%">${claim_category.name}</td>
                     <td style="width: 20%">${item.claim_desc}</td>
-                    <td style="width: 20%">${item.claim_amount.toLocaleString('en-US')}</td>
+                    <td style="width: 20%">${parseInt(item.claim_amount).toLocaleString('en-US')}</td>
                     <td style="width: 20%">${filename}</td>
                 </tr>`
                 item_request_table_view.row.add($(`${detail_data}`)).draw()
