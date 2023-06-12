@@ -136,15 +136,22 @@
 
                         <div class="form-layout">
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-control-label">RF Type <span class="tx-danger">*</span></label>
-                                        <select class="form-control rounded-xl" id="edit-rf_id" name="rf_id">
+                                        <select class="form-control rounded-xl" id="edit-rf_id" name="rf_id" required>
                                             <option value="">Choose RF Name</option>
                                             @foreach ($data['rf_period'] as $item)
                                                 <option value="{{ $item['rf_id'] }}">{{ $item['name'] }}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label">RF Name <span class="tx-danger">*</span></label>
+                                        <input class="form-control rounded-xl" type="text" name="rf_period_name" id="edit-rf_period_name"
+                                            autocomplete="off" placeholder="Ex: RF 25 Mei 2023" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -160,7 +167,7 @@
                                     <div class="form-group">
                                         <label class="form-control-label">Start Date <span
                                                 class="tx-danger">*</span></label>
-                                        <input class="form-control rounded-xl" type="date" name="start_date"
+                                        <input oninput="minDate(this.value)" class="form-control rounded-xl" type="date" name="start_date"
                                             id="edit-start_date" autocomplete="off">
                                     </div>
                                 </div>
@@ -279,7 +286,7 @@
                     data: null
                 },
                 {
-                    data: "rf_name"
+                    data: "rf_period_name"
                 },
                 {
                     data: "active"
@@ -368,8 +375,6 @@
             });
             delete data['button']
 
-            console.log(data);
-
             $.ajax({
                 url: '{{ route('rf_period_create') }}',
                 method: 'POST',
@@ -418,10 +423,6 @@
                 data[nama] = value || "";
             });
             delete data['button']
-
-            console.log(data);
-            return
-
 
             $.ajax({
                 url: '{{ route('rf_period_update') }}',
@@ -516,9 +517,10 @@
             console.log(data);
 
             $("#edit-rf_period_id").val(data.rf_period_id);
+            $("#edit-rf_period_name").val(data.rf_period_name);
             $("#edit-rf_id").val(data.rf_id);
             $("#edit-active").val(data.active);
-            $("#edit-start_date").val(data.start_date);
+            $("#edit-start_date").val(data.start_date).trigger("input");
             $("#edit-due_date").val(data.due_date);
 
             $.LoadingOverlay("hide");
@@ -531,5 +533,14 @@
             $('#modal-rf-period_add').modal("show");
             $.LoadingOverlay('hide');
         })
+
+        function minDate(startDate) {
+            let date = new Date(startDate)
+            date.setDate(date.getDate() + 1);
+            
+            let min = date.toISOString().split('T')[0];
+
+            $("#edit-due_date").prop("min", `${min}`)
+        }
     </script>
 @endsection

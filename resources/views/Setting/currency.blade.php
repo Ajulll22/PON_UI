@@ -365,6 +365,7 @@
                         return
                     } else if (res.result === 'SUCCESS') {
                         reFatchData()
+                        $('#form_add_item').trigger("reset");
                         $('#modal-currency_add').modal("hide");
                         amaran_success(res.message)
                     } else {

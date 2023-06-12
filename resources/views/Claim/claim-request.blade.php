@@ -103,7 +103,7 @@
                                     <select class="form-control rf_period rounded-xl" id="rf_period-add" name="rf_period"
                                         style="width: 100%" disabled required>
                                         @foreach ($data['current-period'] as $item)
-                                            <option value="{{$item['rf_period_id']}}">{{$item['rf_name']}}</option>
+                                            <option value="{{$item['rf_period_id']}}">{{$item['rf_period_name']}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -154,8 +154,8 @@
                                                     <div class="form-group">
                                                         <label class="form-control-label">Claim Date <span
                                                                 class="tx-danger">*</span></label>
-                                                        <input type="text"
-                                                            class="form-control fc-datepicker rounded-xl"
+                                                        <input type="date" min="{{ $data["current-period"][0]["start_date"] }}" max="{{ $data["current-period"][0]["due_date"] }}"
+                                                            class="form-control rounded-xl"
                                                             name="{{ $item['claim_category_id'] }}-claim_date"
                                                             id="{{ $item['claim_category_id'] }}-claim_date-add"
                                                             placeholder="DD/MM/YYYY" autocomplete="off" required>
@@ -389,8 +389,8 @@
                                                     <div class="form-group">
                                                         <label class="form-control-label">Claim Date <span
                                                                 class="tx-danger">*</span></label>
-                                                        <input type="text"
-                                                            class="form-control fc-datepicker rounded-xl"
+                                                        <input type="date"
+                                                            class="form-control edit-date rounded-xl"
                                                             name="{{ $item['claim_category_id'] }}-claim_date-edit"
                                                             id="{{ $item['claim_category_id'] }}-claim_date-edit"
                                                             placeholder="DD/MM/YYYY" autocomplete="off" required>
@@ -674,9 +674,16 @@
                 format: 'dd/mm/yyyy',
                 autoclose: true
             });
+
+            $('.create-date').datepicker({
+                format: 'dd/mm/yyyy',
+                startDate: new Date("2023-06-26"),
+                autoclose: true
+            });
         });
 
         const currentPeriod = @json($data['current-period']);
+        console.log(currentPeriod);
         const claim_category_list = @json($data['claim_category']);
 
         async function get_history(claim_request_id) { 
@@ -760,7 +767,7 @@
                     data: null
                 },
                 {
-                    data: "rf_period.rf_name"
+                    data: "rf_period.rf_period_name"
                 },
                 {
                     data: "status"
@@ -807,6 +814,15 @@
                         }
                         return `<div class="status-label status-${status}">${data}</div>`;
                     }                    
+                },
+                {
+                    searchable: true,
+                    sortable: true,
+                    targets: -2,
+                    data:null,
+                    render: function (data) {  
+                        return parseInt(data).toLocaleString('en-US')
+                    }
                 },
                 {
                     searchable: false,
@@ -1028,6 +1044,18 @@
             })
         }
 
+        function padTo2Digits(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        function formatDate(date) {
+            return [
+                padTo2Digits(date.getDate()),
+                padTo2Digits(date.getMonth() + 1),
+                date.getFullYear(),
+            ].join('/');
+        }
+
         // Submit Item Details
         function submitItemDetail(e, claim_category_id) {
             e.preventDefault()
@@ -1040,7 +1068,7 @@
 
             const pm = $(`#${claim_category_id}-pm-add`).val()
             const data = {
-                claim_date: $(`#${claim_category_id}-claim_date-add`).val(),
+                claim_date: formatDate(new Date($(`#${claim_category_id}-claim_date-add`).val())),
                 claim_amount: parseInt(amount.replaceAll('.', '')),
                 claim_desc: $(`#${claim_category_id}-claim_desc-add`).val(),
                 claim_category_id
@@ -1135,7 +1163,7 @@
 
             const pm = $(`#${claim_category_id}-pm-edit`).val()
             const data = {
-                claim_date: $(`#${claim_category_id}-claim_date-edit`).val(),
+                claim_date: formatDate(new Date($(`#${claim_category_id}-claim_date-edit`).val())),
                 claim_amount: parseInt(amount.replaceAll('.', '')),
                 claim_desc: $(`#${claim_category_id}-claim_desc-edit`).val(),
                 claim_category_id
@@ -1465,10 +1493,14 @@
             // kasih value rf period saat need revision
             if (data.status == "Not Yet Submitted") {
                 $("#rf_period_name-edit").val(currentPeriod[0].rf_period_name)
-                $("#rf_period-edit").html(`<option value="${currentPeriod[0].rf_period_id}" selected>${currentPeriod[0].rf_name}</option>`)
+                $(".edit-date").prop("min", currentPeriod[0].start_date);
+                $(".edit-date").prop("max", currentPeriod[0].due_date);
+                $("#rf_period-edit").html(`<option value="${currentPeriod[0].rf_period_id}" selected>${currentPeriod[0].rf_period_name}</option>`)
             } else {
                 $("#rf_period_name-edit").val(data.rf_period.rf_period_name)
-                $("#rf_period-edit").html(`<option value="${data.rf_period_id}" selected>${data.rf_period.rf_name}</option>`)
+                $(".edit-date").prop("min", data.rf_period.start_date);
+                $(".edit-date").prop("max", data.rf_period.due_date);
+                $("#rf_period-edit").html(`<option value="${data.rf_period_id}" selected>${data.rf_period.rf_period_name}</option>`)
             }
 
             $("#currency-edit").val(data.currency_id)
