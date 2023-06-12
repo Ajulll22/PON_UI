@@ -25,6 +25,7 @@ class CostCentreController extends Controller
         $data['all_notification_length']    = count($data['notification_list']);
 
         $cost_centre_list 	= GatewayController::lead_to_be("GET", "cost-centre/data", []);
+        // dd($cost_centre_list);
 
         $data["cost_centre_list"] = $cost_centre_list['data'];
 

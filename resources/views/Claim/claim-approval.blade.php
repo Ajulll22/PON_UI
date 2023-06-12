@@ -359,7 +359,7 @@
                     data: "user_fullname"
                 },
                 {
-                    data: "rf_period.rf_name"
+                    data: "rf_period.rf_period_name"
                 },
                 {
                     data: "status"

@@ -45,6 +45,7 @@ class PONRequestController extends Controller
         }
 
         $cost_centre = GatewayController::lead_to_be("POST", "cost-centre/child-data", ["cost_centre_id" => ""]);
+        // dd($cost_centre);
         $currency 	= GatewayController::lead_to_be("GET", "currency/data", []);
         $supplier = GatewayController::lead_to_be("GET", "supplier/data", []);
 
