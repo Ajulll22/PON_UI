@@ -185,6 +185,7 @@
                                                             id="{{ $item['claim_category_id'] }}-pm-add"
                                                             name="{{ $item['claim_category_id'] }}-pm"
                                                             style="width: 100%" required>
+                                                            <option value="">Pilih</option>
                                                             @foreach ($data['pm_list'] as $pm)
                                                                 <option value="{{$pm["user_id"]}}">{{$pm["user_firstname"]." ".$pm["user_lastname"]}}</option>
                                                             @endforeach
@@ -418,6 +419,10 @@
                                                                 id="{{ $item['claim_category_id'] }}-pm-edit"
                                                                 name="{{ $item['claim_category_id'] }}-pm-edit"
                                                                 style="width: 100%" required>
+                                                                <option value="">Pilih</option>
+                                                                @foreach ($data['pm_list'] as $pm)
+                                                                    <option value="{{$pm["user_id"]}}">{{$pm["user_firstname"]." ".$pm["user_lastname"]}}</option>
+                                                                @endforeach
                                                             </select>
                                                         </div>
                                                     </div>
