@@ -4,6 +4,7 @@ namespace App\Http\Controllers\UserManagement;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\GatewayController;
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\UtilityController;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
@@ -180,13 +181,18 @@ class UserSetupController extends Controller
             if ($result_data[config('constants.feature_level')]==1) {
                 $user_password_clear = UtilityController::encrypt_decrypt('decrypt',$result_data['user_password']);
 
-    	        return UtilityController::send_user_register(
-    	        	$user_name,
-    	        	$user_fullname,
-    	        	$user_password_clear,
-    	        	$user_email,
-    	        	$result_data
-    	        );
+                $param       = array('username' => $user_name, 'fullname' => $user_fullname, 'password' => $user_password_clear, 'email' => $user_email);
+                $html = view('Mail.user-register',$param)->render();
+                $payload = [
+                    "subject" => 'Welcome to ' . config('constants.app_name'),
+                    "recipient" => [
+                        ["email" => $user_email]
+                    ],
+                    "body" => $html
+                ];
+                PasswordController::sendMail($payload);
+    	        
+                return $result_data;
             }else{
                 return $result_data;
             }     

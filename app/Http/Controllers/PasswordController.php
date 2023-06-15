@@ -229,7 +229,7 @@ class PasswordController extends Controller
         return response($result_data);
     }
 
-    public function sendMail($payload)
+    public static function sendMail($payload)
     {
         $client = new Client();
 
