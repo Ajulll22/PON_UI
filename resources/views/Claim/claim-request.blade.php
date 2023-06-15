@@ -50,6 +50,7 @@
                         <th class="wd-5p-force">No</th>
                         <th>RF Period</th>
                         <th class="text-center" >Status</th>
+                        <th>Progress On</th>
                         <th>Due Date</th>
                         <th>Amount</th>
                         <th>Action</th>
@@ -776,6 +777,9 @@
                 },
                 {
                     data: "status"
+                },
+                {
+                    data: "claim_request_phase"
                 },
                 {
                     data: "rf_period.due_date"
@@ -1526,6 +1530,7 @@
             $.LoadingOverlay("show");
             item_request_table_view.clear()
             const data = table.row($(this).parents('tr')).data();
+            console.log(data);
             get_history(data.claim_request_id);
             tableSupportDoc( data.support_doc, "view" )
 

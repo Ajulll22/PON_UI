@@ -702,6 +702,7 @@
                 sortable    : false,
                 searchable  : false,
                 render      : function(data, type, full){
+                    console.log(data);
                     var edit_status     = '<?php echo $data['privilege_menu'][config('constants.PON_REQUEST_EDIT_MKR')] ?>';
                     var delete_status   = '<?php echo $data['privilege_menu'][config('constants.PON_REQUEST_DEL_MKR')] ?>';
                     var checker_status  = '<?php echo $data['privilege_menu'][config('constants.PON_REQUEST_ADD_CKR')] ?>';
@@ -722,7 +723,9 @@
                     result += details_btn;
 
                     if(edit_status){
-                        result += edit_btn;
+                        if (data.supplier != 1) {
+                            result += edit_btn;
+                        }
                     }
                     if(delete_status){
                         result += delete_btn;
