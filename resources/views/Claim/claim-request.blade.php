@@ -291,6 +291,7 @@
                 <input id="claim_request_id-edit" type="text" hidden>
                 <input id="claim_request_type_id-edit" type="text" hidden>
                 <input id="claim_phase_id-edit" type="text" hidden>
+                <input id="user_id-edit" type="text" hidden>
 
                 <input id="rf_period_name-edit" type="text" hidden>
 
@@ -1080,7 +1081,8 @@
                 claim_date: formatDate(new Date($(`#${claim_category_id}-claim_date-add`).val())),
                 claim_amount: parseInt(amount.replaceAll('.', '')),
                 claim_desc: $(`#${claim_category_id}-claim_desc-add`).val(),
-                claim_category_id
+                claim_category_id,
+                pm_id:null
             }
             if (pm !== undefined) {
                 if (pm === null) {
@@ -1091,7 +1093,7 @@
                     }, 3000);
                     return
                 }
-                data.pm = pm
+                data.pm_id = pm
             }
 
             if (data.claim_date === "" || data.claim_amount === ""|| data.claim_desc === "" || data.claim_amount === 0) {
@@ -1175,7 +1177,9 @@
                 claim_date: formatDate(new Date($(`#${claim_category_id}-claim_date-edit`).val())),
                 claim_amount: parseInt(amount.replaceAll('.', '')),
                 claim_desc: $(`#${claim_category_id}-claim_desc-edit`).val(),
-                claim_category_id
+                claim_category_id,
+                pm_id:null,
+                pm_approve: null
             }
             if (pm !== undefined) {
                 if (pm === null) {
@@ -1186,7 +1190,8 @@
                     }, 3000);
                     return
                 }
-                data.pm = pm
+                data.pm_id = pm;
+                data.pm_approve = "0";
             }
 
             if (data.claim_date === "" || data.claim_amount === "" || data.claim_desc === "") {
@@ -1420,6 +1425,7 @@
                 action, total_amount, claim_item_detail, support_doc, 
                 rf_name: rfName,
                 currency_id: $("#currency-edit").val(),
+                user_id: $("#user_id-edit").val(),
                 rf_period_id: $("#rf_period-edit").val(),
                 cost_centre_id: $("#cost_centre-edit").val(),
                 claim_request_id: $("#claim_request_id-edit").val(),
@@ -1516,9 +1522,11 @@
             $("#claim_request_type_id-edit").val(data.claim_request_type_id)
             $("#claim_request_id-edit").val(data.claim_request_id)
             $("#claim_phase_id-edit").val(data.claim_request_phase_id)
+            $("#user_id-edit").val(data.user_id)
             
             data_edit_temp = [...data.claim_item_detail]
             delete_file_temp = []
+            console.log(data_edit_temp);
 
             buildTableItem("edit")
             
