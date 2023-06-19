@@ -664,6 +664,7 @@
                 delete_document: delete_file_temp
             }
             var formData = new FormData();
+
             formData.append("data", JSON.stringify(data));
 
             $.ajax({
