@@ -597,6 +597,7 @@
                                             <th class="wd-5p-force">No</th>
                                             <th>Phase</th>
                                             <th class="text-center">Status</th>
+                                            <th>Reason</th>
                                             <th>Review Date</th>
                                             <th>Reviewer</th>
                                         </tr>
@@ -720,6 +721,7 @@
                                 <td>${i+1}</td>
                                 <td>${item.claim_request_phase}</td>
                                 <td>${status}</td>
+                                <td>${item.review_reason || "-"}</td>
                                 <td>${item.review_date}</td>
                                 <td>${item.reviewer_name}</td>
                             </tr>`;
@@ -844,9 +846,8 @@
                         let follup = ""
                         if (data.status == "Need Revision" || data.status == "Not Yet Submitted") {
                             follup += '<button id="edit-modal-show" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5" type="button" title="Edit Item"><span class="icon ion-compose"></span></button>'
-                        } else {
-                            follup += '<button id="view-modal-show" style="text-decoration: none;padding: 3px 13px;" class="btn btn-outline-primary mg-r-5" type="button" title="View Detail"><span class="my-auto mx-auto icon ion-eye"></span></button>'
                         }
+                        follup += '<button id="view-modal-show" style="text-decoration: none;padding: 3px 13px;" class="btn btn-outline-primary mg-r-5" type="button" title="View Detail"><span class="my-auto mx-auto icon ion-eye"></span></button>'
 
                         if (data.status == "Not Yet Submitted") {
                             follup +=`<button id="delete-modal-show" style="text-decoration: none;" class="btn btn-outline-danger mg-r-5" type="button" title="Delete Item"><span class="icon ion-trash-a"></span></button>`

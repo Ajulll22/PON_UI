@@ -1250,6 +1250,8 @@
             $('#select_user_status').val('1').trigger('change');
             $('#data_filter_type_add').val('').trigger('change');
             $('#select-reason-add').val('').trigger('change');
+            $('#cost_centre_id').val('').trigger('change');
+            $("#role_id").val("").change();
             $('#data_filter_type_add').attr('disabled', 'disabled');
             $('#modal_add_user').modal("show");
             

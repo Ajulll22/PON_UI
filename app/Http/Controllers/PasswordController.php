@@ -12,9 +12,9 @@ use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise;
 use App\User;
-use Session;
-use Mail;
-use Log;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class PasswordController extends Controller
 {    
@@ -28,10 +28,10 @@ class PasswordController extends Controller
         $data["menu"]                       = $this->menu;
         $data["sub_menu"]                   = $this->sub_menu;
         $data['privilege_menu']             = $request->get('privilege_menu');
-        $data['notification_list']          = $request->get('notification_list');
-        $data['notification_type']          = $request->get('notification_type');
-        $data['notification_data']          = $request->get('notification_data');
-        $data['notification_count']         = $request->get('notification_count');
+        // $data['notification_list']          = $request->get('notification_list');
+        // $data['notification_type']          = $request->get('notification_type');
+        // $data['notification_data']          = $request->get('notification_data');
+        // $data['notification_count']         = $request->get('notification_count');
 
         $user_first_login       = Session::get('user_first_login');
 
@@ -121,11 +121,11 @@ class PasswordController extends Controller
         $data["menu"]                       = $this->menu;
         $data["sub_menu"]                   = $this->sub_menu;
         $data['privilege_menu']             = $request->get('privilege_menu');
-        $data['notification_list']          = $request->get('notification_list');
-        $data['notification_type']          = $request->get('notification_type');
-        $data['notification_data']          = $request->get('notification_data');
-        $data['notification_count']         = $request->get('notification_count');
-        $data['all_notification_length']    = count($data['notification_list']);
+        // $data['notification_list']          = $request->get('notification_list');
+        // $data['notification_type']          = $request->get('notification_type');
+        // $data['notification_data']          = $request->get('notification_data');
+        // $data['notification_count']         = $request->get('notification_count');
+        // $data['all_notification_length']    = count($data['notification_list']);
 
         return view('Password/recover-password')->with('data', $data);
     }
@@ -254,11 +254,11 @@ class PasswordController extends Controller
         $data["menu"]                       = $this->menu;
         $data["sub_menu"]                   = $this->sub_menu;
         $data['privilege_menu']             = $request->get('privilege_menu');
-        $data['notification_list']          = $request->get('notification_list');
-        $data['notification_type']          = $request->get('notification_type');
-        $data['notification_data']          = $request->get('notification_data');
-        $data['notification_count']         = $request->get('notification_count');
-        $data['all_notification_length']    = count($data['notification_list']);
+        // $data['notification_list']          = $request->get('notification_list');
+        // $data['notification_type']          = $request->get('notification_type');
+        // $data['notification_data']          = $request->get('notification_data');
+        // $data['notification_count']         = $request->get('notification_count');
+        // $data['all_notification_length']    = count($data['notification_list']);
         return view('Password/set-new-password')->with(['data' => $data]);
     }
 

@@ -408,6 +408,15 @@
                     }                    
                 },
                 {
+                    searchable: true,
+                    sortable: true,
+                    targets: -2,
+                    data:null,
+                    render: function (data) {  
+                        return parseInt(data).toLocaleString('en-US')
+                    }
+                },
+                {
                     searchable: false,
                     sortable: false,
                     className: "text-center",

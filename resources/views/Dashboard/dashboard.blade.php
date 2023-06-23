@@ -17,7 +17,7 @@
 		  	</div>
         </div>
 
-        <div class="row row-sm mg-b-50">
+        {{-- <div class="row row-sm mg-b-50">
           	<div class="col-sm-12 col-xl-12">
 	          	<h6 class="tx-gray-800 tx-uppercase tx-bold tx-14 mg-b-10">PON Request Summary</h6>
                 <!-- FINANCE STAFF AND ADMINISTRATOR -->
@@ -98,7 +98,7 @@
                     </div>
                 </div>
             @endif
-        </div>
+        </div> --}}
 
         <!-- QUICK GUIDELINE -->
         <div class="row row-sm">
@@ -542,24 +542,24 @@
 @section('javascript')
 	<script type="text/javascript">	
 	    $(document).ready(function() {
-	        $.ajax({
-	            url 	: '{{ route("dashboard-data") }}',
-	            method 	: 'GET',
-	            headers : {
-	                'X-CSRF-TOKEN': "{{ csrf_token() }}"
-	            },
-	            datatype: "json",
-	            success: function (msg) {
-	                $.LoadingOverlay('hide');
-	                $('#pon_request_all').text(msg.dashboard_data[0].total_pon_request);
-	                $('#pon_request_open').text(msg.dashboard_data[0].pon_request_open);
-                    $('#pon_request_waiting').text(msg.dashboard_data[0].pon_request_waiting);
-                    $('#pon_request_on_progress').text(msg.dashboard_data[0].pon_request_on_progress);
-	            },
-	            error: function () {
-	                $.LoadingOverlay('hide');
-	            }
-	        });
+	        // $.ajax({
+	        //     url 	: '{{ route("dashboard-data") }}',
+	        //     method 	: 'GET',
+	        //     headers : {
+	        //         'X-CSRF-TOKEN': "{{ csrf_token() }}"
+	        //     },
+	        //     datatype: "json",
+	        //     success: function (msg) {
+	        //         $.LoadingOverlay('hide');
+	        //         $('#pon_request_all').text(msg.dashboard_data[0].total_pon_request);
+	        //         $('#pon_request_open').text(msg.dashboard_data[0].pon_request_open);
+            //         $('#pon_request_waiting').text(msg.dashboard_data[0].pon_request_waiting);
+            //         $('#pon_request_on_progress').text(msg.dashboard_data[0].pon_request_on_progress);
+	        //     },
+	        //     error: function () {
+	        //         $.LoadingOverlay('hide');
+	        //     }
+	        // });
 	    });
 	</script>
 @endsection
