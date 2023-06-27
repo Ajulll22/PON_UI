@@ -372,4 +372,11 @@ class UserSetupController extends Controller
             return "error message: ".$e->getMessage();
         }
     }
+
+    function checkUser( Request $request) {
+        $data = $request->all();
+        $result_data 	= GatewayController::lead_to_be("POST", "user/dependent/status", $data);
+
+        return $result_data;
+    }
 }

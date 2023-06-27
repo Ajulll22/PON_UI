@@ -5,6 +5,11 @@
 @endsection
 
 @section('css')
+<style>
+    strong li{
+        font-weight: 400 !important;
+    }
+</style>
 @endsection
 @section('header_content')
     <h4 class="tx-gray-800 mg-b-5"><i class="fas fa-users"></i>  User Setup</h4>
@@ -284,13 +289,10 @@
                     </button>
                 </div>
                 <form id="form_delete_user" autocomplete="off">
-                    <div class="modal-body pd-5-force pd-l-20-force bg-gray-400 ">
-                        Reason
-                    </div>
                     <div class="modal-body pd-20" id="reason-container-delete">
                         <div class="form-layout">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="show-delete col-md-6">
                                     <div class="form-group">
                                         <label>Reason</label>
                                         <select class="form-control select2" id="select-reason-delete" required>
@@ -299,6 +301,11 @@
                                             @endforeach
                                             <option value="other">other</option>
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 hide-delete">
+                                    <div id="delete-reason" class="alert alert-danger mb-0">
+                                        test
                                     </div>
                                 </div>
                             </div>
@@ -313,7 +320,7 @@
                     </div>
                     <div class="modal-footer pd-8-force">
                         <button type="button" class="btn btn-dark tx-size-xs pd-t-7-force pd-b-7-force" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-danger tx-size-xs pd-t-7-force pd-b-7-force">Delete User</button>
+                        <button type="submit" class="show-delete btn btn-danger tx-size-xs pd-t-7-force pd-b-7-force">Delete User</button>
                     </div>
                     <!-- modal-footer -->
                 </form>
@@ -1511,6 +1518,7 @@
         $('#user_datatables tbody').on('click', '.btn-user-click-delete', function () {
             temp_delete_user = {};
             var data = table.row($(this).parents('tr')).data();
+            console.log(data);
             temp_delete_user = {
                 user_name           : data.user_name,
                 user_firstname      : data.user_firstname,
@@ -1535,11 +1543,36 @@
                 },
                 datatype: "json",
                 success: function (msg) {
-                    $.LoadingOverlay('hide');
+                    console.log(msg);
                     if (msg['{{ config('constants.result') }}'] == "FAILED") {
                         amaran_error(msg.message);
+                        return;
                     } else if (msg['{{ config('constants.result') }}'] == "SUCCESS") {
                         temp_delete_user['data_filter'] = msg['data_filter'];
+                        $.ajax({
+                            url    : '{{ route("user-setup-check") }}',
+                            method : 'POST',
+                            data: {
+                                user_name   : data.user_name
+                            },
+                            headers: {
+                                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                            },
+                            datatype: "json",
+                            success: function (res) {
+                                console.log(res);
+                                if (res.data.allowed_delete == 0) {
+                                    $(".show-delete").hide()                                   
+                                    $(".hide-delete").show()
+                                    $("#delete-reason").html( `<strong>${res.data.reason}</strong>` )                                   
+                                } else {
+                                    $(".show-delete").show()  
+                                    $(".hide-delete").hide()  
+                                }
+                                $('#select-reason-delete').val('').trigger('change');
+                                $('#modal_delete_user').modal('show');
+                            }
+                        })
                     } else {
                         amaran_error('Oops, Something went wrong!');
                     }
@@ -1549,8 +1582,6 @@
                     // amaran_error('Something went wrong, please contact technical support!');
                 }
             });
-            $('#select-reason-delete').val('').trigger('change');
-            $('#modal_delete_user').modal('show');
         });
 
         var frm = $('#form_delete_user');

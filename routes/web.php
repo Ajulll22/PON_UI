@@ -195,6 +195,7 @@ Route::group(['middleware' => 'session'], function () {
 			Route::post('/update',				 		['uses' => 'UserManagement\UserSetupController@user_update'])->middleware('privilege:USER_EDIT_MKR')->name('user-setup-update');
 
 			Route::post('/delete',				 		['uses'	=> 'UserManagement\UserSetupController@user_delete'])->middleware('privilege:USER_DEL_MKR')->name('user-setup-delete');
+			Route::post('/check',				 		['uses'	=> 'UserManagement\UserSetupController@checkUser'])->middleware('privilege:USER_DEL_MKR')->name('user-setup-check');
 		});
 	});
 
