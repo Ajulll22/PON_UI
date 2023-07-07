@@ -52,9 +52,8 @@ class ClaimApprovalController extends Controller
         $data = [
             "claim_request_id" => $request->input("claim_request_id")
         ];
-        if ($action == "reject") {
-            $data["reason"] = $request->input("reason");
-        }
+        
+        $data["reason"] = $request->input("reason");
 
         $res = GatewayController::lead_to_be("POST", "claim-request/$action", $data);
 

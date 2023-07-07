@@ -564,8 +564,8 @@
                 if (!$("#reason_validate").parsley().validate()) {
                     return
                 }
-                data.reason = $("#reason").val()
             }
+            data.reason = $("#reason").val()
 
             $.ajax({
                 url: '{{ route('claim_approval_action') }}',
