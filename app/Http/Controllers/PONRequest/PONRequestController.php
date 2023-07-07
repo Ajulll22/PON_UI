@@ -147,15 +147,15 @@ class PONRequestController extends Controller
 
         $user_id        = Session::get('user_id');
 
-        $subgroup_name  = Session::get('subgroup_name');
-        $pic            = '';
+        // $subgroup_name  = Session::get('subgroup_name');
+        // $pic            = '';
 
-        if ($subgroup_name == 'Finance Staff' || $subgroup_name == 'Administrator'){
-            $pic = 'Head of Finance';
-        }
-        else if ($subgroup_name == 'Head of Finance'){
-            $pic = 'Top Management';
-        }
+        // if ($subgroup_name == 'Finance Staff' || $subgroup_name == 'Administrator'){
+        //     $pic = 'Head of Finance';
+        // }
+        // else if ($subgroup_name == 'Head of Finance'){
+        //     $pic = 'Top Management';
+        // }
 
         $pon_request_id                 = (int)$request->input('pon_request_id');
         $currency                       = (int)$request->input('currency');
@@ -173,7 +173,6 @@ class PONRequestController extends Controller
 
         // REQUEST PARAMETER
         $param['pon_request_id']                = $pon_request_id;
-        $param['pic']                           = $pic;
         $param['user_id']                       = $user_id;
         $param['currency']                      = $currency;
         $param['supplier']                      = $supplier;

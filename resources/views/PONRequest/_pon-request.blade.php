@@ -1414,7 +1414,6 @@
                 investment_expenditure_reason   : investment_expenditure_reason,
                 file_list                       : file_list,
             };
-            console.log(data);
 
             let instance = $('#form_update_pon_request').parsley();
             if (instance.validate()) {
