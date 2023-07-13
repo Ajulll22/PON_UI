@@ -313,7 +313,7 @@ class ClaimProcessingController extends Controller
         ini_set('memory_limit', '4000M');
         
         $filePath = "file/RF Period $id";
-        $fileName = "RF$id.zip";
+        $fileName = "$id.zip";
         $zip = new \ZipArchive();
     
         if ($zip->open("$filePath/$fileName", \ZipArchive::CREATE) !== true) {
