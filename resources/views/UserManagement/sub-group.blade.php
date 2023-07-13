@@ -199,9 +199,9 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <select multiple="multiple" id="edit_priv_selected" name="edit_priv_selected[]" required>
-                                        @foreach ($data['privilege_list'] as $priv)
+                                        {{-- @foreach ($data['privilege_list'] as $priv)
                                         <option value="{{ $priv['privilege_id'] }}">{{ $priv['privilege_name'] }}</option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                 </div>
                             </div>
@@ -331,6 +331,33 @@
                     $('#priv_selected').append('<option value="'+data[i].privilege_id+'">'+data[i].privilege_name+'</option>');
                 }
                 $('#priv_selected').multiSelect('refresh'); 
+            }
+        });
+    }
+
+    function getPackagePrivilageEdit(package_name, selected){
+        var data = {package_name}
+
+        $.ajax({
+            url         : '{{ route("subgroup.privilage_list") }}',
+            method: 'POST',
+            data: data,
+            headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            },
+            datatype: "json",
+            success     : function (data) {
+                $('#edit_priv_selected').empty();
+                for (var i = 0; i < data.length; i++) {
+                    $('#edit_priv_selected').append('<option value="'+data[i].privilege_id+'">'+data[i].privilege_name+'</option>');
+                }
+                $("#edit_priv_selected").multiSelect('refresh');
+                $.each(selected, function(index, value){
+                    if(value.privilege_selected=='1'){
+                        $('#edit_priv_selected').multiSelect('select', value.privilege_id);
+                    }
+                });
+                $("#edit_priv_selected").multiSelect('refresh');
             }
         });
     }
@@ -669,32 +696,42 @@
         $('#edit_group_name').val(data.group_name);
         $('#edit_subgroup_name').val(data.subgroup_name);
         $('#edit_subgroup_description').val(data.subgroup_description);
+
+        getPackagePrivilageEdit(data.package_name, data.privilege_list);
+
+        // $.each(data.privilege_list, function(index, value){
+        //     if(value.privilege_selected=='1'){
+        //         $('#edit_priv_selected').multiSelect('select', value.privilege_id);
+        //     }
+        // });
+        // $("#edit_priv_selected").multiSelect('refresh');
+        $('#modal_edit_subgroup').modal('show'); 
     
-        $.ajax({
-            url    : '{{ route("list-subgroup-privilege") }}',
-            method : 'POST',
-            headers: {
-                'X-CSRF-TOKEN': "{{ csrf_token() }}"
-            },
-            data   :{
-                subgroup_name:data.subgroup_name
-            },
-            datatype: "JSON",
-            success: function(msg){
-                var selected_privilege = msg.privilege_list;
-                $.each(selected_privilege, function(index, value){
-                    if(value.privilege_selected=='1'){
-                        $('#edit_priv_selected').multiSelect('select', value.privilege_id);
-                    }
-                });
-                $("#edit_priv_selected").multiSelect('refresh');
-                $('#modal_edit_subgroup').modal('show'); 
-            },
-            error: function(msg){
-                $.LoadingOverlay('hide');
-                // amaran_error();
-            }
-        });
+        // $.ajax({
+        //     url    : '{{ route("list-subgroup-privilege") }}',
+        //     method : 'POST',
+        //     headers: {
+        //         'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        //     },
+        //     data   :{
+        //         subgroup_name:data.subgroup_name
+        //     },
+        //     datatype: "JSON",
+        //     success: function(msg){
+        //         var selected_privilege = msg.privilege_list;
+        //         $.each(selected_privilege, function(index, value){
+        //             if(value.privilege_selected=='1'){
+        //                 $('#edit_priv_selected').multiSelect('select', value.privilege_id);
+        //             }
+        //         });
+        //         $("#edit_priv_selected").multiSelect('refresh');
+        //         $('#modal_edit_subgroup').modal('show'); 
+        //     },
+        //     error: function(msg){
+        //         $.LoadingOverlay('hide');
+        //         // amaran_error();
+        //     }
+        // });
         $.LoadingOverlay("hide");
     });
     
