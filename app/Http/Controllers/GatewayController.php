@@ -26,12 +26,14 @@ Class GatewayController {
                 Log::debug('[PATH] '.$method.' '.$path);
             }
 
+            array_walk_recursive($param, function (&$item) {$item = strval($item);});
+
             $json = array();
             foreach ($param as $key => $value) {
                 $json[$key] = $value;
-                if ($value == null) {
-                    $json[$key] = '';
-                }
+                // if ($value == null) {
+                //     $json[$key] = '';
+                // }
                 if ($log_feature == true) {
                     if(!is_array($value)){
                         Log::debug('[DATA]['.$key.']'.$value);

@@ -53,8 +53,11 @@ class ClaimRequestController extends Controller
         $rf_name = $request->input('rf_name');
         $data['support_doc'] = [];
         $files = $request->file('support_doc');
-
-        $path = "file/RF Period $rf_name/".Session::get('user_firstname')." ".Session::get('user_lastname') ;
+        $path = "file/RF Period $rf_name/".Session::get('user_firstname') ;
+        if (Session::get('user_lastname') != "") {
+            $path += " ".Session::get('user_lastname');
+        }
+        
         if(!File::isDirectory($path)){
             File::makeDirectory($path."/absensi", 0777, true, true);
         }
@@ -67,7 +70,9 @@ class ClaimRequestController extends Controller
             }
         }
 
+        // $nameFile = Session::get('user_firstname')."-".time();
         $nameFile = Session::get('user_firstname')." ".Session::get('user_lastname')."-".time();
+
         $nomor = 1;
         foreach ($data['claim_item_detail'] as $item) {
             

@@ -1370,6 +1370,7 @@
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
                 success: function(res) {
+                    console.log(res);
                     if (res.result == "SUCCESS") {
                         table.ajax.reload()
                         $('#modal-claim-request_add').modal("hide");
