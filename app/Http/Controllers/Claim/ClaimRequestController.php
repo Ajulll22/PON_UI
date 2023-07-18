@@ -55,7 +55,7 @@ class ClaimRequestController extends Controller
         $files = $request->file('support_doc');
         $path = "file/RF Period $rf_name/".Session::get('user_firstname') ;
         if (Session::get('user_lastname') != "") {
-            $path += " ".Session::get('user_lastname');
+            $path = $path. " ".Session::get('user_lastname');
         }
         
         if(!File::isDirectory($path)){
