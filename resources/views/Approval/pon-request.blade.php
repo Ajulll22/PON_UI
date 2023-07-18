@@ -217,7 +217,7 @@
                 data: "cost_centre"
             },
             {
-                data: "supplier"
+                data: "supplier_name"
             },
             {
                 data: null

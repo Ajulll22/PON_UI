@@ -579,7 +579,7 @@
                     console.log(res);
                     if (res.result == "SUCCESS") {
                         reFatchData();
-                        $.LoadingOverlay("hide");
+                        // $.LoadingOverlay("hide");
                         $("#modal-claim-approve_view").modal("hide");
                         amaran_success(res.message);
                         return;
