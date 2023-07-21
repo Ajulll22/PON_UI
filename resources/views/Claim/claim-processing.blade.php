@@ -101,6 +101,8 @@
             });
         })
 
+        const privList = @json($data['privilege_menu']);
+
         var table = $('#table-data').DataTable({
             ajax: {
                 'url': "{{ route('claim_processing_list') }}",
@@ -162,16 +164,24 @@
                     render: function(data) {
                         let follup = ""
                         if (data.action_menu.request_pon == 1) {
-                            follup += `<button id="initiate_claim" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5" type="button" >Request PON</button>`
+                            if (privList["GENERATE_PON"]) {
+                                follup += `<button id="initiate_claim" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5" type="button" >Request PON</button>`
+                            }
                         }
                         if (data.action_menu.autopay_report == 1) {
-                            follup += `<a href="/claim-processing/generate-autopay/${data.rf_period_id}" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5">Auto Pay</a>`
+                            if (privList["GENERATE_REPORT_AUTOPAY"]) {
+                                follup += `<a href="/claim-processing/generate-autopay/${data.rf_period_id}" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5">Auto Pay</a>`
+                            }
                         }
                         if (data.action_menu.PP_report == 1) {
-                            follup += `<button id="generate-pp" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5" type="button">Proposal Payment</button>`
+                            if (privList["GENERATE_REPORT_PROP"]) {
+                                follup += `<button id="generate-pp" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5" type="button">Proposal Payment</button>`
+                            }
                         }
                         if (data.action_menu.CSV_report == 1) {
-                            follup += `<a id="generate-csv" href="/claim-processing/generate-csv/${data.rf_period_id}" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5">CSV</a>`
+                            if (privList["GENERATE_REPORT_CSV"]) {
+                                follup += `<a id="generate-csv" href="/claim-processing/generate-csv/${data.rf_period_id}" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5">CSV</a>`
+                            }
                         }
                         if (data.action_menu.files == 1) {
                             follup += `<a href="/claim-processing/download-zip/${data.rf_period}" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5">Zip File</a>`
