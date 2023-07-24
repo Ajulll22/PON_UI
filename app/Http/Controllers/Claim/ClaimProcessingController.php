@@ -266,7 +266,8 @@ class ClaimProcessingController extends Controller
                 $sheet->setCellValue("A".$no+1, $no);
                 $sheet->setCellValue("B".$no+1, $value["employee"]);
                 $sheet->setCellValue("C".$no+1, $value["amount"]);
-                $sheet->setCellValue("D".$no+1, $value["pon_number"]);
+                // $sheet->setCellValue("D".$no+1, $value["pon_number"]);
+                $sheet->getCell("D".$no+1)->setValueExplicit($value["pon_number"], "str");
                 $sheet->setCellValue("E".$no+1, 0);
                 $sheet->fromArray($value["amount_"], null, "F".$no+1);
 
