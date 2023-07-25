@@ -553,7 +553,7 @@
         targets: -1,
         data: null,
         sortable: false,
-        render: function (data, type, full) {
+        render: function (data) {
             var result = "";
             var edit_status = '<?php echo $data['privilege_menu'][config('constants.SUBGROUP_EDIT_MKR')] ?>';
             var delete_status = '<?php echo $data['privilege_menu'][config('constants.SUBGROUP_DEL_MKR')] ?>';
@@ -565,7 +565,9 @@
               result += edit_btn;
             }
             if (delete_status) {
-              result += delete_btn;
+                if (data.allowed_delete != 0) {
+                    result += delete_btn;
+                }
             }
             return result;
         }

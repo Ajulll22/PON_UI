@@ -103,7 +103,10 @@ class ClaimRequestController extends Controller
         $rf_name = $data["rf_name"];
         $data['updated_by'] = Session::get('user_id');
         $nameFile = Session::get('user_firstname')." ".Session::get('user_lastname')."-".time();
-        $path = "file/RF Period $rf_name/".Session::get('user_firstname')." ".Session::get('user_lastname') ;
+        $path = "file/RF Period $rf_name/".Session::get('user_firstname');
+        if (Session::get('user_lastname') != "") {
+            $path = $path. " ".Session::get('user_lastname');
+        }
         if(!File::isDirectory($path)){
             File::makeDirectory($path."/absensi", 0777, true, true);
         }

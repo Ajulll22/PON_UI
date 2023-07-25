@@ -869,7 +869,7 @@
                 targets: -1,
                 data: null,
                 sortable: true,
-                render: function (data, type, full){
+                render: function (data){
 
                     var result = "";
                     var edit_status     = '<?php echo $data['privilege_menu'][config('constants.GROUP_EDIT_MKR')] ?>';
@@ -882,7 +882,9 @@
                         result += edit_btn;
                     }
                     if(delete_status){
-                        result += delete_btn;
+                        if (data.allowed_delete != 0) {
+                            result += delete_btn;
+                        }
                     }
 
                     return result;
