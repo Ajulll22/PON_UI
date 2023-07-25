@@ -564,10 +564,11 @@
                                     <thead>
                                         <tr>
                                             <th width="5%">No</th>
-                                            <th width="20%">Date</th>
-                                            <th width="20%">Claim Category</th>
+                                            <th width="15%">Date</th>
+                                            <th width="15%">Claim Category</th>
                                             <th width="20%">Description</th>
-                                            <th width="25%">Amount</th>
+                                            <th width="15%">PM</th>
+                                            <th width="20%">Amount</th>
                                             <th class="text-center" width="10%">Action</th>
                                         </tr>
                                     </thead>
@@ -691,7 +692,6 @@
         });
 
         const currentPeriod = @json($data['current-period']);
-        console.log(currentPeriod);
         const claim_category_list = @json($data['claim_category']);
 
         async function get_history(claim_request_id) { 
@@ -705,7 +705,6 @@
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
                 success: function(res) {
-                    console.log(res);
                     if (res.result == "SUCCESS") {
                         let tbody_html = ""
                         $.each(res.data, function(i, item) {
@@ -1154,8 +1153,6 @@
                         data.claim_document = [res.file_name]
                         data_temp.push(data)
 
-                        console.log(data_temp);
-
                         buildTableItem("add")
                         resetForm(claim_category_id, 'add')
                     }
@@ -1241,8 +1238,6 @@
                         data.claim_document = [{ filename: res.file_name}]
                         data_edit_temp.push(data)
 
-                        console.log(data_edit_temp);
-
                         buildTableItem("edit")
                         resetForm(claim_category_id, 'edit')
                     }
@@ -1287,7 +1282,6 @@
                 claim_category_id,
                 claim_document
             } = data_edit_temp[i]
-            console.log(claim_document);
             let namaFile = claim_document[0].filename.split("-")
             if (namaFile[0] == "UploadTmp") {
                 const data = { delete_document: claim_document[0].filename }
@@ -1302,7 +1296,6 @@
                 });
             } else {
                 delete_file_temp.push(claim_document[0].filename)
-                console.log(delete_file_temp);
             }
 
             data_edit_temp.splice(i, 1)
@@ -1370,7 +1363,6 @@
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
                 success: function(res) {
-                    console.log(res);
                     if (res.result == "SUCCESS") {
                         table.ajax.reload()
                         $('#modal-claim-request_add').modal("hide");
@@ -1448,7 +1440,6 @@
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
                 success: function(res) {
-                    console.log(res); 
                     if (res.result == "SUCCESS") {
                         table.ajax.reload()
                         $('#modal-claim-request_edit').modal("hide");
@@ -1478,7 +1469,6 @@
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
                 success: function(res) {
-                    console.log(res);
                     if (res.result === 'SUCCESS') {
                         table.ajax.reload()
                         $('#modal-claim-request_delete').modal("hide");
@@ -1506,7 +1496,6 @@
             const data = table.row($(this).parents('tr')).data();
             tableSupportDoc( data.support_doc, "edit" )
 
-            console.log(data);
             // kasih value rf period saat need revision
             if (data.status == "Not Yet Submitted") {
                 $("#rf_period_name-edit").val(currentPeriod[0].rf_period_name)
@@ -1528,7 +1517,6 @@
             
             data_edit_temp = [...data.claim_item_detail]
             delete_file_temp = []
-            console.log(data_edit_temp);
 
             buildTableItem("edit")
             
@@ -1540,7 +1528,6 @@
             $.LoadingOverlay("show");
             item_request_table_view.clear()
             const data = table.row($(this).parents('tr')).data();
-            console.log(data);
             get_history(data.claim_request_id);
             tableSupportDoc( data.support_doc, "view" )
 
@@ -1572,6 +1559,7 @@
                     <td style="width: 15%">${item.claim_date}</td>
                     <td style="width: 20%">${claim_category.name}</td>
                     <td style="width: 20%">${item.claim_desc}</td>
+                    <td style="width: 20%">${item.pm_name}</td>
                     <td style="width: 20%">${parseInt(item.claim_amount).toLocaleString('en-US')}</td>
                     <td style="width: 20%">${filename}</td>
                 </tr>`
@@ -1622,7 +1610,6 @@
         } )
 
         function forceNumber(e) {
-            console.log(e.keyCode);
             if (e.keyCode === 190 || e.keyCode === 110 || e.keyCode === 188) {
                 e.preventDefault();
             }
