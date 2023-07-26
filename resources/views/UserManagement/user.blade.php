@@ -688,7 +688,6 @@
                     },
                     success     : function(msg){
                         console.log(1);
-                        $.LoadingOverlay('hide');
                         if(msg['{{ config('constants.result') }}'] == "SUCCESS"){
                             
                             user_data_filter = msg['data_filter'];
