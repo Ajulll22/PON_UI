@@ -1355,7 +1355,7 @@
             user_data_filter ={};
             var data = table.row($(this).parents('tr')).data();
             console.log(data);
-            $('#edit_subgroup_id').val(data.subgroup_id).trigger('change');
+            $('#edit_subgroup_id').val(data.subgroup_id).change();
             
             $('#edit_user_name').val(data.user_name);
             $('#select-reason-edit').val('').trigger('change');
@@ -1372,35 +1372,37 @@
 
 
             $('#edit_data_filter_type').val('').trigger('change');
-            $("#leader_user_id_edit").val(data.team_leader_user_id).change()
-            $.ajax({
-                url    : '{{ route("user-data-filter") }}',
-                method : 'POST',
-                data: {
-                    user_name   : data.user_name,
-                    group_name  : data.group_name
-                },
-                headers: {
-                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                },
-                datatype: "json",
-                success: function (msg) {
-                    console.log(2);
-                    if (msg['{{ config('constants.result') }}'] == "FAILED") {
-                        amaran_error(msg.message);
-                    } else if (msg['{{ config('constants.result') }}'] == "SUCCESS") {
-                        user_data_filter = msg['data_filter'];
-                    } else {
-                        amaran_error('Oops, Something went wrong!');
+            $("#leader_user_id_edit").val(data.team_leader_user_id).change();
+            setTimeout(() => {
+                $.ajax({
+                    url    : '{{ route("user-data-filter") }}',
+                    method : 'POST',
+                    data: {
+                        user_name   : data.user_name,
+                        group_name  : data.group_name
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
+                    datatype: "json",
+                    success: function (msg) {
+                        console.log(2);
+                        if (msg['{{ config('constants.result') }}'] == "FAILED") {
+                            amaran_error(msg.message);
+                        } else if (msg['{{ config('constants.result') }}'] == "SUCCESS") {
+                            user_data_filter = msg['data_filter'];
+                        } else {
+                            amaran_error('Oops, Something went wrong!');
+                        }
+                        $('#modal_edit_user').modal('show');
+                        $.LoadingOverlay('hide');
+                    },
+                    error: function () {
+                        $.LoadingOverlay('hide');
+                        // amaran_error('Something went wrong, please contact technical support!');
                     }
-                    $('#modal_edit_user').modal('show');
-                    $.LoadingOverlay('hide');
-                },
-                error: function () {
-                    $.LoadingOverlay('hide');
-                    // amaran_error('Something went wrong, please contact technical support!');
-                }
-            });
+                });
+            }, 2000);
         });
 
         var frm = $('#form_edit_user');
