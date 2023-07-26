@@ -687,6 +687,7 @@
                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
                     },
                     success     : function(msg){
+                        console.log(1);
                         $.LoadingOverlay('hide');
                         if(msg['{{ config('constants.result') }}'] == "SUCCESS"){
                             
