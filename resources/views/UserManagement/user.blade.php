@@ -697,7 +697,7 @@
                                 var subgroup_name_selected = $('.selectSubgroupEdit').find('option:selected').text();
                                 amaran_error('<strong>'+subgroup_name_selected+'</strong> and its group doesn\'t have any data filter. Please select another subgroup!');
                                 $('#edit_subgroup_id').focus().select2('open');
-                                $('#edit_data_filter_type').attr('disabled', 'disabled');
+                                $('#edit_data_filter_type').attr('disabled', true);
                             }else{
                                 $('#edit_data_filter_type').removeAttr('disabled');
                             }
@@ -1384,7 +1384,7 @@
                 },
                 datatype: "json",
                 success: function (msg) {
-                    $.LoadingOverlay('hide');
+                    console.log(msg);
                     if (msg['{{ config('constants.result') }}'] == "FAILED") {
                         amaran_error(msg.message);
                     } else if (msg['{{ config('constants.result') }}'] == "SUCCESS") {
@@ -1392,14 +1392,14 @@
                     } else {
                         amaran_error('Oops, Something went wrong!');
                     }
+                    $('#modal_edit_user').modal('show');
+                    $.LoadingOverlay('hide');
                 },
                 error: function () {
                     $.LoadingOverlay('hide');
                     // amaran_error('Something went wrong, please contact technical support!');
                 }
             });
-            $('#modal_edit_user').modal('show');
-            $.LoadingOverlay("hide");
         });
 
         var frm = $('#form_edit_user');
