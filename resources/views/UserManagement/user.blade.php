@@ -1355,6 +1355,7 @@
             user_data_filter ={};
             var data = table.row($(this).parents('tr')).data();
             console.log(data);
+            $('#edit_subgroup_id').val(data.subgroup_id).trigger('change');
             
             $('#edit_user_name').val(data.user_name);
             $('#select-reason-edit').val('').trigger('change');
@@ -1369,7 +1370,6 @@
             $('#role_id_edit').val(data.role_id).change();
             $('#cost_centre_id_edit').val(data.cost_centre_id).change();
 
-            $('#edit_subgroup_id').val(data.subgroup_id).trigger('change');
 
             $('#edit_data_filter_type').val('').trigger('change');
             $("#leader_user_id_edit").val(data.team_leader_user_id).change()
@@ -1385,7 +1385,7 @@
                 },
                 datatype: "json",
                 success: function (msg) {
-                    console.log(msg);
+                    console.log(2);
                     if (msg['{{ config('constants.result') }}'] == "FAILED") {
                         amaran_error(msg.message);
                     } else if (msg['{{ config('constants.result') }}'] == "SUCCESS") {
