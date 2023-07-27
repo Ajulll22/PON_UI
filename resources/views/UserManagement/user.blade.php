@@ -675,11 +675,12 @@
                 $('#message_data_filter').html('').hide();
                 $('#hint-message-wrapper').hide();
                 var data = {
-                    group_name : group_name
+                    group_name : group_name,
+                    user_name : $('#edit_user_name').val()
                 }
 
                 $.ajax({
-                    url         : '{{ route("group-data-filter") }}',
+                    url         : '{{ route("user-data-filter") }}',
                     method      : 'POST',
                     data        : data,
                     datatype    : "json",
@@ -687,7 +688,6 @@
                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
                     },
                     success     : function(msg){
-                        console.log(1);
                         if(msg['{{ config('constants.result') }}'] == "SUCCESS"){
                             
                             user_data_filter = msg['data_filter'];
@@ -701,6 +701,8 @@
                             }else{
                                 $('#edit_data_filter_type').removeAttr('disabled');
                             }
+                            $('#modal_edit_user').modal('show');
+                            $.LoadingOverlay('hide');
                         }
                         else{
                             amaran_error('Oops, Something went wrong!');
@@ -920,7 +922,6 @@
                 dropdownParent: $('#edit_data_filter_type_container')
             }).on('change', function(event){
                 var selected = this.value;
-
                 if(selected != ''){
                     // $('#data_filter_'+selected+'_selected option').remove();
                     // $('#data_filter_'+selected+'_selected').multiSelect('refresh');
@@ -1353,8 +1354,6 @@
             instance.reset();
             user_data_filter ={};
             var data = table.row($(this).parents('tr')).data();
-            console.log(data);
-            $('#edit_subgroup_id').val(data.subgroup_id).change();
             
             $('#edit_user_name').val(data.user_name);
             $('#select-reason-edit').val('').trigger('change');
@@ -1368,40 +1367,41 @@
             $('#edit_user_description').val(data.user_description);
             $('#role_id_edit').val(data.role_id).change();
             $('#cost_centre_id_edit').val(data.cost_centre_id).change();
-
+            
+            $('#edit_subgroup_id').val(data.subgroup_id).change();
 
             $('#edit_data_filter_type').val('').trigger('change');
             $("#leader_user_id_edit").val(data.team_leader_user_id).change();
-            setTimeout(() => {
-                $.ajax({
-                    url    : '{{ route("user-data-filter") }}',
-                    method : 'POST',
-                    data: {
-                        user_name   : data.user_name,
-                        group_name  : data.group_name
-                    },
-                    headers: {
-                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                    },
-                    datatype: "json",
-                    success: function (msg) {
-                        console.log(2);
-                        if (msg['{{ config('constants.result') }}'] == "FAILED") {
-                            amaran_error(msg.message);
-                        } else if (msg['{{ config('constants.result') }}'] == "SUCCESS") {
-                            user_data_filter = msg['data_filter'];
-                        } else {
-                            amaran_error('Oops, Something went wrong!');
-                        }
-                        $('#modal_edit_user').modal('show');
-                        $.LoadingOverlay('hide');
-                    },
-                    error: function () {
-                        $.LoadingOverlay('hide');
-                        // amaran_error('Something went wrong, please contact technical support!');
-                    }
-                });
-            }, 2000);
+            // setTimeout(() => {
+            //     $.ajax({
+            //         url    : '{{ route("user-data-filter") }}',
+            //         method : 'POST',
+            //         data: {
+            //             user_name   : data.user_name,
+            //             group_name  : data.group_name
+            //         },
+            //         headers: {
+            //             'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            //         },
+            //         datatype: "json",
+            //         success: function (msg) {
+            //             console.log(2);
+            //             if (msg['{{ config('constants.result') }}'] == "FAILED") {
+            //                 amaran_error(msg.message);
+            //             } else if (msg['{{ config('constants.result') }}'] == "SUCCESS") {
+            //                 user_data_filter = msg['data_filter'];
+            //             } else {
+            //                 amaran_error('Oops, Something went wrong!');
+            //             }
+            //             $('#modal_edit_user').modal('show');
+            //             $.LoadingOverlay('hide');
+            //         },
+            //         error: function () {
+            //             $.LoadingOverlay('hide');
+            //             // amaran_error('Something went wrong, please contact technical support!');
+            //         }
+            //     });
+            // }, 2000);
         });
 
         var frm = $('#form_edit_user');
@@ -1520,7 +1520,6 @@
         $('#user_datatables tbody').on('click', '.btn-user-click-delete', function () {
             temp_delete_user = {};
             var data = table.row($(this).parents('tr')).data();
-            console.log(data);
             temp_delete_user = {
                 user_name           : data.user_name,
                 user_firstname      : data.user_firstname,
@@ -1545,7 +1544,6 @@
                 },
                 datatype: "json",
                 success: function (msg) {
-                    console.log(msg);
                     if (msg['{{ config('constants.result') }}'] == "FAILED") {
                         amaran_error(msg.message);
                         return;
@@ -1562,7 +1560,6 @@
                             },
                             datatype: "json",
                             success: function (res) {
-                                console.log(res);
                                 if (res.data.allowed_delete == 0) {
                                     $(".show-delete").hide()                                   
                                     $(".hide-delete").show()
