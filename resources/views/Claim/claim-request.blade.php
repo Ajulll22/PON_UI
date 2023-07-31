@@ -90,10 +90,10 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-control-label">Currency <span class="tx-danger">*</span></label>
-                                    <select class="form-control currency rounded-xl" id="currency-add" name="currency"
+                                    <select class="form-control currency rounded-xl" id="currency-add" name="currency" disabled
                                         style="width: 100%" required>
                                         @foreach ($data['currency'] as $item)
-                                            <option value="{{$item['currency_id']}}">{{$item['name']}}</option>
+                                            <option {{ $item['currency_id'] == 1 ? "selected" : "" }} value="{{$item['currency_id']}}">{{$item['name']}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -310,7 +310,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-control-label">Currency <span class="tx-danger">*</span></label>
-                                    <select class="form-control currency rounded-xl" id="currency-edit" name="currency"
+                                    <select class="form-control currency rounded-xl" id="currency-edit" name="currency" disabled
                                         style="width: 100%" required>
                                         @foreach ($data['currency'] as $item)
                                             <option value="{{$item['currency_id']}}">{{$item['name']}}</option>

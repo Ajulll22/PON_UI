@@ -102,26 +102,32 @@
             @endif
 
             <!-- Update -->
-            <a href="#" class="br-menu-link {{ $data['menu'] == 'claim' ? 'active show-sub' : '' }}">
-                <div class="br-menu-item">
-                    <img width="22" height="22" src="{{ asset('assets/img/icon-new/Claim.svg') }}" alt="">
-                    <span class="menu-item-label">Claim</span>
-                    <i class="menu-item-arrow fa fa-angle-down"></i>
-                </div>
-            </a>
-            <ul class="br-menu-sub nav flex-column">
-                <li class="nav-item"><a href="{{ route('claim_request') }}"
-                    class="nav-link {{ $data['sub_menu'] == 'claim-request' ? 'active' : '' }}">Claim Request</a>
-                </li>
-                <li class="nav-item"><a href="{{ route('claim_approval') }}"
-                    class="nav-link {{ $data['sub_menu'] == 'claim-approval' ? 'active' : '' }}">Claim Approval</a>
-                </li>
-                @if ( $data['privilege_menu']["CLAIM_PROCESSING_VIEW"] )                   
-                    <li class="nav-item"><a href="{{ route('claim_processing') }}"
-                        class="nav-link {{ $data['sub_menu'] == 'claim-processing' ? 'active' : '' }}">Claim Processing</a>
-                    </li>
-                @endif
-            </ul>
+            @if ( $data['privilege_menu']["CLAIM_REQUEST_PUSAT_VIEW"] || $data['privilege_menu']["CLAIM_APPROVAL_PUSAT_VIEW"] || $data['privilege_menu']["CLAIM_PROCESSING_VIEW"] ) 
+                <a href="#" class="br-menu-link {{ $data['menu'] == 'claim' ? 'active show-sub' : '' }}">
+                    <div class="br-menu-item">
+                        <img width="22" height="22" src="{{ asset('assets/img/icon-new/Claim.svg') }}" alt="">
+                        <span class="menu-item-label">Claim</span>
+                        <i class="menu-item-arrow fa fa-angle-down"></i>
+                    </div>
+                </a>
+                <ul class="br-menu-sub nav flex-column">
+                    @if ( $data['privilege_menu']["CLAIM_REQUEST_PUSAT_VIEW"] ) 
+                        <li class="nav-item"><a href="{{ route('claim_request') }}"
+                            class="nav-link {{ $data['sub_menu'] == 'claim-request' ? 'active' : '' }}">Claim Request</a>
+                        </li>
+                    @endif
+                    @if ( $data['privilege_menu']["CLAIM_APPROVAL_PUSAT_VIEW"] ) 
+                        <li class="nav-item"><a href="{{ route('claim_approval') }}"
+                            class="nav-link {{ $data['sub_menu'] == 'claim-approval' ? 'active' : '' }}">Claim Approval</a>
+                        </li>
+                    @endif
+                    @if ( $data['privilege_menu']["CLAIM_PROCESSING_VIEW"] )                   
+                        <li class="nav-item"><a href="{{ route('claim_processing') }}"
+                            class="nav-link {{ $data['sub_menu'] == 'claim-processing' ? 'active' : '' }}">Claim Processing</a>
+                        </li>
+                    @endif
+                </ul>
+            @endif
 
             <!-- PON REQUEST -->
             @if (
