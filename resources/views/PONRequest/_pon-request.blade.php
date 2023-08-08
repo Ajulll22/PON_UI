@@ -714,11 +714,9 @@
 
 
                     details_btn     = '<button style="text-decoration: none;" class="btn btn-outline-primary mg-r-5 btn-pon-request-click-details" type="button" data-toggle="tooltip" data-placement="top" title="See Details"><span class="icon ion-clipboard"></span></button>';
+                    edit_btn        = '<button style="text-decoration: none;" class="btn btn-outline-primary mg-r-5 btn-pon-request-click-update" type="button" data-toggle="tooltip" data-placement="top" title="Update PON Request"><span class="icon ion-compose"></span></button>';
+                    delete_btn      = '<button style="text-decoration: none;" class="btn btn-outline-danger mg-r-5 btn-pon-request-click-delete" type="button" data-toggle="tooltip" data-placement="top" title="Delete PON Request"><span class="icon ion-trash-a"></span></button>';
 
-                    if (data.status_id == 1) {
-                        edit_btn        = '<button style="text-decoration: none;" class="btn btn-outline-primary mg-r-5 btn-pon-request-click-update" type="button" data-toggle="tooltip" data-placement="top" title="Update PON Request"><span class="icon ion-compose"></span></button>';
-                        delete_btn      = '<button style="text-decoration: none;" class="btn btn-outline-danger mg-r-5 btn-pon-request-click-delete" type="button" data-toggle="tooltip" data-placement="top" title="Delete PON Request"><span class="icon ion-trash-a"></span></button>';
-                    }
 
                     result += details_btn;
 
@@ -728,7 +726,9 @@
                         }
                     }
                     if(delete_status){
-                        result += delete_btn;
+                        if (data.supplier != 1) {
+                            result += delete_btn;
+                        }
                     }
 
                     return result;
