@@ -721,12 +721,12 @@
                     result += details_btn;
 
                     if(edit_status){
-                        if (data.supplier != 1) {
+                        if (data.supplier != 1 && data.status_id == 1) {
                             result += edit_btn;
                         }
                     }
                     if(delete_status){
-                        if (data.supplier != 1) {
+                        if (data.supplier != 1 && data.status_id == 1) {
                             result += delete_btn;
                         }
                     }
