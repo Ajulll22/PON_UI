@@ -14,7 +14,7 @@ return [
 
     // APP DETAILS
     'version_app'       => 'version 1.1.2.0',           
-    'app_name'          => 'Finance PON Registration',
+    'app_name'          => 'Finance PON',
     'secret_key'        => 'ZSWa9XpLDLfHgScM1MQv2/wyCpfI9MyW',
     'secret_iv'         => '2y10iA8Gqt1tXQ1l',
 

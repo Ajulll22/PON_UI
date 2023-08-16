@@ -66,7 +66,7 @@
                     <div class="br-menu-item">
                         <img width="22" height="22" src="{{ asset('assets/img/icon-new/Approval.svg') }}" alt="">
                             
-                        <span class="menu-item-label">Request List</span>
+                        <span class="menu-item-label">User Request</span>
                         <i class="menu-item-arrow fa fa-angle-down"></i>
                     </div>
                 </a>
@@ -206,7 +206,7 @@
                 <a href="#" class="br-menu-link {{ $data['menu'] == 'user-management' ? 'active show-sub' : '' }}">
                     <div class="br-menu-item">
                         <img width="22" height="22" src="{{ asset('assets/img/icon-new/User.png') }}" alt="">
-                        <span class="menu-item-label">Access Management</span>
+                        <span class="menu-item-label">User Management</span>
                         <i class="menu-item-arrow fa fa-angle-down"></i>
                     </div>
                 </a>
