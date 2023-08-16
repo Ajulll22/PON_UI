@@ -50,7 +50,8 @@ class ClaimApprovalController extends Controller
         $action = $request->input("action");
 
         $data = [
-            "claim_request_id" => $request->input("claim_request_id")
+            "claim_request_id" => $request->input("claim_request_id"),
+            "actual_approver_id" => $request->input("actual_approver_id")
         ];
         
         $data["reason"] = $request->input("reason");

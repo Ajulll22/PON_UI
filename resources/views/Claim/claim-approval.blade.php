@@ -423,6 +423,7 @@
                     targets: -1,
                     data: null,
                     render: function(data) {
+                        console.log(data);
                         let buttonAction = ""
                         if (priv_list.CLAIM_APPROVAL_PUSAT_UPDATE && data.status == "Open") {
                             buttonAction += `<button id="edit-modal-show" style="text-decoration: none;" class="btn btn-outline-warning mg-r-5" type="button" title="Edit Item"><span class="icon ion-compose"></span></button>`
@@ -555,9 +556,9 @@
             })
          }
 
-        function ApproveAction(action, claim_request_id) {
+        function ApproveAction(action, claim_request_id, actual_approver_id) {
             const data = {
-                action,claim_request_id
+                action,claim_request_id, actual_approver_id
             }
             if (action == "reject") {
                 $("#reason_validate").parsley().validate();
@@ -735,8 +736,8 @@
                 action_view = `
                 <button data-dismiss="modal" aria-label="Close" class='rounded-xl btn btn-dark'>Close</button>
                 <div class="d-flex" >
-                    <button onclick="ApproveAction('reject', ${data.claim_request_id})" class="rounded-xl btn status-needrevision mx-2" >Reject</button>
-                    <button onclick="ApproveAction('approve', ${data.claim_request_id})" class="rounded-xl btn btn-success" >Approve</button>
+                    <button onclick="ApproveAction('reject', ${data.claim_request_id}, ${data.approver_id})" class="rounded-xl btn status-needrevision mx-2" >Reject</button>
+                    <button onclick="ApproveAction('approve', ${data.claim_request_id}, ${data.approver_id})" class="rounded-xl btn btn-success" >Approve</button>
                 </div>
                 `
                 stat = "open"
