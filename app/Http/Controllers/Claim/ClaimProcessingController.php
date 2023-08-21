@@ -99,8 +99,11 @@ class ClaimProcessingController extends Controller
             }
 
             $csv_writer = new Csv($spreadSheet);
+
+            $filename = "CsvReport-".$data_report["rf_period_name"].".csv";
+
             header('Content-Type: application/csv');
-            header('Content-Disposition: attachment;filename="CsvReport.csv"');
+            header("Content-Disposition: attachment;filename=$filename");
             header('Cache-Control: max-age=0');
             ob_end_clean();
             $csv_writer->save('php://output');
@@ -206,8 +209,11 @@ class ClaimProcessingController extends Controller
             $spreadSheet->getActiveSheet()->getPageSetup()->setFitToWidth(1);
             $spreadSheet->getActiveSheet()->getPageSetup()->setFitToHeight(0);
             $Excel_writer = new Xlsx($spreadSheet);
+
+            $filename = "ProposalPaymentReport-".$data_report["rf_period_name"].".xlsx";
+
             header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename="ProposalPaymentReport.xlsx"');
+            header("Content-Disposition: attachment;filename=$filename");
             header('Cache-Control: max-age=0');
             ob_end_clean();
             $Excel_writer->save('php://output');
@@ -296,8 +302,11 @@ class ClaimProcessingController extends Controller
             $sheet->getStyle("E2:BG".$no+1)->getNumberFormat()->setFormatCode('_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)');
 
             $Excel_writer = new Xlsx($spreadSheet);
+
+            $filename = "AutoPay-".$data_report["rf_period_name"].".xlsx";
+
             header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename="AutoPay.xlsx"');
+            header("Content-Disposition: attachment;filename=$filename");
             header('Cache-Control: max-age=0');
             ob_end_clean();
             $Excel_writer->save('php://output');
