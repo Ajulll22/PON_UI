@@ -1026,6 +1026,10 @@
             let filePost = []
             let pon_request_file = $('input[name="pon_request_file[]"]')[0].files;
             for(var i = 0; i < pon_request_file.length; i++) {
+                if (pon_request_file[i].size > 5242880) {
+                    amaran_error("Upload Document File To Big")
+                    return
+                }
                 filePost.push({ file_name: pon_request_file[i].name});
             }
             
@@ -1394,6 +1398,16 @@
         // SUBMIT - UPDATE PON REQUEST
         $('#form_update_pon_request').submit(function(event) {
             event.preventDefault();
+
+            let pon_request_file = $('input[name="pon_request_file_update[]"]')[0].files;
+            if (pon_request_file.length > 0) {
+                for(var i = 0; i < pon_request_file.length; i++) {
+                    if (pon_request_file[i].size > 5242880) {
+                        amaran_error("Upload Document File To Big")
+                        return
+                    }
+                }
+            }
             
             let pon_request_id                  = $('#pon_request_id_update').val();
             let cost_centre                     = $('#cost_centre_update').val();
