@@ -145,7 +145,7 @@ class UtilityController extends Controller
     {
         try {
             $rules = [
-                'upload_document' => 'required|mimes:jpg,png,jpeg,pdf'
+                'upload_document' => 'required|mimes:jpg,png,jpeg,pdf|max:5000'
             ];
             $data = $request->all();
             $validator = Validator::make($data, $rules);

@@ -47,6 +47,7 @@
                         <th class="text-center" >Status</th>
                         <th>Due Date</th>
                         <th>Amount</th>
+                        <th>Approver</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -300,6 +301,7 @@
 @section('javascript')
     <script>
         let claim_request_approval = @json($data['claim_list']['claim_request_approval']);
+        const user_id = "{{ Session::get('user_id') }}"
 
         const priv_list = @json($data['privilege_menu'])
         
@@ -372,6 +374,9 @@
                 },
                 {
                     data: null,
+                },
+                {
+                    data: null,
                 }
             ],
             responsive: true,
@@ -390,7 +395,6 @@
                     }
                 },
                 {
-                    width: "15%",
                     searchable: false,
                     sortable: false,
                     targets: 3,
@@ -410,10 +414,24 @@
                 {
                     searchable: true,
                     sortable: true,
-                    targets: -2,
+                    targets: -3,
                     data:null,
                     render: function (data) {  
                         return parseInt(data).toLocaleString('en-US')
+                    }
+                },
+                {
+                    searchable: false,
+                    sortable: false,
+                    className: "text-center",
+                    targets: -2,
+                    data: null,
+                    render: function(data) {
+                        if (data.approver_id == user_id) {
+                            return `<div class="status-label status-notyetsubmitted text-capitalize">${data.approver_username?.replace(/_/g, ' ') || "Kosong"}</div>`;
+                        }
+                        return `<div class="status-label bg-warning text-white text-capitalize">${data.approver_username?.replace(/_/g, ' ') || "Kosong"}</div>`;
+                        
                     }
                 },
                 {
