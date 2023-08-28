@@ -53,6 +53,11 @@ class ClaimRequestController extends Controller
         $rf_name = $request->input('rf_name');
         $data['support_doc'] = [];
         $files = $request->file('support_doc');
+        // if ($files->getSize() > 5000000 ) {
+        //     return [
+        //         "result" => ""
+        //     ];
+        // }
         $path = "file/RF Period $rf_name/".Session::get('user_firstname') ;
         if (Session::get('user_lastname') != "") {
             $path = $path. " ".Session::get('user_lastname');

@@ -1329,6 +1329,11 @@
                     invalidType = true
                     return
                 }
+                if (file.size > 5242880) {
+                    amaran_error("Support Doc File To Big")
+                    invalidType = true
+                    return
+                }
                 formData.append('support_doc[]', file);
             } )
             if (invalidType) {
@@ -1398,6 +1403,11 @@
                 var isAllowed = allowedExtensionsRegx.test(extension);
                 if (!isAllowed) {
                     amaran_error("Invalid Support Doc Type")
+                    invalidType = true
+                    return
+                }
+                if (file.size > 5242880) {
+                    amaran_error("Support Doc File To Big")
                     invalidType = true
                     return
                 }
