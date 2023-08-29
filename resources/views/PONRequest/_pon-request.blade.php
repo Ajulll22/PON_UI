@@ -1027,7 +1027,7 @@
             let pon_request_file = $('input[name="pon_request_file[]"]')[0].files;
             for(var i = 0; i < pon_request_file.length; i++) {
                 if (pon_request_file[i].size > 5242880) {
-                    amaran_error("Upload Document File To Big")
+                    amaran_error("Upload Document File Too Big")
                     return
                 }
                 filePost.push({ file_name: pon_request_file[i].name});
@@ -1403,7 +1403,7 @@
             if (pon_request_file.length > 0) {
                 for(var i = 0; i < pon_request_file.length; i++) {
                     if (pon_request_file[i].size > 5242880) {
-                        amaran_error("Upload Document File To Big")
+                        amaran_error("Upload Document File Too Big")
                         return
                     }
                 }

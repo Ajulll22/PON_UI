@@ -1330,7 +1330,7 @@
                     return
                 }
                 if (file.size > 5242880) {
-                    amaran_error("Support Doc File To Big")
+                    amaran_error("Support Doc File Too Big")
                     invalidType = true
                     return
                 }
@@ -1407,7 +1407,7 @@
                     return
                 }
                 if (file.size > 5242880) {
-                    amaran_error("Support Doc File To Big")
+                    amaran_error("Support Doc File Too Big")
                     invalidType = true
                     return
                 }
