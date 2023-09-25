@@ -33,12 +33,14 @@ class ClaimCategoryController extends Controller
             return redirect()->route('logout');
         }
 
+        $hrd_list     = GatewayController::lead_to_be("POST", "subgroup/user", [ "subgroup_name"=>"Human Resource" ]);
         $approval_list = GatewayController::lead_to_be("GET", "claim-request-phase/approval-data", []);
 
-        // dd($approval_list);
+        // dd($hrd_list);
 
         $data["reason_list"]        = $result_data['reason_list'];
         $data["approval_list"]      = $approval_list['data'];
+        $data["hrd_list"]           = $hrd_list['data']["user_list"];
 
         return view('setting\claim-category', [ 'data' => $data ]);
     }

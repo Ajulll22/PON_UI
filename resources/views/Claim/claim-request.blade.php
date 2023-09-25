@@ -176,7 +176,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            @if ($item['approval_phase']['4'] == '1')
+                                            @if ($item['approval_phase'][2]["selected"] == '1')
                                             <div class="row">
                                                 <div class="col">
                                                     <div class="form-group">
@@ -412,7 +412,7 @@
                                                             autocomplete="off" required>
                                                     </div>
                                                 </div>
-                                                @if ($item['approval_phase']['4'] == '1')
+                                                @if ($item['approval_phase'][2]["selected"] == '1')
                                                     <div class="col">
                                                         <div class="form-group">
                                                             <label class="form-control-label">PM <span

@@ -323,3 +323,9 @@ p.text-base {
     border-top-width: 1px;
     border-bottom-width: 1px;
 }
+
+.input-note {
+    border-radius: 4px;
+    font-size: 11px;
+    padding: 2px;
+}

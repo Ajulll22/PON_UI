@@ -164,13 +164,7 @@ class PONRequestController extends Controller
         $estimated_invoice_date         = $request->input('estimated_invoice_date');
         $file_list                      = $request->input('file_list');
         $investment_expenditure_reason  = $request->input('investment_expenditure_reason');
-        $item_list                      = $request->input('item_list');
-        $total_price                    = 0;
-
-        foreach ($item_list as $item){
-            $total_price = $total_price + ((float)$item['quantity'] * (float)$item['unit_price']);
-        }
-
+        
         // REQUEST PARAMETER
         $param['pon_request_id']                = $pon_request_id;
         // $param['pic']                           = $pic;
@@ -179,12 +173,25 @@ class PONRequestController extends Controller
         $param['supplier']                      = $supplier;
         $param['cost_centre']                   = $cost_centre;
         $param['estimated_invoice_date']        = $estimated_invoice_date;
-        $param['item_list']                     = $item_list;
-        $param['total_price']                   = $total_price;
         $param['investment_expenditure_reason'] = $investment_expenditure_reason;
-        $param['file_list']                     = $file_list;
+        $param['file_list']                     = json_decode($file_list);
+        
+        if ($supplier == 1) {
+            $param['item_list'] = json_decode($request->input('item_list'));
+            $result_data = GatewayController::lead_to_be($method, "pon-request-claim/update", $param);
+        } else {
+            $item_list                      = $request->input('item_list');
+            $total_price                    = 0;
+    
+            foreach ($item_list as $item){
+                $total_price = $total_price + ((float)$item['quantity'] * (float)$item['unit_price']);
+            }
+            $param['total_price']                   = $total_price;
+            $param['item_list']                     = $item_list;
+            $result_data = GatewayController::lead_to_be($method, $path, $param);
+        }
 
-        $result_data = GatewayController::lead_to_be($method, $path, $param);
+        
         return $result_data;
     }
 

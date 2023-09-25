@@ -72,7 +72,14 @@ class PONRequestApprovalController extends Controller
         }
         $data['user_approver_name']    = $user_approver_name;
 
-        $res = GatewayController::lead_to_be("POST", "pon-request/approve", $data);
+        if (key_exists("claim_approval_note", $data)) {
+            $data["claim_approval_note"] = json_decode($data["claim_approval_note"]);
+            // return $data;
+            $res = GatewayController::lead_to_be("POST", "pon-request-claim/approve", $data);
+        } else {
+            $res = GatewayController::lead_to_be("POST", "pon-request/approve", $data);
+        }
+
 
         return $res;
     }

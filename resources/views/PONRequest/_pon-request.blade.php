@@ -184,12 +184,12 @@
                                     <label class="form-control-label">Item Details</label>
                                     <table id="item_detail_datatable" class="table table-striped table-bordered">
                                         <thead>
-                                            <tr>
+                                            <tr id="head-item_detail_datatable" >
                                                 <th width="5%">No</th>
                                                 <th width="35%">Description</th>
                                                 <th width="15%">Quantity</th>
                                                 <th width="20%">Unit Price</th>
-                                                <th width="20%">Total Price</th>
+                                                <th width="5%">Action</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -292,7 +292,7 @@
                                     <div class="form-group">
                                         <label class="form-control-label">Unit Price</label>
                                         <input list="unit_price_item_list_add" 
-                                            oninput="this.value = formatRupiah(this.value, event)"
+                                            oninput="this.value = formatRupiah(this.value)"
                                             class="form-control" type="text" name="unit_price_add" id="unit_price_add" placeholder="Enter Unit Price" maxlength="15" autocomplete>
                                         <datalist id="unit_price_item_list_add">
                                         </datalist>
@@ -431,39 +431,41 @@
                     </div>
                     <div class="form-layout">
                         <div class="modal-body pd-20 pd-t-10-force">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="form-control-label">Description</label>
-                                        </select>
-                                        <textarea list="description_item_list_update" class="form-control" type="text" name="description_update" id="description_update" data-parsley-maxlength="3000" placeholder="Enter Description" maxlength="3000"></textarea>
-                                        <datalist id="description_item_list_update">
-                                        </datalist>
+                            <div id="update-pon_form_add">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-control-label">Description</label>
+                                            </select>
+                                            <textarea list="description_item_list_update" class="form-control" type="text" name="description_update" id="description_update" data-parsley-maxlength="3000" placeholder="Enter Description" maxlength="3000"></textarea>
+                                            <datalist id="description_item_list_update">
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label class="form-control-label">Qty</label>
+                                            <input list="quantity_item_list_update" class="form-control" type="text" name="quantity_update" id="quantity_update" data-parsley-maxlength="5" placeholder="Enter Quantity" maxlength="4" autocomplete="off" oninput="this.value = forceNumber(this.value)">
+                                            <datalist id="quantity_item_list_update">
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label class="form-control-label">Unit Price</label>
+                                            <input list="unit_price_item_list_update" class="form-control" type="text" name="unit_price_update" id="unit_price_update" data-parsley-maxlength="15" placeholder="Enter Unit Price" maxlength="15" oninput="this.value = formatRupiah(this.value)">
+                                            <datalist id="unit_price_item_list_update">
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2" style="padding-top: 27px;">
+                                        <input type="button" name="add_item_button" class="btn btn-primary" value="Add Item" id="add_item_button_update" style="width: 100%" />
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class="form-control-label">Qty</label>
-                                        <input list="quantity_item_list_update" class="form-control" type="text" name="quantity_update" id="quantity_update" data-parsley-maxlength="5" placeholder="Enter Quantity" maxlength="4" autocomplete="off" oninput="this.value = forceNumber(this.value)">
-                                        <datalist id="quantity_item_list_update">
-                                        </datalist>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class="form-control-label">Unit Price</label>
-                                        <input list="unit_price_item_list_update" class="form-control" type="text" name="unit_price_update" id="unit_price_update" data-parsley-maxlength="15" placeholder="Enter Unit Price" maxlength="15" oninput="this.value = formatRupiah(this.value, event)">
-                                        <datalist id="unit_price_item_list_update">
-                                        </datalist>
-                                    </div>
-                                </div>
-                                <div class="col-md-2" style="padding-top: 27px;">
-                                    <input type="button" name="add_item_button" class="btn btn-primary" value="Add Item" id="add_item_button_update" style="width: 100%" />
-                                </div>
-                            </div>
-                            <div class="row mg-t-7">
+                            <div class="row mg-t-7" id="update-pon_table">
                                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                     <table id="request_item_datatable_update" class="table table-striped table-bordered" style="background-color: #fff">
                                         <thead>
@@ -485,6 +487,25 @@
                                     </table>
                                 </div>
                             </div>
+
+                            <div class="row mg-t-7" id="update-claim_table">
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                    <table id="request_item_claim_datatable_update" class="table table-striped table-bordered" style="background-color: #fff">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">No</th>
+                                                <th class="text-center">Nama</th>
+                                                <th class="text-center">Category</th>
+                                                <th class="text-center">Date</th>
+                                                <th class="text-center">Description</th>
+                                                <th class="text-center">Amount</th>
+                                                <th class="text-center">Note</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
@@ -497,7 +518,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="form-control-label">Reason for Investment/Expenditure <span class="tx-danger">*</span></label>
-                                        <input class="form-control" type="text" name="reason_update" id="reason_update" data-parsley-maxlength="2000" placeholder="Enter Reason for Investment/Expenditure" maxlength="50" data-parsley-required>
+                                        <input class="form-control" type="text" name="reason_update" id="reason_update" data-parsley-maxlength="2000" placeholder="Enter Reason for Investment/Expenditure" maxlength="2000" data-parsley-required>
                                     </div>
                                 </div>
                             </div>
@@ -536,6 +557,8 @@
         var delete_status   = '<?php echo $data['privilege_menu'][config('constants.PON_REQUEST_DEL_MKR')] ?>';
         var array_item      = [];
         var array_file      = [];
+
+        var change_item = [];
 
         var last_sequence;
         var last_sequence_index;
@@ -723,6 +746,8 @@
                     if(edit_status){
                         if (data.supplier != 1 && data.status_id == 1) {
                             result += edit_btn;
+                        } else if (data.supplier == 1 && data.status_id == 4) {
+                            result += edit_btn;
                         }
                     }
                     if(delete_status){
@@ -808,6 +833,10 @@
                 );
             }
         });
+
+        var item_claim_table_update = $('#request_item_claim_datatable_update').DataTable({
+            "searching": false,
+        })
 
         // ITEM DATATABLE - UPDATE PON REQUEST
         var item_request_table_update = $('#request_item_datatable_update').DataTable({
@@ -1263,6 +1292,14 @@
             let data = {
                 pon_request_id  : pon_request_id
             };
+
+            if (rowdata.supplier == 1) {
+                $("#update-pon_form_add").hide();
+                $("#reason_update").prop("disabled", true);
+            } else {
+                $("#update-pon_form_add").show();
+                $("#reason_update").prop("disabled", false);
+            }
             
             // GET PON REQUEST ITEM DATA
             $.ajax({
@@ -1280,6 +1317,8 @@
 
                     if(msg['{{ config('constants.result') }}'] == "SUCCESS"){
                         item_request_table_update.clear().draw();
+                        item_claim_table_update.clear().draw();
+                        console.log(msg);
 
                         if (msg.item_list.length > 0) {
                             for (var i=0; i<msg.item_list.length; i++) {
@@ -1292,30 +1331,57 @@
                                 new_item["description"] = description_item;
                                 new_item["quantity"]    = quantity_item;
                                 new_item["unit_price"]  = unit_price_item;
+                                new_item["item_detail"]  = msg.item_list[i].item_detail;
+                                new_item["claim_request_id"]  = msg.item_list[i].claim_request_id;
 
                                 last_sequence = i;
                                 array_item.push(new_item);
                             }
+                            if (rowdata.supplier == 1) {
+                                $("#update-pon_table").hide();
+                                $("#update-claim_table").show();
+                                // sekarang
+                                let nomor = 1;
+                                change_item = JSON.parse(JSON.stringify(array_item))
+                                change_item.forEach((valData, indexData) => {
+                                    valData.item_detail.forEach((valItem, indexItem) => {
+                                        let listHtml = `
+                                            <td>${nomor++}</td>
+                                            <td>${valData.description}</td>
+                                            <td>${valItem.claim_category_name}</td>
+                                            <td>${valItem.claim_date}</td>
+                                            <td>${valItem.claim_desc}</td>
+                                            <td style="width: 15%"><input oninput="this.value = formatRupiah(this.value);onInputAmount(event);" value="${formatRupiah(valItem.claim_amount) ?? ""}" data-index_data="${indexData}" data-index_item="${indexItem}" class="form-control" style="font-size: 11px;padding: 4px;" placeholder="Claim Amount" type="text"></td>
+                                            <td style="width: 15%">${valItem.note ?? ""}</td>
+                                        `
+                                        var jRow = $('<tr>').append(listHtml);
+                                        item_claim_table_update.row.add(jRow).draw();
+                                    });
+                                });
 
-                            for (var i = 0; i < array_item.length; i++) {
-                                each_total  = array_item[i].quantity*array_item[i].unit_price;
-                                let index_number = i+1;
-
-                                // DATATABLE DATA CONSTRUCTION
-                                var main_data = '<td style="width: 5%">'+index_number+'</td>'+
-                                    '<td style="width: 40%">'+array_item[i].description+'</td>'+
-                                    '<td style="width: 10%">'+addComasStatic(Math.round((parseFloat(array_item[i].quantity) + Number.EPSILON) * 10000) / 10000)+'</td>'+
-                                    '<td style="width: 20%">'+addComasStatic(Math.round((parseFloat(array_item[i].unit_price) + Number.EPSILON) * 10000) / 10000)+'</td>'+
-                                    '<td style="width: 20%">'+addComasStatic(Math.round((parseFloat(each_total) + Number.EPSILON) * 10000) / 10000)+'</td>';
-
-                                var menu_bar_header = '<button type="button" style="text-decoration: none;" class="btn btn-outline-danger mg-r-5 btn-item-remove-update" data-toggle="tooltip" data-placement="top" title="Remove Item" data-original-title="Remove Item"><span class="icon ion-trash-a"></span></button>';
-                                var menu_bar_footer = '</div></div>';
-                                var button_menu = '';
-
-                                button_menu = menu_bar_header+menu_bar_footer;
-
-                                var jRow = $('<tr>').append(main_data,'<td>'+button_menu+'</td>');
-                                item_request_table_update.row.add(jRow).draw();
+                            } else {
+                                $("#update-pon_table").show();
+                                $("#update-claim_table").hide();
+                                for (var i = 0; i < array_item.length; i++) {
+                                    each_total  = array_item[i].quantity*array_item[i].unit_price;
+                                    let index_number = i+1;
+    
+                                    // DATATABLE DATA CONSTRUCTION
+                                    var main_data = '<td style="width: 5%">'+index_number+'</td>'+
+                                        '<td style="width: 40%">'+array_item[i].description+'</td>'+
+                                        '<td style="width: 10%">'+addComasStatic(Math.round((parseFloat(array_item[i].quantity) + Number.EPSILON) * 10000) / 10000)+'</td>'+
+                                        '<td style="width: 20%">'+addComasStatic(Math.round((parseFloat(array_item[i].unit_price) + Number.EPSILON) * 10000) / 10000)+'</td>'+
+                                        '<td style="width: 20%">'+addComasStatic(Math.round((parseFloat(each_total) + Number.EPSILON) * 10000) / 10000)+'</td>';
+    
+                                    var menu_bar_header = '<button type="button" style="text-decoration: none;" class="btn btn-outline-danger mg-r-5 btn-item-remove-update" data-toggle="tooltip" data-placement="top" title="Remove Item" data-original-title="Remove Item"><span class="icon ion-trash-a"></span></button>';
+                                    var menu_bar_footer = '</div></div>';
+                                    var button_menu = '';
+    
+                                    button_menu = menu_bar_header+menu_bar_footer;
+    
+                                    var jRow = $('<tr>').append(main_data,'<td>'+button_menu+'</td>');
+                                    item_request_table_update.row.add(jRow).draw();
+                                }
                             }
                         }
                         
@@ -1426,8 +1492,37 @@
                 currency                        : currency,
                 item_list                       : item_list,
                 investment_expenditure_reason   : investment_expenditure_reason,
-                file_list                       : file_list,
+                file_list                       : JSON.stringify(file_list),
             };
+
+            if (supplier == 1) {
+                const update_item_list = [];
+                change_item.forEach((valData, indexData) => {
+                    valData.item_detail.forEach((valItem, indexItem) => {
+                        if (valItem.claim_amount != array_item[indexData].item_detail[indexItem].claim_amount) {
+                            let indexChange = update_item_list.findIndex( el => el.claim_request_id == valData.claim_request_id);
+                            if (indexChange == -1) {
+                                update_item_list.push({
+                                    claim_request_id: valData.claim_request_id,
+                                    item_detail: [
+                                        {
+                                            claim_item_id: valItem.claim_item_id,
+                                            amount: valItem.claim_amount
+                                        }
+                                    ]
+                                })
+                            } else {
+                                update_item_list[indexChange].item_detail.push({
+                                    claim_item_id: valItem.claim_item_id,
+                                    amount: valItem.claim_amount
+                                })
+                            }
+                        }
+                    })
+                });
+
+                data.item_list = JSON.stringify(update_item_list)
+            }
 
             let instance = $('#form_update_pon_request').parsley();
             if (instance.validate()) {
@@ -1704,6 +1799,24 @@
                 $('#current_phase_row').hide();
             }
 
+            if (rowdata.supplier == "1") {
+                $("#head-item_detail_datatable").html(`
+                    <th width="5%">No</th>
+                    <th width="35%">Name</th>
+                    <th width="15%">Quantity</th>
+                    <th width="20%">Total Price</th>
+                    <th width="5%">Action</th>
+                `)
+            } else {
+                $("#head-item_detail_datatable").html(`
+                    <th width="5%">No</th>
+                    <th width="35%">Description</th>
+                    <th width="15%">Quantity</th>
+                    <th width="20%">Unit Price</th>
+                    <th width="20%">Total Price</th>
+                `)
+            }
+
             $('#pon_view').text(pon_number);
             $('#current_phase').text(current_phase);
             $('#cost_centre').text(cost_centre);
@@ -1721,7 +1834,7 @@
             }
             $('#modal_pon_request_detail').modal('show');
             // GET PON REQUEST ITEM DATA
-            get_pon_request_item(pon_request_id);
+            get_pon_request_item(pon_request_id, rowdata.supplier);
 
             // GET PON REQUEST ATTACHMENT DATA
             get_pon_request_attachment(pon_request_id);
@@ -1730,7 +1843,7 @@
         });
 
         // GET PON REQUEST ITEM DATA
-        async function get_pon_request_item(pon_request_id){
+        async function get_pon_request_item(pon_request_id, supplier){
             let data = {
                 pon_request_id  : pon_request_id
             };
@@ -1763,6 +1876,7 @@
                                 new_item["description"] = description_item;
                                 new_item["quantity"]    = quantity_item;
                                 new_item["unit_price"]  = unit_price_item;
+                                new_item["item_detail"]  = msg.item_list[i].item_detail;
 
                                 array_item.push(new_item);
                             }
@@ -1772,11 +1886,21 @@
                                 let index_number = i+1;
 
                                 // DATATABLE DATA CONSTRUCTION
-                                var main_data = '<td>'+index_number+'</td>'+
-                                    '<td>'+array_item[i].description+'</td>'+
-                                    '<td>'+addComasStatic(Math.round((parseFloat(array_item[i].quantity) + Number.EPSILON) * 10000) / 10000)+'</td>'+
-                                    '<td>'+addComasStatic(Math.round((parseFloat(array_item[i].unit_price) + Number.EPSILON) * 10000) / 10000)+'</td>'+
-                                    '<td>'+addComasStatic(Math.round((parseFloat(each_total) + Number.EPSILON) * 10000) / 10000)+'</td>';
+                                let main_data = "";
+                                if (supplier == 1) {           
+                                    main_data = '<td>'+index_number+'</td>'+
+                                        '<td>'+array_item[i].description+'</td>'+
+                                        '<td>'+addComasStatic(Math.round((parseFloat(array_item[i].quantity) + Number.EPSILON) * 10000) / 10000)+'</td>'+
+                                        '<td>'+addComasStatic(Math.round((parseFloat(array_item[i].unit_price) + Number.EPSILON) * 10000) / 10000)+'</td>'+
+                                        '<td>'+'<button onclick="getRowChild(event)" style="text-decoration: none;" class="btn btn-outline-primary" type="button" title="Claim Detail"><span class="my-auto icon ion-eye"></span></button>'+'</td>';
+                                } else {
+                                    main_data = '<td>'+index_number+'</td>'+
+                                        '<td>'+array_item[i].description+'</td>'+
+                                        '<td>'+addComasStatic(Math.round((parseFloat(array_item[i].quantity) + Number.EPSILON) * 10000) / 10000)+'</td>'+
+                                        '<td>'+addComasStatic(Math.round((parseFloat(array_item[i].unit_price) + Number.EPSILON) * 10000) / 10000)+'</td>'+
+                                        '<td>'+addComasStatic(Math.round((parseFloat(each_total) + Number.EPSILON) * 10000) / 10000)+'</td>';
+
+                                }
 
                                 var menu_bar_header = '';
                                 var menu_bar_footer = '</div></div>';
@@ -1802,6 +1926,46 @@
                     amaran_error('Something went wrong, please contact technical support!');
                 }
             });
+        }
+
+        function getRowChild(e) {  
+            let tr = e.target.closest('tr');
+            let row = item_detail_table.row(tr);
+            const indexData = parseInt(row.data()[0])-1
+            const dataItem = array_item[indexData];
+            console.log(dataItem);
+            if (row.child.isShown()) {
+                row.child.hide();
+            } else {
+                if (dataItem.item_detail.length) {
+                    let childHtml = ``;
+                    dataItem.item_detail.forEach((val, indexItem) => {
+                        childHtml += `<tr>
+                            <td>${val.claim_category_name}</td>
+                            <td>${val.claim_date}</td>
+                            <td>${val.claim_amount}</td>
+                            <td>${val.claim_desc}</td>
+                            <td>${val.note ?? ""}</td>
+                        </tr>`
+                    });
+                    row.child(`
+                        <table class='border'>
+                            <tbody>
+                                <tr>
+                                    <th>Claim Category</th>
+                                    <th>Claim Date</th>
+                                    <th>Claim Amount</th>
+                                    <th>Claim Description</th>
+                                    <th>Note</th>
+                                </tr>
+                                ${childHtml}
+                            </tbody>
+                        </table>
+                    `).show();
+                } else {
+                    row.child("<div class='text-center'>No Item Detail Found</div>").show();
+                }
+            }
         }
 
         // GET PON REQUEST ATTACHMENT DATA
@@ -2111,7 +2275,7 @@
             return angka;
         }
 
-        function formatRupiah(angka, e)
+        function formatRupiah(angka)
         {
             angka = angka.replaceAll(",", "");
             angka = angka.replace(/^0+/, '');
@@ -2129,6 +2293,13 @@
             rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
             return rupiah ? rupiah : '';
 
+        }
+
+        function onInputAmount(e) {  
+            const indexData = parseInt($(e.target).data("index_data"));
+            const indexItem = parseInt($(e.target).data("index_item"));
+            change_item[indexData].item_detail[indexItem].claim_amount = forceNumber(e.target.value);
+            console.log(change_item[indexData].item_detail[indexItem].claim_amount, array_item[indexData].item_detail[indexItem].claim_amount);
         }
     </script>
 @endsection

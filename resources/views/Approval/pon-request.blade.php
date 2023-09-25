@@ -135,12 +135,12 @@
                                 <label class="form-control-label">Item Details</label>
                                 <table id="item_detail_datatable" class="table table-striped table-bordered">
                                     <thead>
-                                        <tr>
+                                        <tr id="head-item_detail_datatable" >
                                             <th width="5%">No</th>
                                             <th width="35%">Description</th>
                                             <th width="15%">Quantity</th>
                                             <th width="20%">Unit Price</th>
-                                            <th width="20%">Total Price</th>
+                                            <th width="5%">Action</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -149,7 +149,7 @@
                     </div>
                 </div>
 
-                <div class="modal-footer pd-8-force">
+                <div id="action-approve" class="modal-footer pd-8-force">
                     <button onclick="approvePonRequest(2)" class="rounded-xl btn status-needrevision mx-2">Reject</button>
                     <button onclick="approvePonRequest(1)" class="rounded-xl btn btn-success">Approve</button>
                 </div>
@@ -416,6 +416,32 @@
                 $('#current_phase_row').hide();
             }
 
+            if (rowdata.supplier == "1") {
+                $("#head-item_detail_datatable").html(`
+                    <th width="5%">No</th>
+                    <th width="35%">Name</th>
+                    <th width="15%">Quantity</th>
+                    <th width="20%">Total Price</th>
+                    <th width="5%">Action</th>
+                `)
+                $("#action-approve").html(`
+                    <button onclick="approveClaim(2)" class="rounded-xl btn status-needrevision mx-2">Reject</button>
+                    <button onclick="approveClaim(1)" class="rounded-xl btn btn-success">Approve</button>
+                `)
+            } else {
+                $("#head-item_detail_datatable").html(`
+                    <th width="5%">No</th>
+                    <th width="35%">Description</th>
+                    <th width="15%">Quantity</th>
+                    <th width="20%">Unit Price</th>
+                    <th width="20%">Total Price</th>
+                `)
+                $("#action-approve").html(`
+                    <button onclick="approvePonRequest(2)" class="rounded-xl btn status-needrevision mx-2">Reject</button>
+                    <button onclick="approvePonRequest(1)" class="rounded-xl btn btn-success">Approve</button>
+                `)
+            }
+
             $("#pon_request_id").val(rowdata.pon_request_id);
             $('#pon_view').text(pon_number);
             $('#current_phase').text(current_phase);
@@ -429,7 +455,7 @@
             $('#modal_pon_request_detail').modal('show');
             
             // GET PON REQUEST ITEM DATA
-            get_pon_request_item(pon_request_id);
+            get_pon_request_item(pon_request_id, rowdata.supplier);
 
             // GET PON REQUEST ATTACHMENT DATA
             get_pon_request_attachment(pon_request_id);
@@ -438,7 +464,7 @@
         });
 
         // GET PON REQUEST ITEM DATA
-        function get_pon_request_item(pon_request_id){
+        function get_pon_request_item(pon_request_id, supplier){
             let data = {
                 pon_request_id  : pon_request_id
             };
@@ -453,6 +479,7 @@
                 },
                 success: function (msg) {
                     $.LoadingOverlay('hide');
+                    console.log(msg);
 
                     array_item = [];
 
@@ -470,6 +497,7 @@
                                 new_item["description"] = description_item;
                                 new_item["quantity"]    = quantity_item;
                                 new_item["unit_price"]  = unit_price_item;
+                                new_item["item_detail"]  = msg.item_list[i].item_detail;
 
                                 array_item.push(new_item);
                             }
@@ -479,11 +507,21 @@
                                 let index_number = i+1;
 
                                 // DATATABLE DATA CONSTRUCTION
-                                var main_data = '<td>'+index_number+'</td>'+
-                                    '<td>'+array_item[i].description+'</td>'+
-                                    '<td>'+addComasStatic(Math.round((parseFloat(array_item[i].quantity) + Number.EPSILON) * 10000) / 10000)+'</td>'+
-                                    '<td>'+addComasStatic(Math.round((parseFloat(array_item[i].unit_price) + Number.EPSILON) * 10000) / 10000)+'</td>'+
-                                    '<td>'+addComasStatic(Math.round((parseFloat(each_total) + Number.EPSILON) * 10000) / 10000)+'</td>';
+                                let main_data = "";
+                                if (supplier == 1) {           
+                                    main_data = '<td>'+index_number+'</td>'+
+                                        '<td>'+array_item[i].description+'</td>'+
+                                        '<td>'+addComasStatic(Math.round((parseFloat(array_item[i].quantity) + Number.EPSILON) * 10000) / 10000)+'</td>'+
+                                        '<td>'+addComasStatic(Math.round((parseFloat(array_item[i].unit_price) + Number.EPSILON) * 10000) / 10000)+'</td>'+
+                                        '<td>'+'<button onclick="getRowChild(event)" style="text-decoration: none;" class="btn btn-outline-primary" type="button" title="Claim Detail"><span class="my-auto icon ion-eye"></span></button>'+'</td>';
+                                } else {
+                                    main_data = '<td>'+index_number+'</td>'+
+                                        '<td>'+array_item[i].description+'</td>'+
+                                        '<td>'+addComasStatic(Math.round((parseFloat(array_item[i].quantity) + Number.EPSILON) * 10000) / 10000)+'</td>'+
+                                        '<td>'+addComasStatic(Math.round((parseFloat(array_item[i].unit_price) + Number.EPSILON) * 10000) / 10000)+'</td>'+
+                                        '<td>'+addComasStatic(Math.round((parseFloat(each_total) + Number.EPSILON) * 10000) / 10000)+'</td>';
+
+                                }
 
                                 var menu_bar_header = '';
                                 var menu_bar_footer = '</div></div>';
@@ -689,6 +727,96 @@
                         }
                     });
                 }, function () {}).set('reverseButtons', true);
+            }
+        }
+
+        function approveClaim(approval_type) {  
+            let claim_approval_note = [];
+            array_item.forEach(data => {
+                data.item_detail.forEach(item => {
+                    if (item.note) {
+                        console.log(item.note);
+                        claim_approval_note.push({
+                            claim_item_id: item.claim_item_id,
+                            note: item.note
+                        })
+                    }
+                });
+            });
+            const data = {
+                pon_request_id: $("#pon_request_id").val(),
+                approval_type, claim_approval_note: JSON.stringify(claim_approval_note)
+            }
+            if (approval_type == 2) {
+                data.rejection_reason = "Tidak Sesuai"
+            }
+            console.log(data);
+            $.ajax({
+                url     : '{{ route("pon_request_approve") }}',
+                method  : 'POST',
+                data    : data,
+                datatype: "json",
+                headers : {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                success: function (res) {
+                    console.log(res);
+                    $.LoadingOverlay('hide');
+                    if (res.result == "SUCCESS") {
+                        pon_request_datatable.ajax.reload()
+                        $("#modal_pon_request_detail").modal("hide")
+
+                        amaran_success(res.message)
+                        return
+                    }
+                    amaran_error(res.message)
+                }
+            })
+        }
+
+        function onInputNote(e) {  
+            const indexData = parseInt($(e.target).data("index_data"));
+            const indexItem = parseInt($(e.target).data("index_item"));
+            array_item[indexData].item_detail[indexItem].note = e.target.value;
+        }
+
+        function getRowChild(e) {  
+            let tr = e.target.closest('tr');
+            let row = item_detail_table.row(tr);
+            const indexData = parseInt(row.data()[0])-1
+            const dataItem = array_item[indexData];
+            console.log(dataItem);
+            if (row.child.isShown()) {
+                row.child.hide();
+            } else {
+                if (dataItem.item_detail.length) {
+                    let childHtml = ``;
+                    dataItem.item_detail.forEach((val, indexItem) => {
+                        childHtml += `<tr>
+                            <td>${val.claim_category_name}</td>
+                            <td>${val.claim_date}</td>
+                            <td>${val.claim_amount}</td>
+                            <td>${val.claim_desc}</td>
+                            <td><input value="${val.note ?? ""}" data-index_data="${indexData}" data-index_item="${indexItem}" oninput="onInputNote(event)" class="form-control" style="font-size: 11px;padding: 4px;" placeholder="Claim Note" type="text"></td>
+                        </tr>`
+                    });
+                    row.child(`
+                        <table class='border'>
+                            <tbody>
+                                <tr>
+                                    <th>Claim Category</th>
+                                    <th>Claim Date</th>
+                                    <th>Claim Amount</th>
+                                    <th>Claim Description</th>
+                                    <th>Note</th>
+                                </tr>
+                                ${childHtml}
+                            </tbody>
+                        </table>
+                    `).show();
+                } else {
+                    row.child("<div class='text-center'>No Item Detail Found</div>").show();
+                }
             }
         }
     </script>

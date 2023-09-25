@@ -100,6 +100,9 @@
                                 @endforeach
                             </div>
                         </div>
+                        <div id="hrd_create" class="form-group row">
+
+                        </div>
 
                         <div class="d-flex justify-content-end">
                             <button name="button" data-dismiss="modal" aria-label="Close"
@@ -172,6 +175,10 @@
                             </div>
                         </div>
 
+                        <div id="hrd_edit" class="form-group row">
+
+                        </div>
+
                         <div class="d-flex justify-content-end">
                             <button name="button" data-dismiss="modal" aria-label="Close"
                                 class='rounded-xl btn btn-dark'>Cancel</button>
@@ -230,18 +237,7 @@
             });
         })
 
-        const cobaFind = [{
-                id: 1,
-                name: "pm"
-            },
-            {
-                id: 2,
-                name: "hrd"
-            }
-        ]
-
-        const pm = cobaFind.find(approveList => approveList.name === "hrd")
-        console.log(pm);
+        const hrd_list = @json($data["hrd_list"]);
 
         var table_df = $('#table_data_filter').DataTable({
             fixedHeader: true,
@@ -276,10 +272,10 @@
                     data: "active"
                 },
                 {
-                    data: "approval_phase.4"
+                    data: "approval_phase.2.selected"
                 },
                 {
-                    data: "approval_phase.5"
+                    data: "approval_phase.3.selected"
                 },
                 {
                     data: null,
@@ -303,7 +299,24 @@
                 {
                     searchable: false,
                     sortable: false,
-                    targets: [2, -2, -3],
+                    targets: [2],
+                    data: null,
+                    render: function(data) {
+                        let follup = ""
+                        if (data == 1) {
+                            follup = `
+                                <svg class="ml-2" width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1.11181 7C0.135159 17.9248 5.61941 11.6306 15.1118 1" stroke="#51CBFF" stroke-width="2"/>
+                                </svg>
+                            `;
+                        }
+                        return follup;
+                    }
+                },
+                {
+                    searchable: false,
+                    sortable: false,
+                    targets: [-2, -3],
                     data: null,
                     render: function(data) {
                         let follup = ""
@@ -323,6 +336,7 @@
                     targets: -1,
                     data: null,
                     render: function(data) {
+                        console.log(data);
                         let follup =
                             `<button id="edit-modal-show" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5" type="button" title="Edit Item"><span class="icon ion-compose"></span></button>`
                         if (data.active != 1) {
@@ -337,11 +351,95 @@
             ]
         });
 
+        // Handle Change
+        $("#approval_phase_5").change((e) => {
+            if (e.currentTarget.checked) {
+                let hrdListHtml = "";
+                hrd_list.forEach(element => {
+                    hrdListHtml += `<option value="${element.user_id}">${element.user_firstname} ${element.user_lastname}</option>`
+                });
+                $("#hrd_create").html(`
+                    <label for="inputPassword3" class="col-sm-3 col-form-label">HRD<span
+                            class="tx-danger">*</span></label>
+                    <div class="col-sm-9">
+                        <select id="hrd_id" class="form-control rounded-xl" name="active" required>
+                            <option value="">Pilih HRD</option>
+                            ${hrdListHtml}
+                        </select>
+                    </div>
+                `);
+            } else {
+                $("#hrd_create").html("")
+            }
+        })
+        $("#edit-approval_phase_5").change((e) => {
+            if (e.currentTarget.checked) {
+                let hrdListHtml = "";
+                hrd_list.forEach(element => {
+                    hrdListHtml += `<option value="${element.user_id}">${element.user_firstname} ${element.user_lastname}</option>`
+                });
+                $("#hrd_edit").html(`
+                    <label for="inputPassword3" class="col-sm-3 col-form-label">HRD<span
+                            class="tx-danger">*</span></label>
+                    <div class="col-sm-9">
+                        <select id="edit-hrd_id" class="form-control rounded-xl" name="active" required>
+                            <option value="">Pilih HRD</option>
+                            ${hrdListHtml}
+                        </select>
+                    </div>
+                `);
+            } else {
+                $("#hrd_edit").html("")
+            }
+        })
+
         // Handle Action
         $("#form_add_item").submit((e) => {
             e.preventDefault()
 
-            const approval_phase = $.map($('input[name="approval_phase"]:checked'), (item) => item.value)
+            const approval_phase = [
+                {
+                    phase_id: "2",
+                    phase_name: "Team Leader Approval",
+                    selected: "0",
+                    user_approver: null
+                },
+                {
+                    phase_id: "3",
+                    phase_name: "Head of Dept. Approval",
+                    selected: "0",
+                    user_approver: null
+                },
+                {
+                    phase_id: "4",
+                    phase_name: "PM Approval",
+                    selected: "0",
+                    user_approver: null
+                },
+                {
+                    phase_id: "5",
+                    phase_name: "HRD Approval",
+                    selected: "0",
+                    user_approver: null
+                },
+                {
+                    phase_id: "6",
+                    phase_name: "Finance Approval",
+                    selected: "0",
+                    user_approver: null
+                }
+            ]
+            
+            const check_approval = $.map($('input[name="approval_phase"]:checked'), (item) => item.value);
+
+            approval_phase.forEach(val => {
+                if (check_approval.includes(val.phase_id)) {
+                    val.selected = "1"
+                    if (val.phase_id == "5") {
+                        val.user_approver = $("#hrd_id").val()
+                    }
+                }
+            });
             const data = {
                 name: $("#name").val(),
                 description: $("#description").val(),
@@ -390,7 +488,49 @@
         })
         $("#form_edit_item").submit((e) => {
             e.preventDefault()
-            const approval_phase = $.map($('input[name="edit-approval_phase"]:checked'), (item) => item.value)
+            const approval_phase = [
+                {
+                    phase_id: "2",
+                    phase_name: "Team Leader Approval",
+                    selected: "0",
+                    user_approver: null
+                },
+                {
+                    phase_id: "3",
+                    phase_name: "Head of Dept. Approval",
+                    selected: "0",
+                    user_approver: null
+                },
+                {
+                    phase_id: "4",
+                    phase_name: "PM Approval",
+                    selected: "0",
+                    user_approver: null
+                },
+                {
+                    phase_id: "5",
+                    phase_name: "HRD Approval",
+                    selected: "0",
+                    user_approver: null
+                },
+                {
+                    phase_id: "6",
+                    phase_name: "Finance Approval",
+                    selected: "0",
+                    user_approver: null
+                }
+            ]
+            
+            const check_approval = $.map($('input[name="edit-approval_phase"]:checked'), (item) => item.value);
+
+            approval_phase.forEach(val => {
+                if (check_approval.includes(val.phase_id)) {
+                    val.selected = "1"
+                    if (val.phase_id == "5") {
+                        val.user_approver = $("#edit-hrd_id").val()
+                    }
+                }
+            });
             
             const data = {
                 claim_category_id: $('#edit-claim_category_id').val(),
@@ -489,13 +629,29 @@
             $('#edit-description').val(data.description);
             $('#edit-active').val(data.active).trigger('change');
 
-            for (const property in data.approval_phase) {
-                if (data.approval_phase[property] == 1) {
-                    $(`#edit-approval_phase_${property}`).prop("checked", true)
-                } else {
-                    $(`#edit-approval_phase_${property}`).prop("checked", false)
+            data.approval_phase.forEach(val => {
+                $(`#edit-approval_phase_${val.phase_id}`).prop("checked", val.selected == "1")
+                if (val.phase_id == "5") {
+                    if (val.selected == "1") {
+                        let hrdListHtml = "";
+                        hrd_list.forEach(element => {
+                            hrdListHtml += `<option value="${element.user_id}" ${val.user_approver == element.user_id ? "selected" : ""} >${element.user_firstname} ${element.user_lastname}</option>`
+                        });
+                        $("#hrd_edit").html(`
+                            <label for="inputPassword3" class="col-sm-3 col-form-label">HRD<span
+                                    class="tx-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <select id="edit-hrd_id" class="form-control rounded-xl" name="active" required>
+                                    <option value="">Pilih HRD</option>
+                                    ${hrdListHtml}
+                                </select>
+                            </div>
+                        `);
+                    } else {
+                        $("#hrd_edit").html(``);
+                    }
                 }
-            }
+            });
 
             $('#modal-claim-category_edit').modal("show");
             $.LoadingOverlay('hide');

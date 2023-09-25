@@ -31,7 +31,7 @@ class ClaimRequestController extends Controller
 	    $currency 	= GatewayController::lead_to_be("GET", "currency/data", []);
         $claim_category     = GatewayController::lead_to_be("GET", "claim-item-category/data", []);
         $pm_list     = GatewayController::lead_to_be("POST", "subgroup/user", [ "subgroup_name"=>"Project Management" ]);
-
+        // dd($claim_category['data']);
         $data['claim_category'] = $claim_category['data'];
         $data['currency'] = $currency['data'];
         $data['current-period'] = $currentPeriod ['data'];
