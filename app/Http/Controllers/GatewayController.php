@@ -25,8 +25,6 @@ Class GatewayController {
             if ($log_feature == true) {
                 Log::debug('[PATH] '.$method.' '.$path);
             }
-            $param = json_encode($param);
-            $param = json_decode($param, true);
 
             array_walk_recursive($param, function (&$item) {$item = strval($item);});
 

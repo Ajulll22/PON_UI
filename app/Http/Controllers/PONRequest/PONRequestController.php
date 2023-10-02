@@ -174,10 +174,10 @@ class PONRequestController extends Controller
         $param['cost_centre']                   = $cost_centre;
         $param['estimated_invoice_date']        = $estimated_invoice_date;
         $param['investment_expenditure_reason'] = $investment_expenditure_reason;
-        $param['file_list']                     = json_decode($file_list);
+        $param['file_list']                     = json_decode($file_list, true);
         
         if ($supplier == 1) {
-            $param['item_list'] = json_decode($request->input('item_list'));
+            $param['item_list'] = json_decode($request->input('item_list', true));
             $result_data = GatewayController::lead_to_be($method, "pon-request-claim/update", $param);
         } else {
             $item_list                      = $request->input('item_list');
