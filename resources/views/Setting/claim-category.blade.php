@@ -92,7 +92,7 @@
                                         <input id="approval_phase_{{ $item['claim_request_phase_id'] }}"
                                             name="approval_phase" type="checkbox"
                                             value="{{ $item['claim_request_phase_id'] }}"
-                                            {{ $item['claim_request_phase_id'] == 4 || $item['claim_request_phase_id'] == 5 ? '' : 'disabled checked' }}>
+                                            {{ $item['claim_request_phase_id'] == 4 || $item['claim_request_phase_id'] == 5 ? '' : ($item['claim_request_phase_id'] == 6 ? 'disabled' : 'disabled checked') }}>
                                         <label class="form-check-label" for="pm">
                                             {{ str_replace(' Approval', '', $item['name']) }}
                                         </label>
@@ -166,7 +166,7 @@
                                         <input id="edit-approval_phase_{{ $item['claim_request_phase_id'] }}"
                                             name="edit-approval_phase" type="checkbox"
                                             value="{{ $item['claim_request_phase_id'] }}"
-                                            {{ $item['claim_request_phase_id'] == 4 || $item['claim_request_phase_id'] == 5 ? '' : 'disabled checked' }}>
+                                            {{ $item['claim_request_phase_id'] == 4 || $item['claim_request_phase_id'] == 5 ? '' : ($item['claim_request_phase_id'] == 6 ? 'disabled' : 'disabled checked') }}>
                                         <label class="form-check-label" for="pm">
                                             {{ str_replace(' Approval', '', $item['name']) }}
                                         </label>
@@ -353,6 +353,7 @@
 
         // Handle Change
         $("#approval_phase_5").change((e) => {
+            $("#approval_phase_6").prop("checked", e.currentTarget.checked)
             if (e.currentTarget.checked) {
                 let hrdListHtml = "";
                 hrd_list.forEach(element => {
@@ -373,6 +374,7 @@
             }
         })
         $("#edit-approval_phase_5").change((e) => {
+            $("#edit-approval_phase_6").prop("checked", e.currentTarget.checked)
             if (e.currentTarget.checked) {
                 let hrdListHtml = "";
                 hrd_list.forEach(element => {
@@ -424,6 +426,12 @@
                 },
                 {
                     phase_id: "6",
+                    phase_name: "Head of HR Approval",
+                    selected: "0",
+                    user_approver: null
+                },
+                {
+                    phase_id: "7",
                     phase_name: "Finance Approval",
                     selected: "0",
                     user_approver: null
@@ -515,6 +523,12 @@
                 },
                 {
                     phase_id: "6",
+                    phase_name: "Head of HR Approval",
+                    selected: "0",
+                    user_approver: null
+                },
+                {
+                    phase_id: "7",
                     phase_name: "Finance Approval",
                     selected: "0",
                     user_approver: null
