@@ -177,7 +177,7 @@ class PONRequestController extends Controller
         $param['file_list']                     = json_decode($file_list, true);
         
         if ($supplier == 1) {
-            $param['item_list'] = json_decode($request->input('item_list', true));
+            $param['item_list'] = json_decode($request->input('item_list'), true);
             $result_data = GatewayController::lead_to_be($method, "pon-request-claim/update", $param);
         } else {
             $item_list                      = $request->input('item_list');
