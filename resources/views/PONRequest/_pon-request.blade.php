@@ -2269,7 +2269,6 @@
 
         function forceNumber(angka) {
             angka = angka.replaceAll(",", "");
-            angka = angka.replace(/^0+/, '');
             angka = angka.replace(/[^,\d]/g, '').toString();
 
             return angka;
@@ -2291,7 +2290,7 @@
             }
             
             rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-            return rupiah ? rupiah : '';
+            return rupiah ? rupiah : 0;
 
         }
 
@@ -2299,7 +2298,6 @@
             const indexData = parseInt($(e.target).data("index_data"));
             const indexItem = parseInt($(e.target).data("index_item"));
             change_item[indexData].item_detail[indexItem].claim_amount = forceNumber(e.target.value);
-            console.log(change_item[indexData].item_detail[indexItem].claim_amount, array_item[indexData].item_detail[indexItem].claim_amount);
         }
     </script>
 @endsection

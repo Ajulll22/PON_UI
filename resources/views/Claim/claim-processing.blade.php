@@ -49,11 +49,8 @@
                         <label for="inputEmail3" class="col-sm-3 col-form-label">Submission Date<span
                                 class="tx-danger">*</span></label>
                         <div class="col-sm-9">
-                            <input type="text"
-                                class="form-control fc-datepicker rounded-xl"
-                                name="submission_date"
-                                id="submission_date"
-                                placeholder="DD/MM/YYYY" autocomplete="off">
+                            <input type="text" class="form-control fc-datepicker rounded-xl" name="submission_date"
+                                id="submission_date" placeholder="DD/MM/YYYY" autocomplete="off">
                             <input type="text" name="rf_period_id" id="rf_period_id" hidden>
                         </div>
                     </div>
@@ -63,6 +60,37 @@
                     <button data-dismiss="modal" aria-label="Close" class='rounded-xl btn btn-dark'>Cancel</button>
 
                     <button id="submit-download_pp" class='rounded-xl btn btn-primary'>Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-download_csv" class="modal fade" data-value=''>
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content tx-size-sm">
+                <div class="modal-header pd-x-20">
+                    <h5></h5>
+                    <h6 class="tx-20 mg-b-0 tx-inverse tx-bold">Download CSV</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body px-5">
+                    <div class="form-group row">
+                        <label for="inputEmail3" class="col-sm-3 col-form-label">Rekening Sumber<span
+                                class="tx-danger">*</span></label>
+                        <div class="col-sm-9">
+                            <select class="form-control rounded-xl" id="rek_sumber" name="rek_sumber"
+                                style="width: 100%" required>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button data-dismiss="modal" aria-label="Close" class='rounded-xl btn btn-dark'>Cancel</button>
+
+                    <button id="submit-download_csv" class='rounded-xl btn btn-primary'>Submit</button>
                 </div>
             </div>
         </div>
@@ -106,7 +134,7 @@
         var table = $('#table-data').DataTable({
             ajax: {
                 'url': "{{ route('claim_processing_list') }}",
-                'dataSrc' : ""
+                'dataSrc': ""
             },
             scrollX: true,
             scrollCollapse: true,
@@ -150,8 +178,8 @@
                     searchable: true,
                     sortable: true,
                     targets: -2,
-                    data:null,
-                    render: function (data) {  
+                    data: null,
+                    render: function(data) {
                         return parseInt(data).toLocaleString('en-US')
                     }
                 },
@@ -165,29 +193,36 @@
                         let follup = ""
                         if (data.action_menu.request_pon == 1) {
                             if (privList["GENERATE_PON"]) {
-                                follup += `<button id="initiate_claim" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5" type="button" >Request PON</button>`
+                                follup +=
+                                    `<button id="initiate_claim" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5" type="button" >Request PON</button>`
                             }
                         }
                         if (data.action_menu.autopay_report == 1) {
                             if (privList["GENERATE_REPORT_AUTOPAY"]) {
-                                follup += `<a href="/claim-processing/generate-autopay/${data.rf_period_id}" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5">Auto Pay</a>`
+                                follup +=
+                                    `<a href="/claim-processing/generate-autopay/${data.rf_period_id}" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5">Auto Pay</a>`
                             }
                         }
                         if (data.action_menu.PP_report == 1) {
                             if (privList["GENERATE_REPORT_PROP"]) {
-                                follup += `<button id="generate-pp" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5" type="button">Proposal Payment</button>`
+                                follup +=
+                                    `<button id="generate-pp" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5" type="button">Proposal Payment</button>`
                             }
                         }
                         if (data.action_menu.CSV_report == 1) {
                             if (privList["GENERATE_REPORT_CSV"]) {
-                                follup += `<a id="generate-csv" href="/claim-processing/generate-csv/${data.rf_period_id}" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5">CSV</a>`
+                                // follup += `<a id="generate-csv" href="/claim-processing/generate-csv/${data.rf_period_id}" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5">CSV</a>`
+                                follup +=
+                                    `<button id="generate-csv" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5">CSV</button>`
                             }
                         }
                         if (data.action_menu.files == 1) {
-                            follup += `<a href="/claim-processing/download-zip/${data.rf_period}" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5">Zip File</a>`
+                            follup +=
+                                `<a href="/claim-processing/download-zip/${data.rf_period}" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5">Zip File</a>`
                         }
                         if (data.action_menu.close == 1) {
-                            follup += `<button id="close_claim" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5" type="button">Close</button>`
+                            follup +=
+                                `<button id="close_claim" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5" type="button">Close</button>`
                         }
                         return follup;
                     }
@@ -199,21 +234,24 @@
         });
 
         $('#table-data tbody').on('click', '#close_claim', function() {
-            const { rf_period_id, rf_period } = table.row($(this).parents('tr')).data();
-            const data = { 
+            const {
+                rf_period_id,
+                rf_period
+            } = table.row($(this).parents('tr')).data();
+            const data = {
                 rf_period_id
             };
-            
-            alertify.confirm('Confirmation', `Are you sure want to close this RF ${rf_period} ?`, function(){  
+
+            alertify.confirm('Confirmation', `Are you sure want to close this RF ${rf_period} ?`, function() {
                 $.ajax({
-                    url     : '{{ route("claim_processing_close") }}',
-                    method  : 'POST',
+                    url: '{{ route('claim_processing_close') }}',
+                    method: 'POST',
                     data,
                     datatype: "json",
-                    headers : {
+                    headers: {
                         'X-CSRF-TOKEN': "{{ csrf_token() }}"
                     },
-                    success: function (res) {
+                    success: function(res) {
                         console.log(res);
                         $.LoadingOverlay('hide');
                         if (res.result === 'SUCCESS') {
@@ -228,43 +266,49 @@
         })
 
         $('#table-data tbody').on('click', '#initiate_claim', function() {
-            const { rf_period_id, rf_period } = table.row($(this).parents('tr')).data();
-            const data = { 
+            const {
+                rf_period_id,
+                rf_period
+            } = table.row($(this).parents('tr')).data();
+            const data = {
                 rf_period_id
             };
-            
-            alertify.confirm('Confirmation', `Are you sure want to request PON this claim RF ${rf_period} ?`, function(){  
-                $.ajax({
-                    url     : '{{ route("claim_processing_initiate") }}',
-                    method  : 'POST',
-                    data,
-                    datatype: "json",
-                    headers : {
-                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                    },
-                    success: function (res) {
-                        console.log(res);
-                        $.LoadingOverlay('hide');
-                        if (res.result === 'SUCCESS') {
-                            table.ajax.reload();
-                            amaran_success(res.message)
-                        } else {
-                            amaran_error(res.message)
+
+            alertify.confirm('Confirmation', `Are you sure want to request PON this claim RF ${rf_period} ?`,
+                function() {
+                    $.ajax({
+                        url: '{{ route('claim_processing_initiate') }}',
+                        method: 'POST',
+                        data,
+                        datatype: "json",
+                        headers: {
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                        },
+                        success: function(res) {
+                            console.log(res);
+                            $.LoadingOverlay('hide');
+                            if (res.result === 'SUCCESS') {
+                                table.ajax.reload();
+                                amaran_success(res.message)
+                            } else {
+                                amaran_error(res.message)
+                            }
                         }
-                    }
-                })
-            }, "");
+                    })
+                }, "");
         })
-        
+
         $('#table-data tbody').on('click', '#generate-pp', function() {
-            const { rf_period_id } = table.row($(this).parents('tr')).data();
+            const {
+                rf_period_id
+            } = table.row($(this).parents('tr')).data();
             $("#submission_date").val("");
             $("#rf_period_id").val(rf_period_id);
             $("#modal-download_pp").modal("show");
-            
+
         })
 
-        $("#submit-download_pp").click( function () {  
+        $("#submit-download_pp").click(function() {
             const date = $("#submission_date").val();
             const id = $("#rf_period_id").val();
             if (date == "") {
@@ -274,6 +318,6 @@
             window.location.href = `/claim-processing/generate-pp/${id}?date=${date}`;
             $("#modal-download_pp").modal("hide");
             amaran_success("Downloading");
-        } )
+        })
     </script>
 @endsection

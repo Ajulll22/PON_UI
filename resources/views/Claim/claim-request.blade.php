@@ -1248,43 +1248,23 @@
 
         // Delete Item Detail
         $('#request_item_datatable-add tbody').on('click', '#delete-item-detail', function() {
-            const i = $(this).closest('tr').index()
-            const {
-                claim_category_id,
-                claim_document
-            } = data_temp[i]
-            
-            $(`#${claim_category_id}-jumlah-add`).text("0")
-
-            data_temp.splice(i, 1)
-
-            const data = {
-                delete_document: claim_document[0]
-            }
-
-            buildTableItem("add")
-
-            $.ajax({
-                type: "POST",
-                url: "{{ route('delete_item') }}",
-                data: data,
-                dataType: "json",
-                headers: {
-                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                },
-            });
-            return
-        })
-
-        $('#request_item_datatable-edit tbody').on('click', '#delete-item-detail', function() {
-            const i = $(this).closest('tr').index()
-            const {
-                claim_category_id,
-                claim_document
-            } = data_edit_temp[i]
-            let namaFile = claim_document[0].filename.split("-")
-            if (namaFile[0] == "UploadTmp") {
-                const data = { delete_document: claim_document[0].filename }
+            alertify.confirm("Are You Sure?", function () {
+                const i = $("#delete-item-detail").closest('tr').index()
+                const {
+                    claim_category_id,
+                    claim_document
+                } = data_temp[i]
+                
+                $(`#${claim_category_id}-jumlah-add`).text("0")
+    
+                data_temp.splice(i, 1)
+    
+                const data = {
+                    delete_document: claim_document[0]
+                }
+    
+                buildTableItem("add")
+    
                 $.ajax({
                     type: "POST",
                     url: "{{ route('delete_item') }}",
@@ -1294,12 +1274,36 @@
                         'X-CSRF-TOKEN': "{{ csrf_token() }}"
                     },
                 });
-            } else {
-                delete_file_temp.push(claim_document[0].filename)
-            }
+                return
+            }).setHeader('Delete Item Detail')
+        })
 
-            data_edit_temp.splice(i, 1)
-            buildTableItem("edit")
+        $('#request_item_datatable-edit tbody').on('click', '#delete-item-detail', function() {
+            alertify.confirm("Are You Sure?", function () {
+                const i = $('#delete-item-detail').closest('tr').index()
+                const {
+                    claim_category_id,
+                    claim_document
+                } = data_edit_temp[i]
+                let namaFile = claim_document[0].filename.split("-")
+                if (namaFile[0] == "UploadTmp") {
+                    const data = { delete_document: claim_document[0].filename }
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('delete_item') }}",
+                        data: data,
+                        dataType: "json",
+                        headers: {
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                        },
+                    });
+                } else {
+                    delete_file_temp.push(claim_document[0].filename)
+                }
+    
+                data_edit_temp.splice(i, 1)
+                buildTableItem("edit")
+            }).setHeader('Delete Item Detail')
 
         })
 
