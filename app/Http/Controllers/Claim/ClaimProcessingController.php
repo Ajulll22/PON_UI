@@ -58,10 +58,17 @@ class ClaimProcessingController extends Controller
         return $res;
     }
 
-    public function GenerateCSV($id)
+    public function GenerateCSV($id, Request $request)
     {
         ini_set('max_execution_time', 0);
         ini_set('memory_limit', '4000M');
+
+        $rek_type = $request->query("rek");
+
+        $rek_list = [
+            "idr" => "1230001919010",
+            "usd" => "1220004043553"
+        ];
 
         $data = [
             "rf_period_id" => $id
@@ -72,7 +79,7 @@ class ClaimProcessingController extends Controller
         }
 
         $data_report = $res["data"];
-        $data_report["rek_sumber"] = "1050005478221";
+        $data_report["rek_sumber"] = $rek_list[$rek_type];
 
         try {
 
