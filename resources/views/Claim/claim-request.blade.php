@@ -1248,8 +1248,8 @@
 
         // Delete Item Detail
         $('#request_item_datatable-add tbody').on('click', '#delete-item-detail', function() {
+            const i = $(this).closest('tr').index()
             alertify.confirm("Are You Sure?", function () {
-                const i = $("#delete-item-detail").closest('tr').index()
                 const {
                     claim_category_id,
                     claim_document
@@ -1279,8 +1279,8 @@
         })
 
         $('#request_item_datatable-edit tbody').on('click', '#delete-item-detail', function() {
+            const i = $(this).closest('tr').index()
             alertify.confirm("Are You Sure?", function () {
-                const i = $('#delete-item-detail').closest('tr').index()
                 const {
                     claim_category_id,
                     claim_document
