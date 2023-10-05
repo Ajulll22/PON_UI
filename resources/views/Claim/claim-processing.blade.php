@@ -82,6 +82,8 @@
                         <div class="col-sm-9">
                             <select class="form-control rounded-xl" id="rek_sumber" name="rek_sumber"
                                 style="width: 100%" required>
+                                <option value="idr">IDR</option>
+                                <option value="usd">USD</option>
                             </select>
                         </div>
                     </div>
@@ -307,6 +309,15 @@
             $("#modal-download_pp").modal("show");
 
         })
+        $('#table-data tbody').on('click', '#generate-csv', function() {
+            const {
+                rf_period_id
+            } = table.row($(this).parents('tr')).data();
+            $("#rek_sumber").val("idr").change();
+            $("#rf_period_id").val(rf_period_id);
+            $("#modal-download_csv").modal("show");
+
+        })
 
         $("#submit-download_pp").click(function() {
             const date = $("#submission_date").val();
@@ -317,6 +328,17 @@
             }
             window.location.href = `/claim-processing/generate-pp/${id}?date=${date}`;
             $("#modal-download_pp").modal("hide");
+            amaran_success("Downloading");
+        })
+        $("#submit-download_csv").click(function() {
+            const rek = $("#rek_sumber").val();
+            const id = $("#rf_period_id").val();
+            if (rek == "") {
+                amaran_error("Please Fill Required Field")
+                return
+            }
+            window.location.href = `/claim-processing/generate-csv/${id}?rek=${rek}`;
+            $("#modal-download_csv").modal("hide");
             amaran_success("Downloading");
         })
     </script>
