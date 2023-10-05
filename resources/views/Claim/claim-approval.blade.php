@@ -650,7 +650,7 @@
     
                 data_edit_temp.splice(i, 1)
                 buildTableEdit()
-            })
+            }).setHeader('Delete Item Detail')
         })
 
         function cancelEditDetail() {
