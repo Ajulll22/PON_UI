@@ -310,6 +310,8 @@
 
         var support_doc = []
 
+        let updated_by = 0
+
         $(document).ready(function() {
             $('.dataTables_length select').select2({
                 minimumResultsForSearch: Infinity
@@ -689,7 +691,7 @@
                 cost_centre_id: $("#cost_centre_id-edit").val(),
                 rf_name: $("#rf_name-edit").val(),
                 claim_phase_id: $("#claim_phase_id-edit").val(),
-                total_amount, action: "SUBMIT", support_doc,
+                total_amount, action: "SUBMIT", support_doc, updated_by,
                 claim_item_detail: data_edit_temp,
                 delete_document: delete_file_temp
             }
@@ -811,6 +813,7 @@
             $.LoadingOverlay("show");
             const data = table.row($(this).parents('tr')).data();
             console.log(data);
+            updated_by = data.approver_id;
             $("#claim_request_id-edit").val(data.claim_request_id);
             $("#claim_request_type_id-edit").val(data.claim_request_type_id);
             $("#currency_id-edit").val(data.currency_id);

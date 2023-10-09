@@ -106,16 +106,18 @@ class ClaimRequestController extends Controller
         $data_all = $request->all();
         $data = json_decode($data_all['data'], true);
         $rf_name = $data["rf_name"];
-        $data['updated_by'] = Session::get('user_id');
+        if (!array_key_exists("updated_by", $data)) {
+            $data['updated_by'] = Session::get('user_id');
+        }
         $nameFile = Session::get('user_firstname')." ".Session::get('user_lastname')."-".time();
         $path = "file/RF Period $rf_name/".Session::get('user_firstname');
         if (Session::get('user_lastname') != "") {
             $path = $path. " ".Session::get('user_lastname');
         }
-        if(!File::isDirectory($path)){
-            File::makeDirectory($path."/absensi", 0777, true, true);
-        }
         if (array_key_exists("change_support_doc", $data_all)) {
+            if(!File::isDirectory($path)){
+                File::makeDirectory($path."/absensi", 0777, true, true);
+            }
             $changeSupportDoc = [];
             if (array_key_exists('support_doc', $data)) {
                 foreach ($data["support_doc"] as $file_old) {
