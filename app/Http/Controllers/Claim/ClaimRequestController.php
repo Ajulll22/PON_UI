@@ -62,6 +62,7 @@ class ClaimRequestController extends Controller
         if (Session::get('user_lastname') != "") {
             $path = $path. " ".Session::get('user_lastname');
         }
+        $path = str_replace(".", "", $path);
         
         if(!File::isDirectory($path)){
             File::makeDirectory($path."/absensi", 0777, true, true);
@@ -114,6 +115,7 @@ class ClaimRequestController extends Controller
         if (Session::get('user_lastname') != "") {
             $path = $path. " ".Session::get('user_lastname');
         }
+        $path = str_replace(".", "", $path);
         if (array_key_exists("change_support_doc", $data_all)) {
             if(!File::isDirectory($path)){
                 File::makeDirectory($path."/absensi", 0777, true, true);
