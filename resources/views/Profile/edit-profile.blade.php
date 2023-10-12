@@ -187,7 +187,6 @@
                     },
                     datatype: "json",
                     success: function (msg) {
-                        console.log(msg);
                         $.LoadingOverlay('hide');
                         if (msg['{{ config('constants.result') }}'] == "FAILED") {
                             amaran_error(msg.message);

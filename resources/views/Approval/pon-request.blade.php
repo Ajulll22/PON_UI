@@ -376,7 +376,6 @@
 
             let rowdata         = pon_request_datatable.row($(this).parents('tr')).data();
 
-            console.log(rowdata);
             let each_total      = 0;
             let grand_total     = 0;
             let pon_request_id  = rowdata.pon_request_id;
@@ -479,7 +478,6 @@
                 },
                 success: function (msg) {
                     $.LoadingOverlay('hide');
-                    console.log(msg);
 
                     array_item = [];
 
@@ -735,7 +733,6 @@
             array_item.forEach(data => {
                 data.item_detail.forEach(item => {
                     if (item.note) {
-                        console.log(item.note);
                         claim_approval_note.push({
                             claim_item_id: item.claim_item_id,
                             note: item.note
@@ -750,7 +747,6 @@
             if (approval_type == 2) {
                 data.rejection_reason = "Tidak Sesuai"
             }
-            console.log(data);
             $.ajax({
                 url     : '{{ route("pon_request_approve") }}',
                 method  : 'POST',
@@ -760,7 +756,6 @@
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
                 success: function (res) {
-                    console.log(res);
                     $.LoadingOverlay('hide');
                     if (res.result == "SUCCESS") {
                         pon_request_datatable.ajax.reload()
@@ -785,7 +780,6 @@
             let row = item_detail_table.row(tr);
             const indexData = parseInt(row.data()[0])-1
             const dataItem = array_item[indexData];
-            console.log(dataItem);
             if (row.child.isShown()) {
                 row.child.hide();
             } else {

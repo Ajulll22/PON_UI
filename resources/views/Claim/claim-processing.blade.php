@@ -254,7 +254,6 @@
                         'X-CSRF-TOKEN': "{{ csrf_token() }}"
                     },
                     success: function(res) {
-                        console.log(res);
                         $.LoadingOverlay('hide');
                         if (res.result === 'SUCCESS') {
                             table.ajax.reload();
@@ -287,7 +286,6 @@
                             'X-CSRF-TOKEN': "{{ csrf_token() }}"
                         },
                         success: function(res) {
-                            console.log(res);
                             $.LoadingOverlay('hide');
                             if (res.result === 'SUCCESS') {
                                 table.ajax.reload();

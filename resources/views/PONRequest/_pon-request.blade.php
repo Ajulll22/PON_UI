@@ -725,7 +725,6 @@
                 sortable    : false,
                 searchable  : false,
                 render      : function(data, type, full){
-                    console.log(data);
                     var edit_status     = '<?php echo $data['privilege_menu'][config('constants.PON_REQUEST_EDIT_MKR')] ?>';
                     var delete_status   = '<?php echo $data['privilege_menu'][config('constants.PON_REQUEST_DEL_MKR')] ?>';
                     var checker_status  = '<?php echo $data['privilege_menu'][config('constants.PON_REQUEST_ADD_CKR')] ?>';
@@ -1318,7 +1317,6 @@
                     if(msg['{{ config('constants.result') }}'] == "SUCCESS"){
                         item_request_table_update.clear().draw();
                         item_claim_table_update.clear().draw();
-                        console.log(msg);
 
                         if (msg.item_list.length > 0) {
                             for (var i=0; i<msg.item_list.length; i++) {
@@ -1400,7 +1398,6 @@
                     amaran_error('Something went wrong, please contact technical support!');
                 }
             });
-            console.log(rowdata);
 
             $('#pon_request_id_update').val(pon_request_id);
             $('#cost_centre_update').val(rowdata.cost_centre_id).change();
@@ -1536,7 +1533,6 @@
                     },
                     success     : function(msg) {
                         $.LoadingOverlay('hide');
-                        console.log(msg);
 
                         if (msg['{{ config('constants.result') }}'] == "FAILED") {
                             amaran_error(msg.message);
@@ -1610,7 +1606,6 @@
             $.LoadingOverlay("show");
 
             let rowdata         = pon_request_datatable.row($(this).parents('tr')).data();
-            console.log(rowdata);
             let each_total      = 0;
             let grand_total     = 0;
             let pon_request_id  = rowdata.pon_request_id;
@@ -1857,7 +1852,6 @@
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
                 success: function (msg) {
-                    console.log(msg);
                     $.LoadingOverlay('hide');
 
                     array_item = [];
@@ -1933,7 +1927,6 @@
             let row = item_detail_table.row(tr);
             const indexData = parseInt(row.data()[0])-1
             const dataItem = array_item[indexData];
-            console.log(dataItem);
             if (row.child.isShown()) {
                 row.child.hide();
             } else {

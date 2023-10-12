@@ -443,7 +443,6 @@
                     targets: -1,
                     data: null,
                     render: function(data) {
-                        console.log(data);
                         let buttonAction = ""
                         if (priv_list.CLAIM_APPROVAL_PUSAT_UPDATE && data.status == "Open") {
                             buttonAction += `<button id="edit-modal-show" style="text-decoration: none;" class="btn btn-outline-warning mg-r-5" type="button" title="Edit Item"><span class="icon ion-compose"></span></button>`
@@ -565,7 +564,6 @@
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
                 success: function(res) {
-                    console.log(res);
                     if (res.result === 'SUCCESS') {
                         table.clear().rows.add(res.data.claim_request_approval).draw()
                         return
@@ -597,7 +595,6 @@
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
                 success: function(res) {
-                    console.log(res);
                     if (res.result == "SUCCESS") {
                         reFatchData();
                         // $.LoadingOverlay("hide");
@@ -626,13 +623,12 @@
         }
 
         $('#request_item_datatable-edit tbody').on('click', '#delete-item-detail', function() {
-            const i = $(this).closest('tr').index()
+            const i = item_request_table_edit.row($(this).parents('tr')).index()
             alertify.confirm("Are You Sure?", function () {
                 const {
                     claim_category_id,
                     claim_document
                 } = data_edit_temp[i]
-                console.log(claim_document);
                 let namaFile = claim_document[0].filename.split("-")
                 if (namaFile[0] == "UploadTmp") {
                     const data = { delete_document: claim_document[0].filename }
@@ -647,7 +643,6 @@
                     });
                 } else {
                     delete_file_temp.push(claim_document[0].filename)
-                    console.log(delete_file_temp);
                 }
     
                 data_edit_temp.splice(i, 1)
@@ -661,7 +656,6 @@
 
         $("#edit_item_detail").submit( function (e) { 
             e.preventDefault();
-            console.log(data_edit_temp);
             const index = $("#index-edit").val()
             const tmp = {...data_edit_temp[index]}
 
@@ -710,7 +704,6 @@
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
                 success: function(res) {
-                    console.log(res);                    
                     if (res.result == "SUCCESS") {
                         reFatchData()
                         $('#modal-claim-request_edit').modal("hide");
@@ -727,7 +720,7 @@
          } )
 
         $('#request_item_datatable-edit tbody').on('click', '#edit-item-detail', function() {
-            const i = $(this).closest('tr').index()
+            const i = item_request_table_edit.row($(this).parents('tr')).index()
             if (data_edit_temp[i].pm) {
                 $("#pm-edit").val(data_edit_temp[i].pm)
             }
@@ -812,7 +805,6 @@
         $('#table-data tbody').on('click', '#edit-modal-show', function() {
             $.LoadingOverlay("show");
             const data = table.row($(this).parents('tr')).data();
-            console.log(data);
             updated_by = data.approver_id;
             $("#claim_request_id-edit").val(data.claim_request_id);
             $("#claim_request_type_id-edit").val(data.claim_request_type_id);
@@ -849,7 +841,6 @@
 
         
         function forceNumber(e) {
-            console.log(e.keyCode);
             if (e.keyCode === 190 || e.keyCode === 110 || e.keyCode === 188) {
                 e.preventDefault();
             }

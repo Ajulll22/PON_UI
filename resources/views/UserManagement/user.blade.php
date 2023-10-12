@@ -1385,7 +1385,6 @@
             //         },
             //         datatype: "json",
             //         success: function (msg) {
-            //             console.log(2);
             //             if (msg['{{ config('constants.result') }}'] == "FAILED") {
             //                 amaran_error(msg.message);
             //             } else if (msg['{{ config('constants.result') }}'] == "SUCCESS") {

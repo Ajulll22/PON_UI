@@ -249,7 +249,6 @@
                     },
                     success: function(msg){
                         if(msg['{{ config('constants.result') }}'] == "SUCCESS"){
-                            // console.log(msg);
                             $('.login-btn-text').css('display', 'block');
                             $('.login-btn-spinner').css('display', 'none');
                             $('#email-input').hide();

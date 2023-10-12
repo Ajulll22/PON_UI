@@ -599,7 +599,6 @@
                 }, 3000);
                 return
             }
-            console.log(data);
 
             $.ajax({
                 url: '{{ route('cost_centre_update') }}',
@@ -643,7 +642,6 @@
                 cost_centre_id: $("#delete-cost_centre_id").val()
             }
 
-            console.log(data);
             $.ajax({
                 url: '{{ route('cost_centre_delete') }}',
                 method: 'POST',

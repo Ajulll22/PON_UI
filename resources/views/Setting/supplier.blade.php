@@ -223,7 +223,6 @@
         ]
 
         const pm = cobaFind.find(approveList => approveList.name === "hrd")
-        console.log(pm);
 
         var table_df = $('#table_data_filter').DataTable({
             fixedHeader: true,
@@ -459,7 +458,6 @@
         $('#table-data tbody').on('click', '#edit-modal-show', function() {
             $.LoadingOverlay("show");
             const data = table.row($(this).parents('tr')).data();
-            console.log(data);
 
             $("#edit-supplier_id").val(data.supplier_id);
             $("#edit-name").val(data.name);

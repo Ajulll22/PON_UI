@@ -257,7 +257,6 @@
         ]
 
         const pm = cobaFind.find(approveList => approveList.name === "hrd")
-        console.log(pm);
 
         var table_df = $('#table_data_filter').DataTable({
             fixedHeader: true,
@@ -458,8 +457,6 @@
                     }
                 },
                 error: function(err) {
-                    console.log('aneh');
-                    console.log(err);
                 }
             });
         })
@@ -514,7 +511,6 @@
         $('#table-data tbody').on('click', '#edit-modal-show', function() {
             $.LoadingOverlay("show");
             const data = table.row($(this).parents('tr')).data();
-            console.log(data);
 
             $("#edit-rf_period_id").val(data.rf_period_id);
             $("#edit-rf_period_name").val(data.rf_period_name);

@@ -388,7 +388,6 @@
 
             // Get Data from Current Selection
             var data = table.row($(this).parents('tr')).data();
-            console.log(data);
 
             $('#select-reason').val('').trigger('change');
 

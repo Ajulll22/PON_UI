@@ -255,7 +255,6 @@
 
                         }
                         else{
-                            console.log(msg);
                             $('.login-btn-text').css('display', 'block');
                             $('.login-btn').prop('disabled', false);
                             $('.login-btn-spinner').css('display', 'none');

@@ -336,7 +336,6 @@
                     targets: -1,
                     data: null,
                     render: function(data) {
-                        console.log(data);
                         let follup =
                             `<button id="edit-modal-show" style="text-decoration: none;" class="btn btn-outline-primary mg-r-5" type="button" title="Edit Item"><span class="icon ion-compose"></span></button>`
                         if (data.active != 1) {
@@ -486,7 +485,6 @@
                         amaran_success(res.message)
                     } else {
                         amaran_error(res.message)
-                        console.log(err);
                     }
                 },
                 error: function(err) {
@@ -604,7 +602,6 @@
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
                 success: function(res) {
-                    console.log(res);
                     if (res.result === 'SUCCESS') {
                         table.ajax.reload()
                         $('#modal-claim_category_delete').modal("hide");

@@ -100,9 +100,6 @@
             let params      = (new URL(current_url)).searchParams;
             let user_name   = params.get('un');
             let user_email  = params.get('em');
-            console.log(current_url);
-            console.log(user_name);
-            console.log(user_email);
 
             let frm = $('#form_change_password');
             frm.submit(function (e){
@@ -126,7 +123,6 @@
                         },
                         datatype    : "json",
                         success     : function(msg){
-                            console.log(msg);
                             // Change Password Success
                             if(msg['{{ config('constants.result') }}'] == "SUCCESS"){
                                 amaran_success(msg.message);

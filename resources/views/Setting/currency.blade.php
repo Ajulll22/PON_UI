@@ -388,8 +388,6 @@
             });
             delete data['button']
 
-            console.log(data);
-
             $.ajax({
                 url: '{{ route('currency_update') }}',
                 method: 'PUT',
@@ -472,7 +470,6 @@
         $('#table-data tbody').on('click', '#edit-modal-show', function() {
             $.LoadingOverlay("show");
             const data = table.row($(this).parents('tr')).data();
-            console.log(data);
 
             $("#edit-currency_id").val(data.currency_id);
             $("#edit-name").val(data.name);

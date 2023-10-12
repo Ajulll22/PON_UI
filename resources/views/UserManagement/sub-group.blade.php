@@ -376,7 +376,6 @@
       $(".selectGroup").select2({
           placeholder: "select group"
       }).on('change', function(event){
-          // console.log( this.value );
       });
 
       $('#select-reason').select2({
