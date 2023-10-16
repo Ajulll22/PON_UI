@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\GatewayController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class ClaimRequestController extends Controller
@@ -155,9 +156,8 @@ class ClaimRequestController extends Controller
             }
             $data['claim_item_detail'][$key]['claim_document'] = [$filename];
         }
-        $delete_document = $request->input('delete_document');
-        if ($delete_document) {
-            foreach ($delete_document as $file) {
+        if ($data["delete_document"]) {
+            foreach ($data["delete_document"] as $file) {
                 if (file_exists(public_path($file))){
                     unlink(public_path($file));
                 }

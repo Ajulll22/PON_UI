@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\GatewayController;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -332,6 +333,10 @@ class ClaimProcessingController extends Controller
         $filePath = "file/RF Period $id";
         $fileName = "$id.zip";
         $zip = new \ZipArchive();
+
+        if(!File::isDirectory($filePath)){
+            File::makeDirectory($filePath, 0777, true, true);
+        }
     
         if ($zip->open("$filePath/$fileName", \ZipArchive::CREATE) !== true) {
             throw new \RuntimeException('Cannot open ' . "$filePath/$fileName");
