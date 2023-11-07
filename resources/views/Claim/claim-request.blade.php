@@ -1156,6 +1156,9 @@
                         buildTableItem("add")
                         resetForm(claim_category_id, 'add')
                     }
+                },
+                error: function (err) {  
+                    amaran_error(err.message ?? "Server Internal")
                 }
             })
         }

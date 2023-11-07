@@ -271,9 +271,7 @@ class PONRequestController extends Controller
                     $newFilePath = $destinationPath.'\\'.$specific_dir.'\\'.$_FILES['pon_request_file']['name'][$i];
 
                     // UPLOAD FILE TO TEMP DIR
-                    if(move_uploaded_file($tmpFilePath, $newFilePath)) {
-                        return "berhasil";
-                    }
+                    move_uploaded_file($tmpFilePath, $newFilePath);
                 }
             }
         }

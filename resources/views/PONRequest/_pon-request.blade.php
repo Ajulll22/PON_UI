@@ -1618,7 +1618,7 @@
             let pon_number              = rowdata.pon_number;
             let current_phase           = rowdata.current_phase;
             let cost_centre             = rowdata.cost_centre;
-            let supplier                = rowdata.supplier;
+            let supplier                = rowdata.supplier_name;
             let total_price             = addComasStatic(Math.round((parseFloat(rowdata.total_price) + Number.EPSILON) * 10000) / 10000);
             let reason                  = rowdata.reason;
             let rejection_reason        = rowdata.rejection_reason;
