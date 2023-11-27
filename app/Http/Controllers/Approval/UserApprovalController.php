@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Approval;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\GatewayController;
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\UtilityController;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
@@ -90,7 +91,19 @@ class UserApprovalController extends Controller
 	    if ($result_data['result']=="SUCCESS") {
 		    if ($request_type_name=="ADD" && $request_status_name=="APPROVED") {
 		    	$user_password_clear = UtilityController::encrypt_decrypt('decrypt',$result_data['user_password']);
-		    	return UtilityController::send_user_register($user_name, $user_fullname, $user_password_clear, $user_email , $result_data);
+
+				$data = array('username' => $user_name, 'fullname' => $user_fullname, 'password' => $user_password_clear, 'email' => $user_email);
+				$html = view('Mail.user-register',$data)->render();
+				$payload = [
+					"subject" => config('constants.app_name').' - Forgot Password',
+					"recipient" => [
+						["email" => $user_email]
+					],
+					"body" => $html
+				];
+				PasswordController::sendMail($payload);
+
+				return $result_data;
 		    }
 		    else{
 		        return $result_data;

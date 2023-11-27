@@ -1318,10 +1318,10 @@
             }
 
             var files = $("#support_doc-add")[0].files;
-            if (!files.length) {
-                amaran_error("Please Add Support Doc")
-                return
-            }
+            // if (!files.length) {
+            //     amaran_error("Please Add Support Doc")
+            //     return
+            // }
             /* define allowed file types */
             var allowedExtensionsRegx = /(\.jpg|\.jpeg|\.png|\.gif|\.pdf)$/i;
 

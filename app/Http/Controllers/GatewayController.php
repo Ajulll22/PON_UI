@@ -26,7 +26,7 @@ Class GatewayController {
                 Log::debug('[PATH] '.$method.' '.$path);
             }
 
-            array_walk_recursive($param, function (&$item) {$item = strval($item);});
+            // array_walk_recursive($param, function (&$item) {$item = strval($item);});
 
             $json = array();
             foreach ($param as $key => $value) {
