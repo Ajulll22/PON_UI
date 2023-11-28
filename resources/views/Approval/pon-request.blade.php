@@ -375,7 +375,7 @@
             $.LoadingOverlay("show");
 
             let rowdata         = pon_request_datatable.row($(this).parents('tr')).data();
-
+            console.log(rowdata);
             let each_total      = 0;
             let grand_total     = 0;
             let pon_request_id  = rowdata.pon_request_id;
@@ -477,6 +477,7 @@
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
                 success: function (msg) {
+                    console.log(msg);
                     $.LoadingOverlay('hide');
 
                     array_item = [];
@@ -791,6 +792,7 @@
                             <td>${val.claim_date}</td>
                             <td>${val.claim_amount}</td>
                             <td>${val.claim_desc}</td>
+                            <td><a href="/${val.claim_document[0].filename}" target="_blank" style="text-decoration: none;" class="btn btn-outline-primary" type="button" title="Preview File"><span class="my-auto icon ion-eye"></span></a></td>
                             <td><input value="${val.note ?? ""}" data-index_data="${indexData}" data-index_item="${indexItem}" oninput="onInputNote(event)" class="form-control" style="font-size: 11px;padding: 4px;" placeholder="Claim Note" type="text"></td>
                         </tr>`
                     });
@@ -802,6 +804,7 @@
                                     <th>Claim Date</th>
                                     <th>Claim Amount</th>
                                     <th>Claim Description</th>
+                                    <th>File</th>
                                     <th>Note</th>
                                 </tr>
                                 ${childHtml}

@@ -1180,7 +1180,8 @@
                 claim_desc: $(`#${claim_category_id}-claim_desc-edit`).val(),
                 claim_category_id,
                 pm_id:null,
-                pm_approve: null
+                pm_approve: null,
+                autopay_report_override_column: null
             }
             if (pm !== undefined) {
                 if (pm === null) {

@@ -206,7 +206,7 @@
                     <input id="pm-edit" type="text" hidden>
                     <div class="modal-body px-5">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col">
                                 <div class="form-group">
                                     <label class="form-control-label">Claim Category <span
                                         class="tx-danger">*</span></label>
@@ -218,7 +218,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col">
                                 <div class="form-group">
                                     <label class="form-control-label">Claim Date <span
                                             class="tx-danger">*</span></label>
@@ -227,7 +227,7 @@
                                         id="claim_date-edit" placeholder="DD/MM/YYYY" autocomplete="off">
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col">
                                 <div class="form-group">
                                     <label class="form-control-label">Claim Amount <span
                                             class="tx-danger">*</span></label>
