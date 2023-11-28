@@ -32,9 +32,12 @@ class ClaimApprovalController extends Controller
             $data['claim_list'] = $claim_list['data'];
         }
         $claim_category     = GatewayController::lead_to_be("GET", "claim-item-category/data", []);
-
         $data['claim_category'] = $claim_category['data'];
 
+        $autopay_list     = GatewayController::lead_to_be("GET", "catalogue/autopay-report/column", []);
+        // dd($autopay_list);
+        $data["autopay_list"] = $autopay_list["data"];
+        
         return view('claim\claim-approval')->with('data', $data);
     }
 

@@ -206,7 +206,7 @@
                     <input id="pm-edit" type="text" hidden>
                     <div class="modal-body px-5">
                         <div class="row">
-                            <div class="col">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-control-label">Claim Category <span
                                         class="tx-danger">*</span></label>
@@ -218,6 +218,20 @@
                                     </select>
                                 </div>
                             </div>
+                            @if ($data['privilege_menu']["CLAIM_AUTOPAY_COL_UPDATE"])
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label">Autopay Column</label>
+                                    <select class="form-control claim_category rounded-xl" id="autopay_report_override_column" name="autopay_report_override_column"
+                                        style="width: 100%">
+                                        <option value="">Pilih</option>
+                                        @foreach ($data["autopay_list"] as $item)
+                                            <option value="{{$item['column_report_id']}}">{{$item["name"]}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            @endif
                             <div class="col">
                                 <div class="form-group">
                                     <label class="form-control-label">Claim Date <span
@@ -664,6 +678,7 @@
             tmp.claim_amount = parseInt(amount.replaceAll('.', ''))
             tmp.claim_desc = $("#claim_desc-edit").val()
             tmp.claim_date = $("#claim_date-edit").val()
+            tmp.autopay_report_override_column = $("#autopay_report_override_column").val() ?? null
 
             data_edit_temp[index] = tmp
 
@@ -725,8 +740,9 @@
                 $("#pm-edit").val(data_edit_temp[i].pm)
             }
             $("#index-edit").val(i)
-
+            console.log(data_edit_temp[i]);
             $("#claim_category-edit").val(data_edit_temp[i].claim_category_id)
+            $("#autopay_report_override_column")?.val(data_edit_temp[i].autopay_report_override_column).change()
             $("#claim_date-edit").val(data_edit_temp[i].claim_date)
             $("#claim_amount-edit").val(data_edit_temp[i].claim_amount).change()
             $("#claim_desc-edit").val(data_edit_temp[i].claim_desc)
