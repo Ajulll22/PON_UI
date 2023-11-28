@@ -44,7 +44,7 @@ class PONRequestController extends Controller
             return redirect()->route('logout');
         }
 
-        $cost_centre = GatewayController::lead_to_be("POST", "cost-centre/child-data", ["cost_centre_id" => ""]);
+        $cost_centre = GatewayController::lead_to_be("GET", "cost-centre/raw-data", []);
         // dd($cost_centre);
         $currency 	= GatewayController::lead_to_be("GET", "currency/data", []);
         $supplier = GatewayController::lead_to_be("GET", "supplier/data", []);
