@@ -221,6 +221,8 @@ class UserSetupController extends Controller
         $cost_centre_id 	= $request->input('cost_centre_id');
     	$role_id 	        = $request->input('role_id');
     	$leader_user_id 	= $request->input('leader_user_id');
+    	$on_leave 	= $request->input('on_leave');
+    	$subtitute_user 	= $request->input('subtitute_user');
         
         // REQUEST PARAMETER
         $param['user_name']         = $user_name;
@@ -236,6 +238,8 @@ class UserSetupController extends Controller
         $param['cost_centre_id']       = $cost_centre_id;
         $param['role_id']       = $role_id;
         $param['leader_user_id']       = $leader_user_id;
+        $param['on_leave']       = $on_leave;
+        $param['subtitute_user']       = $subtitute_user;
 
         if($reason == null){
             $reason = "";

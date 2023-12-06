@@ -448,6 +448,24 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label">On Leave Status</label>
+                                        <div class="form-check d-flex my-auto">
+                                            <input id="on_leave"
+                                                name="on_leave" type="checkbox">
+                                            <div><p class="my-auto mx-2 font-italic">Checklist if you're paid leave</p></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="show_substitute" class="col-md-6" style="display: none">
+                                    <div class="form-group">
+                                        <label class="form-control-label">Subtitute <span class="tx-danger">*</span></label>
+                                        <select class="form-control" name="on_leave_subtitute" id="on_leave_subtitute" >
+                                            <option value="">Select Subtitute</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
@@ -1204,6 +1222,7 @@
                 targets     : -2,
                 data        : null,
                 render      : function(data, type, full){
+                    // console.log(data);
                     var status = '';
                     
                     if(data.user_active == '1'){
@@ -1354,6 +1373,16 @@
             instance.reset();
             user_data_filter ={};
             var data = table.row($(this).parents('tr')).data();
+            // console.log(data);
+            let subtitute_list = data.possible_subtitute_user
+            let optionHtml = "<option value=''>-</option>"
+            subtitute_list.forEach(el => {
+                optionHtml += `<option value='${el.user_id}'>${el.user_fullname}</option>`
+            });
+
+            $("#on_leave_subtitute").html(optionHtml)
+            $("#on_leave_subtitute").val(data.subtitute_user ?? "").change()
+            $('#on_leave').prop("checked", data.on_leave == 1).change()
             
             $('#edit_user_name').val(data.user_name);
             $('#select-reason-edit').val('').trigger('change');
@@ -1419,6 +1448,11 @@
             var cost_centre_id 		     = $('#cost_centre_id_edit').val();     
             var role_id 		         = $('#role_id_edit').val();   
             var leader_user_id 		     = $('#leader_user_id_edit').val();   
+            var on_leave                 = $('#on_leave').is(':checked') ? 1 : 0
+            var subtitute_user           = ""
+            if (on_leave) {
+                subtitute_user = $('#on_leave_subtitute').val()
+            }
 
             var reason = "";
             if($('#select-reason-edit').val() == 'other'){
@@ -1440,7 +1474,7 @@
                 subgroup_id         : edit_subgroup_id,
                 data_filter         : user_data_filter,
                 reason              : reason,
-                cost_centre_id, role_id, leader_user_id
+                cost_centre_id, role_id, leader_user_id, on_leave, subtitute_user
             };
 
             var instance = $('#form_edit_user').parsley();
@@ -1642,6 +1676,16 @@
 
         $('#edit_subgroup_name').click(function(){
             amaran_warning('Subgroup name can\'t be edited!');
+        });
+
+        $('#on_leave').on('change', function() {
+            if (this.checked) {
+                $("#on_leave_subtitute").prop('required',true);
+                $("#show_substitute").show(200)
+            }else {
+                $("#on_leave_subtitute").prop('required',false);
+                $("#show_substitute").hide(200)
+            }
         });
     </script>
 @endsection
